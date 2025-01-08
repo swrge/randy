@@ -163,7 +163,7 @@ impl CommandRatelimiter {
 /// sending [`OpCode::Heartbeat`]s (which requires sending a heartbeat back
 /// immediately).
 ///
-/// [`OpCode::Heartbeat`]: twilight_model::gateway::OpCode::Heartbeat
+/// [`OpCode::Heartbeat`]: randy_model::gateway::OpCode::Heartbeat
 fn nonreserved_commands_per_reset(heartbeat_interval: Duration) -> u8 {
     /// Guard against faulty gateways specifying low heartbeat intervals by
     /// maximally reserving this many heartbeats per [`PERIOD`].

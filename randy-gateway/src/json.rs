@@ -11,7 +11,7 @@ use crate::{
     EventTypeFlags,
 };
 use serde::de::DeserializeSeed;
-use twilight_model::gateway::{
+use randy_model::gateway::{
     event::{GatewayEvent, GatewayEventDeserializer},
     OpCode,
 };

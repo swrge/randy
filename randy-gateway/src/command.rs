@@ -2,7 +2,7 @@
 //!
 //! [`Shard::command`]: crate::Shard::command
 
-use twilight_model::gateway::payload::outgoing::{
+use randy_model::gateway::payload::outgoing::{
     RequestGuildMembers, UpdatePresence, UpdateVoiceState,
 };
 
@@ -13,7 +13,7 @@ mod private {
     //! [`Command`]: super::Command
 
     use serde::Serialize;
-    use twilight_model::gateway::payload::outgoing::{
+    use randy_model::gateway::payload::outgoing::{
         RequestGuildMembers, UpdatePresence, UpdateVoiceState,
     };
 
@@ -36,9 +36,9 @@ mod private {
 /// To send an arbitrary command to the Discord Gateway API then [`Shard::send`]
 /// may be used.
 ///
-/// [`Heartbeat`]: twilight_model::gateway::payload::outgoing::Heartbeat
-/// [`Identify`]: twilight_model::gateway::payload::outgoing::Identify
-/// [`Resume`]: twilight_model::gateway::payload::outgoing::Resume
+/// [`Heartbeat`]: randy_model::gateway::payload::outgoing::Heartbeat
+/// [`Identify`]: randy_model::gateway::payload::outgoing::Identify
+/// [`Resume`]: randy_model::gateway::payload::outgoing::Resume
 /// [`Shard::command`]: crate::Shard::command
 /// [`Shard::send`]: crate::Shard::send
 pub trait Command: private::Sealed {}
@@ -51,7 +51,7 @@ impl Command for UpdateVoiceState {}
 mod tests {
     use super::Command;
     use static_assertions::assert_impl_all;
-    use twilight_model::gateway::payload::outgoing::{
+    use randy_model::gateway::payload::outgoing::{
         RequestGuildMembers, UpdatePresence, UpdateVoiceState,
     };
 

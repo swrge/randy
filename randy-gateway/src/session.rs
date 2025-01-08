@@ -62,8 +62,8 @@ impl Session {
     /// with the shard's authentication details, and in return the session ID is
     /// provided via the [`Ready`] event.
     ///
-    /// [`Identify`]: twilight_model::gateway::payload::outgoing::Identify
-    /// [`Ready`]: twilight_model::gateway::payload::incoming::Ready
+    /// [`Identify`]: randy_model::gateway::payload::outgoing::Identify
+    /// [`Ready`]: randy_model::gateway::payload::incoming::Ready
     /// [ID of the shard]: crate::ShardId
     pub const fn id(&self) -> &str {
         &self.id

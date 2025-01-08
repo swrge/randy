@@ -6,7 +6,7 @@ use std::{
     sync::Arc,
 };
 use tokio_websockets::Connector;
-use twilight_model::gateway::{
+use randy_model::gateway::{
     payload::outgoing::{identify::IdentifyProperties, update_presence::UpdatePresencePayload},
     Intents,
 };
@@ -202,7 +202,7 @@ impl<Q> ConfigBuilder<Q> {
     /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use std::env::{self, consts::OS};
     /// use twilight_gateway::{ConfigBuilder, Intents, Shard};
-    /// use twilight_model::gateway::payload::outgoing::identify::IdentifyProperties;
+    /// use randy_model::gateway::payload::outgoing::identify::IdentifyProperties;
     ///
     /// let token = env::var("DISCORD_TOKEN")?;
     /// let properties = IdentifyProperties::new("twilight.rs", "twilight.rs", OS);
@@ -269,7 +269,7 @@ impl<Q> ConfigBuilder<Q> {
     /// ```no_run
     /// use std::env;
     /// use twilight_gateway::{ConfigBuilder, Intents, Shard, ShardId};
-    /// use twilight_model::gateway::{
+    /// use randy_model::gateway::{
     ///     payload::outgoing::update_presence::UpdatePresencePayload,
     ///     presence::{ActivityType, MinimalActivity, Status},
     /// };
@@ -294,7 +294,7 @@ impl<Q> ConfigBuilder<Q> {
     /// # Ok(()) }
     /// ```
     ///
-    /// [successfully resumed]: twilight_model::gateway::event::Event::Resumed
+    /// [successfully resumed]: randy_model::gateway::event::Event::Resumed
     #[allow(clippy::missing_const_for_fn)]
     pub fn presence(mut self, presence: UpdatePresencePayload) -> Self {
         self.inner.presence = Some(presence);
@@ -306,7 +306,7 @@ impl<Q> ConfigBuilder<Q> {
     ///
     /// Resumes are always done to the URL specified in [`resume_gateway_url`].
     ///
-    /// [`resume_gateway_url`]: twilight_model::gateway::payload::incoming::Ready::resume_gateway_url
+    /// [`resume_gateway_url`]: randy_model::gateway::payload::incoming::Ready::resume_gateway_url
     #[allow(clippy::missing_const_for_fn)]
     pub fn proxy_url(mut self, proxy_url: String) -> Self {
         self.inner.proxy_url = Some(proxy_url.into_boxed_str());
@@ -383,7 +383,7 @@ impl<Q> ConfigBuilder<Q> {
     /// session. Refer to the documentation for [`Session`] for more
     /// information.
     ///
-    /// [`Resume`]: twilight_model::gateway::payload::outgoing::Resume
+    /// [`Resume`]: randy_model::gateway::payload::outgoing::Resume
     #[allow(clippy::missing_const_for_fn)]
     pub fn session(mut self, session: Session) -> Self {
         self.inner.session = Some(session);
@@ -403,7 +403,7 @@ mod tests {
     use super::{Config, ConfigBuilder};
     use static_assertions::assert_impl_all;
     use std::fmt::Debug;
-    use twilight_model::gateway::Intents;
+    use randy_model::gateway::Intents;
 
     assert_impl_all!(Config: Clone, Debug, Send, Sync);
     assert_impl_all!(ConfigBuilder: Debug, Send, Sync);

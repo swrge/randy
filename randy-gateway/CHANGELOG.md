@@ -859,7 +859,7 @@ Document the `metrics` feature ([#642] - [@vivian]).
 ### Misc.
 
 Use the renamed
-`twilight_model::gateway::payload::identify::IdentityInfo::compress` model
+`randy_model::gateway::payload::identify::IdentityInfo::compress` model
 field ([#624] - [@chamburr]).
 
 ## [0.2.4] - 2020-11-28
@@ -910,7 +910,7 @@ custom gateway implementations ([#568] - [@Erk-]).
 
 ### Changes
 
-`twilight_model::gateway::Intents` is now re-exported as
+`randy_model::gateway::Intents` is now re-exported as
 `twilight_gateway::Intents`.
 
 The following methods now take a second "intents" parameter, as this is now
@@ -949,7 +949,7 @@ support version 8 of the Discord Gateway API.
 
 `twilight-gateway` now depends on `twilight-http` 0.2 and `twilight-model` 0.2.
 
-`twilight_model::gateway::Intents` is now re-exported as
+`randy_model::gateway::Intents` is now re-exported as
 `twilight_gateway::Intents`.
 
 The following methods now take a second "intents" parameter, as this is now

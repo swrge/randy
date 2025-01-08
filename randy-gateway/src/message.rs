@@ -9,7 +9,7 @@
 use std::borrow::Cow;
 
 use tokio_websockets::{CloseCode, Message as WebsocketMessage};
-use twilight_model::gateway::CloseFrame;
+use randy_model::gateway::CloseFrame;
 
 /// Message to send over the connection to the remote.
 #[derive(Clone, Debug, Eq, PartialEq)]

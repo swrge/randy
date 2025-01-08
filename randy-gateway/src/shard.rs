@@ -42,7 +42,7 @@ use tokio::{
     time::{self, Duration, Instant, Interval, MissedTickBehavior},
 };
 use tokio_websockets::{ClientBuilder, Error as WebsocketError, Limits, MaybeTlsStream};
-use twilight_model::gateway::{
+use randy_model::gateway::{
     event::GatewayEventDeserializer,
     payload::{
         incoming::Hello,
@@ -164,7 +164,7 @@ struct MinimalEvent<T> {
 
 /// Minimal [`Ready`] for light deserialization.
 ///
-/// [`Ready`]: twilight_model::gateway::payload::incoming::Ready
+/// [`Ready`]: randy_model::gateway::payload::incoming::Ready
 #[derive(Deserialize)]
 struct MinimalReady {
     /// Used for resuming connections.
@@ -277,7 +277,7 @@ pub struct Shard<Q = InMemoryQueue> {
     /// The interval is received in the [`GatewayEvent::Hello`] event when
     /// first opening a new [connection].
     ///
-    /// [`GatewayEvent::Hello`]: twilight_model::gateway::event::GatewayEvent::Hello
+    /// [`GatewayEvent::Hello`]: randy_model::gateway::event::GatewayEvent::Hello
     /// [connection]: Self::connection
     heartbeat_interval: Option<Interval>,
     /// Whether an event has been received in the current heartbeat interval.
@@ -296,7 +296,7 @@ pub struct Shard<Q = InMemoryQueue> {
     /// The latency is reset on receiving [`GatewayEvent::Hello`] as the host
     /// may have changed, invalidating previous latency statistic.
     ///
-    /// [`GatewayEvent::Hello`]: twilight_model::gateway::event::GatewayEvent::Hello
+    /// [`GatewayEvent::Hello`]: randy_model::gateway::event::GatewayEvent::Hello
     latency: Latency,
     /// Command ratelimiter, if it was enabled via
     /// [`Config::ratelimit_messages`].

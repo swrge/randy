@@ -44,12 +44,12 @@ pub use self::{
     shard::{Shard, ShardState},
     stream::StreamExt,
 };
-pub use twilight_model::gateway::{CloseFrame, Intents, ShardId};
+pub use randy_model::gateway::{CloseFrame, Intents, ShardId};
 
 #[doc(no_inline)]
 pub use twilight_gateway_queue as queue;
 #[doc(no_inline)]
-pub use twilight_model::gateway::event::{Event, EventType};
+pub use randy_model::gateway::event::{Event, EventType};
 
 #[cfg(feature = "twilight-http")]
 use self::error::{StartRecommendedError, StartRecommendedErrorType};

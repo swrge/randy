@@ -87,7 +87,7 @@ mod private {
         pin::Pin,
         task::{ready, Context, Poll},
     };
-    use twilight_model::gateway::event::Event;
+    use randy_model::gateway::event::Event;
 
     /// Future for the [`next_event`](super::StreamExt::next_event) method.
     pub struct NextEvent<'a, St: ?Sized> {

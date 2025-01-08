@@ -1,7 +1,7 @@
 //! Optimization for skipping deserialization of unwanted events.
 
 use bitflags::bitflags;
-use twilight_model::gateway::{event::EventType, OpCode};
+use randy_model::gateway::{event::EventType, OpCode};
 
 bitflags! {
     /// Important optimization for narrowing requested event types.
@@ -27,14 +27,14 @@ bitflags! {
     /// won't cause the operation of shards to fail, because shards will always
     /// parse portions of necessary events.
     ///
-    /// [`ChannelCreate`]: twilight_model::gateway::event::Event::ChannelCreate
-    /// [`ChannelPinsUpdate`]: twilight_model::gateway::event::Event::ChannelPinsUpdate
-    /// [`Event`]: twilight_model::gateway::event::Event
-    /// [`GuildCreate`]: twilight_model::gateway::event::Event::GuildCreate
-    /// [`Intents`]: twilight_model::gateway::Intents
-    /// [`Intents::GUILDS`]: twilight_model::gateway::Intents::GUILDS
-    /// [`RoleCreate`]: twilight_model::gateway::event::Event::RoleCreate
-    /// [`RoleUpdate`]: twilight_model::gateway::event::Event::RoleUpdate
+    /// [`ChannelCreate`]: randy_model::gateway::event::Event::ChannelCreate
+    /// [`ChannelPinsUpdate`]: randy_model::gateway::event::Event::ChannelPinsUpdate
+    /// [`Event`]: randy_model::gateway::event::Event
+    /// [`GuildCreate`]: randy_model::gateway::event::Event::GuildCreate
+    /// [`Intents`]: randy_model::gateway::Intents
+    /// [`Intents::GUILDS`]: randy_model::gateway::Intents::GUILDS
+    /// [`RoleCreate`]: randy_model::gateway::event::Event::RoleCreate
+    /// [`RoleUpdate`]: randy_model::gateway::event::Event::RoleUpdate
     /// [`Shard`]: crate::Shard
     #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
     pub struct EventTypeFlags: u128 {
@@ -435,7 +435,7 @@ mod tests {
     use super::EventTypeFlags;
     use static_assertions::assert_impl_all;
     use std::{fmt::Debug, hash::Hash};
-    use twilight_model::gateway::event::EventType;
+    use randy_model::gateway::event::EventType;
 
     assert_impl_all!(
         EventTypeFlags: Copy,
