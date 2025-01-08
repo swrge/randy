@@ -3,7 +3,7 @@
 //! # Examples
 //!
 //! ```
-//! use twilight_model::application::command::CommandType;
+//! use randy_model::application::command::CommandType;
 //! use twilight_util::builder::command::{BooleanBuilder, CommandBuilder, StringBuilder};
 //!
 //! CommandBuilder::new(
@@ -27,7 +27,7 @@
 //! ```
 //!
 //! ```
-//! use twilight_model::application::command::CommandType;
+//! use randy_model::application::command::CommandType;
 //! use twilight_util::builder::command::{CommandBuilder, NumberBuilder};
 //!
 //! CommandBuilder::new(
@@ -44,7 +44,7 @@
 //! );
 //! ```
 
-use twilight_model::{
+use randy_model::{
     application::{
         command::{
             Command, CommandOption, CommandOptionChoice, CommandOptionChoiceValue,

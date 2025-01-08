@@ -274,7 +274,7 @@ Add a calculator for calculating the permissions of a member on a guild level or
 in a specific channel, exposed via the `permission-calculator` feature flag
 ([#834] - [@zeylahellyer]).
 
-Implement the `snowflake::Snowflake` trait on the new `twilight_model::id` types
+Implement the `snowflake::Snowflake` trait on the new `randy_model::id` types
 `ApplicationId`, `CommandId`, `IntegrationId`, and `InteractionId`
 ([#950] - [@zeylahellyer]).
 

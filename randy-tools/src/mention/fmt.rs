@@ -2,7 +2,7 @@
 
 use super::timestamp::Timestamp;
 use std::fmt::{Display, Formatter, Result as FmtResult, Write};
-use twilight_model::{
+use randy_model::{
     channel::Channel,
     guild::{Emoji, Member, Role},
     id::{
@@ -20,7 +20,7 @@ use twilight_model::{
 ///
 /// ```
 /// use twilight_mention::Mention;
-/// use twilight_model::id::{marker::UserMarker, Id};
+/// use randy_model::id::{marker::UserMarker, Id};
 ///
 /// assert_eq!("<@123>", Id::<UserMarker>::new(123).mention().to_string());
 /// ```
@@ -143,7 +143,7 @@ impl Display for MentionFormat<Id<UserMarker>> {
 ///
 /// ```
 /// use twilight_mention::Mention;
-/// use twilight_model::id::{marker::ChannelMarker, Id};
+/// use randy_model::id::{marker::ChannelMarker, Id};
 ///
 /// let id = Id::<ChannelMarker>::new(123);
 /// assert_eq!("<#123>", id.mention().to_string());
@@ -309,8 +309,8 @@ mod tests {
     use super::{CommandMention, Mention, MentionFormat};
     use static_assertions::assert_impl_all;
     use std::fmt::{Debug, Display};
-    use twilight_model::id::marker::CommandMarker;
-    use twilight_model::{
+    use randy_model::id::marker::CommandMarker;
+    use randy_model::{
         channel::Channel,
         guild::{Emoji, Member, Role},
         id::{

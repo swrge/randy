@@ -2,7 +2,7 @@
 //! which contains all of the permissions applicable to a text channel.
 
 use super::bitops;
-use twilight_model::guild::Permissions;
+use randy_model::guild::Permissions;
 
 /// Permissions associated with sending messages in a guild text channel.
 pub const PERMISSIONS_MESSAGING: Permissions = Permissions::from_bits_truncate(
@@ -97,7 +97,7 @@ const PERMISSIONS_VOICE: Permissions = Permissions::from_bits_truncate(
 #[cfg(test)]
 mod tests {
     use super::{PERMISSIONS_STAGE_OMIT, PERMISSIONS_TEXT_OMIT, PERMISSIONS_VOICE_OMIT};
-    use twilight_model::guild::Permissions;
+    use randy_model::guild::Permissions;
 
     #[test]
     fn permissions_stage_omitted() {

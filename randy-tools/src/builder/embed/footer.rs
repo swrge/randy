@@ -1,7 +1,7 @@
 //! Create embed footers.
 
 use super::ImageSource;
-use twilight_model::channel::message::embed::EmbedFooter;
+use randy_model::channel::message::embed::EmbedFooter;
 
 /// Create an embed footer with a builder.
 ///

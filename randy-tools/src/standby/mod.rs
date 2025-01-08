@@ -29,7 +29,7 @@ use tokio::sync::{
     mpsc::{self, UnboundedReceiver, UnboundedSender as MpscSender},
     oneshot::{self, Receiver, Sender as OneshotSender},
 };
-use twilight_model::{
+use randy_model::{
     application::interaction::{Interaction, InteractionType},
     gateway::{
         event::Event,
@@ -103,7 +103,7 @@ impl<T: Debug> Debug for Bystander<T> {
 /// ```rust,no_run
 /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// use std::time::Duration;
-/// use twilight_model::gateway::event::{Event, EventType};
+/// use randy_model::gateway::event::{Event, EventType};
 /// use twilight_standby::Standby;
 ///
 /// let standby = Standby::new();
@@ -219,7 +219,7 @@ impl Standby {
     /// ```no_run
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// use twilight_model::{
+    /// use randy_model::{
     ///     gateway::event::{Event, EventType},
     ///     id::Id,
     /// };
@@ -240,7 +240,7 @@ impl Standby {
     /// The returned future resolves to a [`Canceled`] error if the associated
     /// [`Standby`] instance is dropped.
     ///
-    /// [`BanAdd`]: twilight_model::gateway::payload::incoming::BanAdd
+    /// [`BanAdd`]: randy_model::gateway::payload::incoming::BanAdd
     /// [`Canceled`]: future::Canceled
     /// [`wait_for_stream`]: Self::wait_for_stream
     pub fn wait_for<F: Fn(&Event) -> bool + Send + Sync + 'static>(
@@ -268,7 +268,7 @@ impl Standby {
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use tokio_stream::StreamExt;
-    /// use twilight_model::{
+    /// use randy_model::{
     ///     gateway::event::{Event, EventType},
     ///     id::Id,
     /// };
@@ -294,7 +294,7 @@ impl Standby {
     /// The returned stream ends when the associated [`Standby`] instance is
     /// dropped.
     ///
-    /// [`BanAdd`]: twilight_model::gateway::payload::incoming::BanAdd
+    /// [`BanAdd`]: randy_model::gateway::payload::incoming::BanAdd
     /// [`wait_for`]: Self::wait_for
     pub fn wait_for_stream<F: Fn(&Event) -> bool + Send + Sync + 'static>(
         &self,
@@ -321,7 +321,7 @@ impl Standby {
     /// ```no_run
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// use twilight_model::gateway::event::{Event, EventType};
+    /// use randy_model::gateway::event::{Event, EventType};
     /// use twilight_standby::Standby;
     ///
     /// let standby = Standby::new();
@@ -344,7 +344,7 @@ impl Standby {
     /// [`Standby`] instance is dropped.
     ///
     /// [`Canceled`]: future::Canceled
-    /// [`Ready`]: twilight_model::gateway::payload::incoming::Ready
+    /// [`Ready`]: randy_model::gateway::payload::incoming::Ready
     /// [`wait_for_event_stream`]: Self::wait_for_event_stream
     pub fn wait_for_event<F: Fn(&Event) -> bool + Send + Sync + 'static>(
         &self,
@@ -379,7 +379,7 @@ impl Standby {
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use tokio_stream::StreamExt;
-    /// use twilight_model::gateway::event::{Event, EventType};
+    /// use randy_model::gateway::event::{Event, EventType};
     /// use twilight_standby::Standby;
     ///
     /// let standby = Standby::new();
@@ -403,7 +403,7 @@ impl Standby {
     /// The returned stream ends when the associated [`Standby`] instance is
     /// dropped.
     ///
-    /// [`Ready`]: twilight_model::gateway::payload::incoming::Ready
+    /// [`Ready`]: randy_model::gateway::payload::incoming::Ready
     /// [`wait_for_event`]: Self::wait_for_event
     pub fn wait_for_event_stream<F: Fn(&Event) -> bool + Send + Sync + 'static>(
         &self,
@@ -436,7 +436,7 @@ impl Standby {
     /// ```no_run
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// use twilight_model::{gateway::payload::incoming::MessageCreate, id::Id};
+    /// use randy_model::{gateway::payload::incoming::MessageCreate, id::Id};
     /// use twilight_standby::Standby;
     ///
     /// let standby = Standby::new();
@@ -485,7 +485,7 @@ impl Standby {
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use tokio_stream::StreamExt;
-    /// use twilight_model::{gateway::payload::incoming::MessageCreate, id::Id};
+    /// use randy_model::{gateway::payload::incoming::MessageCreate, id::Id};
     /// use twilight_standby::Standby;
     ///
     /// let standby = Standby::new();
@@ -533,7 +533,7 @@ impl Standby {
     /// ```no_run
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// use twilight_model::{gateway::payload::incoming::ReactionAdd, id::Id};
+    /// use randy_model::{gateway::payload::incoming::ReactionAdd, id::Id};
     /// use twilight_standby::Standby;
     ///
     /// let standby = Standby::new();
@@ -581,7 +581,7 @@ impl Standby {
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use tokio_stream::StreamExt;
-    /// use twilight_model::{
+    /// use randy_model::{
     ///     channel::message::EmojiReactionType,
     ///     gateway::payload::incoming::ReactionAdd,
     ///     id::Id,
@@ -633,7 +633,7 @@ impl Standby {
     ///
     /// ```no_run
     /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// use twilight_model::{application::interaction::Interaction, id::Id};
+    /// use randy_model::{application::interaction::Interaction, id::Id};
     /// use twilight_standby::Standby;
     ///
     /// let standby = Standby::new();
@@ -675,7 +675,7 @@ impl Standby {
     /// ```no_run
     /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use tokio_stream::StreamExt;
-    /// use twilight_model::{
+    /// use randy_model::{
     ///     application::interaction::{Interaction, InteractionData},
     ///     id::Id,
     /// };
@@ -1060,7 +1060,7 @@ mod tests {
     use std::fmt::Debug;
     use tokio_stream::StreamExt;
     use twilight_gateway::{Event, EventType};
-    use twilight_model::{
+    use randy_model::{
         application::interaction::{
             message_component::MessageComponentInteractionData, Interaction, InteractionData,
             InteractionType,

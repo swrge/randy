@@ -2,7 +2,7 @@
 //! operations - i.e. `bits` and `from_bits_truncate` - are `const`, we can just
 //! create wrapping operations over them.
 
-use twilight_model::guild::Permissions;
+use randy_model::guild::Permissions;
 
 /// Insert permissions into another.
 pub const fn insert(permissions: Permissions, other: Permissions) -> Permissions {
@@ -16,7 +16,7 @@ pub const fn remove(permissions: Permissions, other: Permissions) -> Permissions
 
 #[cfg(test)]
 mod tests {
-    use twilight_model::guild::Permissions;
+    use randy_model::guild::Permissions;
 
     #[test]
     fn insert() {

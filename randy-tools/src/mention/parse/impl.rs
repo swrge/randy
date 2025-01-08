@@ -3,8 +3,8 @@ use crate::timestamp::{Timestamp, TimestampStyle};
 use super::{MentionIter, MentionType, ParseMentionError, ParseMentionErrorType};
 use crate::fmt::CommandMention;
 use std::{num::NonZeroU64, str::Chars};
-use twilight_model::id::marker::CommandMarker;
-use twilight_model::id::{
+use randy_model::id::marker::CommandMarker;
+use randy_model::id::{
     marker::{ChannelMarker, EmojiMarker, RoleMarker, UserMarker},
     Id,
 };
@@ -33,7 +33,7 @@ pub trait ParseMention: private::Sealed {
     ///
     /// ```
     /// use twilight_mention::ParseMention;
-    /// use twilight_model::id::{
+    /// use randy_model::id::{
     ///     marker::{ChannelMarker, UserMarker},
     ///     Id,
     /// };
@@ -508,7 +508,7 @@ mod private {
     use super::super::MentionType;
     use crate::fmt::CommandMention;
     use crate::timestamp::Timestamp;
-    use twilight_model::id::{
+    use randy_model::id::{
         marker::{ChannelMarker, EmojiMarker, RoleMarker, UserMarker},
         Id,
     };
@@ -537,7 +537,7 @@ mod tests {
         timestamp::{Timestamp, TimestampStyle},
     };
     use static_assertions::assert_impl_all;
-    use twilight_model::id::{
+    use randy_model::id::{
         marker::{ChannelMarker, EmojiMarker, RoleMarker, UserMarker},
         Id,
     };

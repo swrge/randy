@@ -14,7 +14,7 @@ use tokio::sync::{
     mpsc::UnboundedReceiver as MpscReceiver,
     oneshot::{error::RecvError, Receiver},
 };
-use twilight_model::{
+use randy_model::{
     application::interaction::Interaction,
     gateway::{
         event::Event,

@@ -8,7 +8,7 @@ use std::{
     fmt::{Display, Formatter, Result as FmtResult},
     num::NonZeroU64,
 };
-use twilight_model::id::{marker::WebhookMarker, Id};
+use randy_model::id::{marker::WebhookMarker, Id};
 
 /// Error when [parsing] a webhook URL.
 ///
@@ -78,7 +78,7 @@ pub enum WebhookParseErrorType {
 /// Parse a webhook URL with a token:
 ///
 /// ```
-/// use twilight_model::id::Id;
+/// use randy_model::id::Id;
 /// use twilight_util::link::webhook;
 ///
 /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -96,7 +96,7 @@ pub enum WebhookParseErrorType {
 /// Parse a webhook URL without a token:
 ///
 /// ```
-/// use twilight_model::id::Id;
+/// use randy_model::id::Id;
 /// use twilight_util::link::webhook;
 ///
 /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -161,7 +161,7 @@ mod tests {
     use super::{WebhookParseError, WebhookParseErrorType};
     use static_assertions::assert_impl_all;
     use std::{error::Error, fmt::Debug};
-    use twilight_model::id::Id;
+    use randy_model::id::Id;
 
     assert_impl_all!(WebhookParseErrorType: Debug, Send, Sync);
     assert_impl_all!(WebhookParseError: Debug, Error, Send, Sync);

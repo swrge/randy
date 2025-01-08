@@ -17,7 +17,7 @@ use std::{marker::PhantomData, str::CharIndices};
 ///
 /// ```
 /// use twilight_mention::ParseMention;
-/// use twilight_model::id::{marker::UserMarker, Id};
+/// use randy_model::id::{marker::UserMarker, Id};
 ///
 /// let buf = "<@123> some <@456> users <@789>!";
 /// let mut iter = Id::<UserMarker>::iter(buf);
@@ -106,7 +106,7 @@ mod tests {
     };
     use static_assertions::{assert_impl_all, assert_obj_safe};
     use std::fmt::Debug;
-    use twilight_model::id::{
+    use randy_model::id::{
         marker::{ChannelMarker, EmojiMarker, RoleMarker, UserMarker},
         Id,
     };

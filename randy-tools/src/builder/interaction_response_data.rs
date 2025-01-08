@@ -1,4 +1,4 @@
-use twilight_model::{
+use randy_model::{
     application::command::CommandOptionChoice,
     channel::message::{AllowedMentions, Component, Embed, MessageFlags},
     http::{attachment::Attachment, interaction::InteractionResponseData},
@@ -8,7 +8,7 @@ use twilight_model::{
 ///
 /// # Example
 /// ```
-/// use twilight_model::channel::message::{
+/// use randy_model::channel::message::{
 ///     component::{ActionRow, Button, ButtonStyle, Component},
 ///     MessageFlags,
 /// };
@@ -86,7 +86,7 @@ impl InteractionResponseDataBuilder {
     /// Only valid when the type of the interaction is
     /// [`ApplicationCommandAutocompleteResult`].
     ///
-    /// [`ApplicationCommandAutocompleteResult`]: twilight_model::http::interaction::InteractionResponseType::ApplicationCommandAutocompleteResult
+    /// [`ApplicationCommandAutocompleteResult`]: randy_model::http::interaction::InteractionResponseType::ApplicationCommandAutocompleteResult
     pub fn choices(mut self, choices: impl IntoIterator<Item = CommandOptionChoice>) -> Self {
         self.0.choices = Some(choices.into_iter().collect());
 
@@ -135,8 +135,8 @@ impl InteractionResponseDataBuilder {
     ///
     /// Defaults to [`None`].
     ///
-    /// [`EPHEMERAL`]: twilight_model::channel::message::MessageFlags::EPHEMERAL
-    /// [`SUPPRESS_EMBEDS`]: twilight_model::channel::message::MessageFlags::SUPPRESS_EMBEDS
+    /// [`EPHEMERAL`]: randy_model::channel::message::MessageFlags::EPHEMERAL
+    /// [`SUPPRESS_EMBEDS`]: randy_model::channel::message::MessageFlags::SUPPRESS_EMBEDS
     pub const fn flags(mut self, flags: MessageFlags) -> Self {
         self.0.flags = Some(flags);
 
@@ -173,7 +173,7 @@ mod tests {
     use super::*;
     use static_assertions::assert_impl_all;
     use std::fmt::Debug;
-    use twilight_model::{
+    use randy_model::{
         channel::message::{
             component::{Button, ButtonStyle},
             MentionType,

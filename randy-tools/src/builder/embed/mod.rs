@@ -11,7 +11,7 @@ pub use self::{
     image_source::ImageSource,
 };
 
-use twilight_model::{
+use randy_model::{
     channel::message::embed::{
         Embed, EmbedAuthor, EmbedField, EmbedFooter, EmbedImage, EmbedThumbnail,
     },

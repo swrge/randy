@@ -16,7 +16,7 @@
 //!
 //! ```
 //! use twilight_mention::ParseMention;
-//! use twilight_model::id::{
+//! use randy_model::id::{
 //!     marker::{ChannelMarker, EmojiMarker, RoleMarker},
 //!     Id,
 //! };
@@ -32,7 +32,7 @@
 //!
 //! ```
 //! use twilight_mention::ParseMention;
-//! use twilight_model::id::{marker::UserMarker, Id};
+//! use randy_model::id::{marker::UserMarker, Id};
 //!
 //! let mut iter = Id::<UserMarker>::iter("these <@123> are <#456> mentions <@789>");
 //! assert!(matches!(iter.next(), Some((user, _, _)) if user.get() == 123));
@@ -69,7 +69,7 @@ pub use self::{
 };
 
 use std::fmt::{Display, Formatter, Result as FmtResult};
-use twilight_model::id::{
+use randy_model::id::{
     marker::{ChannelMarker, EmojiMarker, RoleMarker, UserMarker},
     Id,
 };
@@ -88,7 +88,7 @@ use twilight_model::id::{
 ///     parse::{MentionType, ParseMention},
 ///     timestamp::Timestamp,
 /// };
-/// use twilight_model::id::{
+/// use randy_model::id::{
 ///     marker::{ChannelMarker, RoleMarker, UserMarker},
 ///     Id,
 /// };

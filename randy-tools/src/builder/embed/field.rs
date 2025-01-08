@@ -1,6 +1,6 @@
 //! Create embed fields.
 
-use twilight_model::channel::message::embed::EmbedField;
+use randy_model::channel::message::embed::EmbedField;
 
 /// Create an embed field with a builder.
 ///

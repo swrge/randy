@@ -28,7 +28,7 @@
 //! Let's see that in code:
 //!
 //! ```
-//! use twilight_model::{
+//! use randy_model::{
 //!     channel::{
 //!         permission_overwrite::{PermissionOverwrite, PermissionOverwriteType},
 //!         ChannelType,
@@ -86,10 +86,10 @@
 //! assert_eq!(expected, calculated_permissions);
 //! ```
 //!
-//! [Add Reactions]: twilight_model::guild::Permissions::ADD_REACTIONS
-//! [Embed Links]: twilight_model::guild::Permissions::EMBED_LINKS
-//! [Send Messages]: twilight_model::guild::Permissions::SEND_MESSAGES
-//! [View Channel]: twilight_model::guild::Permissions::VIEW_CHANNEL
+//! [Add Reactions]: randy_model::guild::Permissions::ADD_REACTIONS
+//! [Embed Links]: randy_model::guild::Permissions::EMBED_LINKS
+//! [Send Messages]: randy_model::guild::Permissions::SEND_MESSAGES
+//! [View Channel]: randy_model::guild::Permissions::VIEW_CHANNEL
 
 mod bitops;
 mod preset;
@@ -98,7 +98,7 @@ use self::preset::{
     PERMISSIONS_MESSAGING, PERMISSIONS_ROOT_ONLY, PERMISSIONS_STAGE_OMIT, PERMISSIONS_TEXT_OMIT,
     PERMISSIONS_VOICE_OMIT,
 };
-use twilight_model::{
+use randy_model::{
     channel::{
         permission_overwrite::{PermissionOverwrite, PermissionOverwriteType},
         ChannelType,
@@ -324,35 +324,35 @@ impl<'a> PermissionCalculator<'a> {
     /// See the crate-level documentation for an example.
     ///
     /// [`root`]: Self::root
-    /// [Administrator]: twilight_model::guild::Permissions::ADMINISTRATOR
-    /// [Add Reactions]: twilight_model::guild::Permissions::ADD_REACTIONS
-    /// [Attach Files]: twilight_model::guild::Permissions::ATTACH_FILES
-    /// [Ban Members]: twilight_model::guild::Permissions::BAN_MEMBERS
-    /// [Change Nickname]: twilight_model::guild::Permissions::CHANGE_NICKNAME
-    /// [Connect]: twilight_model::guild::Permissions::CONNECT
-    /// [Deafen Members]: twilight_model::guild::Permissions::DEAFEN_MEMBERS
-    /// [Embed Links]: twilight_model::guild::Permissions::EMBED_LINKS
-    /// [Kick Members]: twilight_model::guild::Permissions::KICK_MEMBERS
-    /// [Manage Guild Expressions]: twilight_model::guild::Permissions::MANAGE_GUILD_EXPRESSIONS
-    /// [Manage Guild]: twilight_model::guild::Permissions::MANAGE_GUILD
-    /// [Manage Messages]: twilight_model::guild::Permissions::MANAGE_MESSAGES
-    /// [Manage Nicknames]: twilight_model::guild::Permissions::MANAGE_NICKNAMES
-    /// [Manage Webhooks]: twilight_model::guild::Permissions::MANAGE_WEBHOOKS
-    /// [Mention Everyone]: twilight_model::guild::Permissions::MENTION_EVERYONE
-    /// [Move Members]: twilight_model::guild::Permissions::MOVE_MEMBERS
-    /// [Mute Members]: twilight_model::guild::Permissions::MUTE_MEMBERS
-    /// [Priority Speaker]: twilight_model::guild::Permissions::PRIORITY_SPEAKER
-    /// [Read Message History]: twilight_model::guild::Permissions::READ_MESSAGE_HISTORY
-    /// [Request To Speak]: twilight_model::guild::Permissions::REQUEST_TO_SPEAK
-    /// [Send Messages]: twilight_model::guild::Permissions::SEND_MESSAGES
-    /// [Send TTS Messages]: twilight_model::guild::Permissions::SEND_TTS_MESSAGES
-    /// [Speak]: twilight_model::guild::Permissions::SPEAK
-    /// [Stream]: twilight_model::guild::Permissions::STREAM
-    /// [Use External Emojis]: twilight_model::guild::Permissions::USE_EXTERNAL_EMOJIS
-    /// [Use Slash Commands]: twilight_model::guild::Permissions::USE_SLASH_COMMANDS
-    /// [Use VAD]: twilight_model::guild::Permissions::USE_VAD
-    /// [View Audit Log]: twilight_model::guild::Permissions::VIEW_AUDIT_LOG
-    /// [View Guild Insights]: twilight_model::guild::Permissions::VIEW_GUILD_INSIGHTS
+    /// [Administrator]: randy_model::guild::Permissions::ADMINISTRATOR
+    /// [Add Reactions]: randy_model::guild::Permissions::ADD_REACTIONS
+    /// [Attach Files]: randy_model::guild::Permissions::ATTACH_FILES
+    /// [Ban Members]: randy_model::guild::Permissions::BAN_MEMBERS
+    /// [Change Nickname]: randy_model::guild::Permissions::CHANGE_NICKNAME
+    /// [Connect]: randy_model::guild::Permissions::CONNECT
+    /// [Deafen Members]: randy_model::guild::Permissions::DEAFEN_MEMBERS
+    /// [Embed Links]: randy_model::guild::Permissions::EMBED_LINKS
+    /// [Kick Members]: randy_model::guild::Permissions::KICK_MEMBERS
+    /// [Manage Guild Expressions]: randy_model::guild::Permissions::MANAGE_GUILD_EXPRESSIONS
+    /// [Manage Guild]: randy_model::guild::Permissions::MANAGE_GUILD
+    /// [Manage Messages]: randy_model::guild::Permissions::MANAGE_MESSAGES
+    /// [Manage Nicknames]: randy_model::guild::Permissions::MANAGE_NICKNAMES
+    /// [Manage Webhooks]: randy_model::guild::Permissions::MANAGE_WEBHOOKS
+    /// [Mention Everyone]: randy_model::guild::Permissions::MENTION_EVERYONE
+    /// [Move Members]: randy_model::guild::Permissions::MOVE_MEMBERS
+    /// [Mute Members]: randy_model::guild::Permissions::MUTE_MEMBERS
+    /// [Priority Speaker]: randy_model::guild::Permissions::PRIORITY_SPEAKER
+    /// [Read Message History]: randy_model::guild::Permissions::READ_MESSAGE_HISTORY
+    /// [Request To Speak]: randy_model::guild::Permissions::REQUEST_TO_SPEAK
+    /// [Send Messages]: randy_model::guild::Permissions::SEND_MESSAGES
+    /// [Send TTS Messages]: randy_model::guild::Permissions::SEND_TTS_MESSAGES
+    /// [Speak]: randy_model::guild::Permissions::SPEAK
+    /// [Stream]: randy_model::guild::Permissions::STREAM
+    /// [Use External Emojis]: randy_model::guild::Permissions::USE_EXTERNAL_EMOJIS
+    /// [Use Slash Commands]: randy_model::guild::Permissions::USE_SLASH_COMMANDS
+    /// [Use VAD]: randy_model::guild::Permissions::USE_VAD
+    /// [View Audit Log]: randy_model::guild::Permissions::VIEW_AUDIT_LOG
+    /// [View Guild Insights]: randy_model::guild::Permissions::VIEW_GUILD_INSIGHTS
     #[must_use = "calculating permissions is only useful if they're used"]
     pub const fn in_channel(
         self,
@@ -518,7 +518,7 @@ mod tests {
     use super::{preset::PERMISSIONS_ROOT_ONLY, PermissionCalculator};
     use static_assertions::assert_impl_all;
     use std::fmt::Debug;
-    use twilight_model::{
+    use randy_model::{
         channel::{
             permission_overwrite::{PermissionOverwrite, PermissionOverwriteType},
             ChannelType,

@@ -1,7 +1,7 @@
 //! Create embed authors.
 
 use super::ImageSource;
-use twilight_model::channel::message::embed::EmbedAuthor;
+use randy_model::channel::message::embed::EmbedAuthor;
 
 /// Create an embed author with a builder.
 ///
