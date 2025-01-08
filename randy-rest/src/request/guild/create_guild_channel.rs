@@ -7,7 +7,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     channel::{
         forum::{DefaultReaction, ForumLayout, ForumSortOrder, ForumTag},
         permission_overwrite::PermissionOverwrite,

@@ -12,7 +12,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     channel::message::{AllowedMentions, Component, Embed, Message},
     http::attachment::Attachment,
     id::{
@@ -61,7 +61,7 @@ struct UpdateResponseFields<'a> {
 /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// use std::env;
 /// use twilight_http::Client;
-/// use twilight_model::{channel::message::AllowedMentions, id::Id};
+/// use randy_model::{channel::message::AllowedMentions, id::Id};
 ///
 /// let client = Client::new(env::var("DISCORD_TOKEN")?);
 /// let application_id = Id::new(1);
@@ -234,7 +234,7 @@ impl<'a> UpdateResponse<'a> {
     /// ```no_run
     /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     /// use twilight_util::builder::embed::EmbedBuilder;
     ///
     /// let client = Client::new("token".to_owned());
@@ -390,7 +390,7 @@ mod tests {
     use crate::{client::Client, request::TryIntoRequest};
     use std::error::Error;
     use twilight_http_ratelimiting::Path;
-    use twilight_model::id::Id;
+    use randy_model::id::Id;
 
     #[test]
     fn delete_followup_message() -> Result<(), Box<dyn Error>> {

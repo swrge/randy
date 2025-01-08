@@ -7,7 +7,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     channel::{thread::AutoArchiveDuration, Channel, ChannelType},
     id::{marker::ChannelMarker, Id},
 };
@@ -31,7 +31,7 @@ struct CreateThreadFields<'a> {
 /// To make a [`PrivateThread`], the guild must also have the
 /// `PRIVATE_THREADS` feature.
 ///
-/// [`PrivateThread`]: twilight_model::channel::ChannelType::PrivateThread
+/// [`PrivateThread`]: randy_model::channel::ChannelType::PrivateThread
 #[must_use = "requests must be configured and executed"]
 pub struct CreateThread<'a> {
     channel_id: Id<ChannelMarker>,

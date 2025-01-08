@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::id::{marker::ChannelMarker, Id};
+use randy_model::id::{marker::ChannelMarker, Id};
 
 /// Add the current user to a thread.
 #[must_use = "requests must be configured and executed"]

@@ -13,8 +13,8 @@ use twilight_validate::request::{audit_reason as validate_audit_reason, Validati
 /// Requires the [`MANAGE_CHANNELS`] permission on the channel this invite
 /// belongs to, or [`MANAGE_GUILD`] to remove any invite across the guild.
 ///
-/// [`MANAGE_CHANNELS`]: twilight_model::guild::Permissions::MANAGE_CHANNELS
-/// [`MANAGE_GUILD`]: twilight_model::guild::Permissions::MANAGE_GUILD
+/// [`MANAGE_CHANNELS`]: randy_model::guild::Permissions::MANAGE_CHANNELS
+/// [`MANAGE_GUILD`]: randy_model::guild::Permissions::MANAGE_GUILD
 #[must_use = "requests must be configured and executed"]
 pub struct DeleteInvite<'a> {
     code: &'a str,

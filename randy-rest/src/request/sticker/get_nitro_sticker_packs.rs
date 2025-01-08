@@ -7,7 +7,7 @@ use crate::{
 };
 use serde::Deserialize;
 use std::future::IntoFuture;
-use twilight_model::channel::message::sticker::StickerPack;
+use randy_model::channel::message::sticker::StickerPack;
 
 #[derive(Deserialize)]
 pub struct StickerPackListing {

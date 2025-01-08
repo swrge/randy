@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::gateway::connection_info::ConnectionInfo;
+use randy_model::gateway::connection_info::ConnectionInfo;
 
 /// Get information about the gateway, optionally with additional information detailing the
 /// number of shards to use and sessions remaining.

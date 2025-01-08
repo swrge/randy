@@ -115,7 +115,7 @@ use std::{
 };
 use tokio::time;
 use twilight_http_ratelimiting::Ratelimiter;
-use twilight_model::{
+use randy_model::{
     channel::{message::AllowedMentions, ChannelType},
     guild::{
         auto_moderation::AutoModerationEventType, scheduled_event::PrivacyLevel, MfaLevel,
@@ -341,7 +341,7 @@ impl Client {
     ///
     /// Requires the [`MANAGE_GUILD`] permission.
     ///
-    /// [`MANAGE_GUILD`]: twilight_model::guild::Permissions::MANAGE_GUILD
+    /// [`MANAGE_GUILD`]: randy_model::guild::Permissions::MANAGE_GUILD
     pub const fn auto_moderation_rule(
         &self,
         guild_id: Id<GuildMarker>,
@@ -354,7 +354,7 @@ impl Client {
     ///
     /// Requires the [`MANAGE_GUILD`] permission.
     ///
-    /// [`MANAGE_GUILD`]: twilight_model::guild::Permissions::MANAGE_GUILD
+    /// [`MANAGE_GUILD`]: randy_model::guild::Permissions::MANAGE_GUILD
     pub const fn auto_moderation_rules(
         &self,
         guild_id: Id<GuildMarker>,
@@ -373,7 +373,7 @@ impl Client {
     /// ```no_run
     /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use twilight_http::Client;
-    /// use twilight_model::{guild::auto_moderation::AutoModerationEventType, id::Id};
+    /// use randy_model::{guild::auto_moderation::AutoModerationEventType, id::Id};
     ///
     /// let client = Client::new("my token".to_owned());
     ///
@@ -387,7 +387,7 @@ impl Client {
     /// # Ok(()) }
     /// ```
     ///
-    /// [`MANAGE_GUILD`]: twilight_model::guild::Permissions::MANAGE_GUILD
+    /// [`MANAGE_GUILD`]: randy_model::guild::Permissions::MANAGE_GUILD
     pub const fn create_auto_moderation_rule<'a>(
         &'a self,
         guild_id: Id<GuildMarker>,
@@ -401,7 +401,7 @@ impl Client {
     ///
     /// Requires the [`MANAGE_GUILD`] permission.
     ///
-    /// [`MANAGE_GUILD`]: twilight_model::guild::Permissions::MANAGE_GUILD
+    /// [`MANAGE_GUILD`]: randy_model::guild::Permissions::MANAGE_GUILD
     pub const fn delete_auto_moderation_rule(
         &self,
         guild_id: Id<GuildMarker>,
@@ -414,7 +414,7 @@ impl Client {
     ///
     /// Requires the [`MANAGE_GUILD`] permission.
     ///
-    /// [`MANAGE_GUILD`]: twilight_model::guild::Permissions::MANAGE_GUILD
+    /// [`MANAGE_GUILD`]: randy_model::guild::Permissions::MANAGE_GUILD
     pub const fn update_auto_moderation_rule(
         &self,
         guild_id: Id<GuildMarker>,
@@ -429,7 +429,7 @@ impl Client {
     ///
     /// ```no_run
     /// # use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -450,7 +450,7 @@ impl Client {
     ///
     /// ```no_run
     /// # use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     /// #
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -482,7 +482,7 @@ impl Client {
     ///
     /// ```no_run
     /// # use twilight_http::{request::AuditLogReason, Client};
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     /// #
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -513,7 +513,7 @@ impl Client {
     ///
     /// ```no_run
     /// # use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     /// #
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -541,7 +541,7 @@ impl Client {
     ///
     /// ```no_run
     /// # use twilight_http::Client;
-    /// # use twilight_model::id::Id;
+    /// # use randy_model::id::Id;
     /// #
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -570,7 +570,7 @@ impl Client {
     ///
     /// The type returned is [`FollowedChannel`].
     ///
-    /// [`FollowedChannel`]: ::twilight_model::channel::FollowedChannel
+    /// [`FollowedChannel`]: ::randy_model::channel::FollowedChannel
     pub const fn follow_news_channel(
         &self,
         channel_id: Id<ChannelMarker>,
@@ -584,7 +584,7 @@ impl Client {
     /// Requires the [`MANAGE_CHANNELS`] permission. This method only works if
     /// the channel is a guild channel.
     ///
-    /// [`MANAGE_CHANNELS`]: twilight_model::guild::Permissions::MANAGE_CHANNELS
+    /// [`MANAGE_CHANNELS`]: randy_model::guild::Permissions::MANAGE_CHANNELS
     pub const fn channel_invites(&self, channel_id: Id<ChannelMarker>) -> GetChannelInvites<'_> {
         GetChannelInvites::new(self, channel_id)
     }
@@ -600,7 +600,7 @@ impl Client {
     ///
     /// ```no_run
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -652,7 +652,7 @@ impl Client {
     /// # use twilight_http::Client;
     /// # let client = Client::new("my token".to_owned());
     /// #
-    /// use twilight_model::{
+    /// use randy_model::{
     ///     guild::Permissions,
     ///     http::permission_overwrite::{PermissionOverwrite, PermissionOverwriteType},
     ///     id::{marker::RoleMarker, Id},
@@ -764,7 +764,7 @@ impl Client {
     ///
     /// ```no_run
     /// # use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -792,7 +792,7 @@ impl Client {
     ///
     /// ```no_run
     /// # use twilight_http::Client;
-    /// # use twilight_model::id::Id;
+    /// # use randy_model::id::Id;
     /// #
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -815,7 +815,7 @@ impl Client {
     ///
     /// ```no_run
     /// # use twilight_http::Client;
-    /// # use twilight_model::id::Id;
+    /// # use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -838,7 +838,7 @@ impl Client {
     ///
     /// ```no_run
     /// # use twilight_http::Client;
-    /// # use twilight_model::id::Id;
+    /// # use randy_model::id::Id;
     /// #
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -1072,7 +1072,7 @@ impl Client {
     ///
     /// Requires the [`MANAGE_GUILD`] permission.
     ///
-    /// [`MANAGE_GUILD`]: twilight_model::guild::Permissions::MANAGE_GUILD
+    /// [`MANAGE_GUILD`]: randy_model::guild::Permissions::MANAGE_GUILD
     pub const fn guild_invites(&self, guild_id: Id<GuildMarker>) -> GetGuildInvites<'_> {
         GetGuildInvites::new(self, guild_id)
     }
@@ -1097,7 +1097,7 @@ impl Client {
     ///
     /// ```no_run
     /// # use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     /// #
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -1133,7 +1133,7 @@ impl Client {
     ///
     /// ```no_run
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -1152,7 +1152,7 @@ impl Client {
     /// Returns an error of type [`ValidationErrorType::SearchGuildMembers`] if
     /// the limit is invalid.
     ///
-    /// [`GUILD_MEMBERS`]: twilight_model::gateway::Intents::GUILD_MEMBERS
+    /// [`GUILD_MEMBERS`]: randy_model::gateway::Intents::GUILD_MEMBERS
     /// [`ValidationErrorType::SearchGuildMembers`]: twilight_validate::request::ValidationErrorType::SearchGuildMembers
     pub const fn search_guild_members<'a>(
         &'a self,
@@ -1212,7 +1212,7 @@ impl Client {
     /// ```no_run
     /// use std::env;
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// let client = Client::new(env::var("DISCORD_TOKEN")?);
@@ -1262,7 +1262,7 @@ impl Client {
     ///
     /// ```no_run
     /// # use twilight_http::{request::AuditLogReason, Client};
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     /// #
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -1345,7 +1345,7 @@ impl Client {
     /// If the welcome screen is not enabled, this requires the [`MANAGE_GUILD`]
     /// permission.
     ///
-    /// [`MANAGE_GUILD`]: twilight_model::guild::Permissions::MANAGE_GUILD
+    /// [`MANAGE_GUILD`]: randy_model::guild::Permissions::MANAGE_GUILD
     pub const fn guild_welcome_screen(
         &self,
         guild_id: Id<GuildMarker>,
@@ -1357,7 +1357,7 @@ impl Client {
     ///
     /// Requires the [`MANAGE_GUILD`] permission.
     ///
-    /// [`MANAGE_GUILD`]: twilight_model::guild::Permissions::MANAGE_GUILD
+    /// [`MANAGE_GUILD`]: randy_model::guild::Permissions::MANAGE_GUILD
     pub const fn update_guild_welcome_screen(
         &self,
         guild_id: Id<GuildMarker>,
@@ -1398,7 +1398,7 @@ impl Client {
     ///
     /// ```no_run
     /// # use twilight_http::Client;
-    /// # use twilight_model::id::Id;
+    /// # use randy_model::id::Id;
     /// #
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -1409,7 +1409,7 @@ impl Client {
     /// # Ok(()) }
     /// ```
     ///
-    /// [`CREATE_INVITE`]: twilight_model::guild::Permissions::CREATE_INVITE
+    /// [`CREATE_INVITE`]: randy_model::guild::Permissions::CREATE_INVITE
     pub const fn create_invite(&self, channel_id: Id<ChannelMarker>) -> CreateInvite<'_> {
         CreateInvite::new(self, channel_id)
     }
@@ -1419,8 +1419,8 @@ impl Client {
     /// Requires the [`MANAGE_CHANNELS`] permission on the channel this invite
     /// belongs to, or [`MANAGE_GUILD`] to remove any invite across the guild.
     ///
-    /// [`MANAGE_CHANNELS`]: twilight_model::guild::Permissions::MANAGE_CHANNELS
-    /// [`MANAGE_GUILD`]: twilight_model::guild::Permissions::MANAGE_GUILD
+    /// [`MANAGE_CHANNELS`]: randy_model::guild::Permissions::MANAGE_CHANNELS
+    /// [`MANAGE_GUILD`]: randy_model::guild::Permissions::MANAGE_GUILD
     pub const fn delete_invite<'a>(&'a self, code: &'a str) -> DeleteInvite<'a> {
         DeleteInvite::new(self, code)
     }
@@ -1444,7 +1444,7 @@ impl Client {
     /// ```no_run
     /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// let client = Client::new("my token".to_owned());
     ///
@@ -1512,7 +1512,7 @@ impl Client {
     /// ```no_run
     /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// let client = Client::new("my token".to_owned());
     /// client
@@ -1526,7 +1526,7 @@ impl Client {
     ///
     /// ```no_run
     /// # use twilight_http::Client;
-    /// # use twilight_model::id::Id;
+    /// # use randy_model::id::Id;
     /// #
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -1602,7 +1602,7 @@ impl Client {
     /// # Examples
     /// ```no_run
     /// # use twilight_http::{Client, request::channel::reaction::RequestReactionType};
-    /// # use twilight_model::id::Id;
+    /// # use randy_model::id::Id;
     /// #
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -1698,7 +1698,7 @@ impl Client {
     ///
     /// ```no_run
     /// # use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -1872,7 +1872,7 @@ impl Client {
     /// ```no_run
     /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// let client = Client::new("my token".to_owned());
     /// let guild_id = Id::new(234);
@@ -1921,7 +1921,7 @@ impl Client {
     /// Returns an error of type [`TypeInvalid`] if the channel is not a thread.
     ///
     /// [`NameInvalid`]: twilight_validate::channel::ChannelValidationErrorType::NameInvalid
-    /// [`PrivateThread`]: twilight_model::channel::ChannelType::PrivateThread
+    /// [`PrivateThread`]: randy_model::channel::ChannelType::PrivateThread
     /// [`TypeInvalid`]: twilight_validate::channel::ChannelValidationErrorType::TypeInvalid
     pub fn create_thread<'a>(
         &'a self,
@@ -1953,11 +1953,11 @@ impl Client {
     ///
     /// Returns an error of type [`TypeInvalid`] if the channel is not a thread.
     ///
-    /// [`AnnouncementThread`]: twilight_model::channel::ChannelType::AnnouncementThread
-    /// [`GuildAnnouncement`]: twilight_model::channel::ChannelType::GuildAnnouncement
-    /// [`GuildText`]: twilight_model::channel::ChannelType::GuildText
+    /// [`AnnouncementThread`]: randy_model::channel::ChannelType::AnnouncementThread
+    /// [`GuildAnnouncement`]: randy_model::channel::ChannelType::GuildAnnouncement
+    /// [`GuildText`]: randy_model::channel::ChannelType::GuildText
     /// [`NameInvalid`]: twilight_validate::channel::ChannelValidationErrorType::NameInvalid
-    /// [`PublicThread`]: twilight_model::channel::ChannelType::PublicThread
+    /// [`PublicThread`]: randy_model::channel::ChannelType::PublicThread
     /// [`TypeInvalid`]: twilight_validate::channel::ChannelValidationErrorType::TypeInvalid
     pub fn create_thread_from_message<'a>(
         &'a self,
@@ -1995,8 +1995,8 @@ impl Client {
     ///
     /// Requires both [`READ_MESSAGE_HISTORY`] and [`MANAGE_THREADS`].
     ///
-    /// [`MANAGE_THREADS`]: twilight_model::guild::Permissions::MANAGE_THREADS
-    /// [`READ_MESSAGE_HISTORY`]: twilight_model::guild::Permissions::READ_MESSAGE_HISTORY
+    /// [`MANAGE_THREADS`]: randy_model::guild::Permissions::MANAGE_THREADS
+    /// [`READ_MESSAGE_HISTORY`]: randy_model::guild::Permissions::READ_MESSAGE_HISTORY
     pub const fn private_archived_threads(
         &self,
         channel_id: Id<ChannelMarker>,
@@ -2014,12 +2014,12 @@ impl Client {
     ///
     /// When called in a [`GuildAnnouncement`] channel, returns [`AnnouncementThread`]s.
     ///
-    /// [`AnnouncementThread`]: twilight_model::channel::ChannelType::AnnouncementThread
-    /// [`archive_timestamp`]: twilight_model::channel::thread::ThreadMetadata::archive_timestamp
-    /// [`GuildAnnouncement`]: twilight_model::channel::ChannelType::GuildAnnouncement
-    /// [`GuildText`]: twilight_model::channel::ChannelType::GuildText
-    /// [`PublicThread`]: twilight_model::channel::ChannelType::PublicThread
-    /// [`READ_MESSAGE_HISTORY`]: twilight_model::guild::Permissions::READ_MESSAGE_HISTORY
+    /// [`AnnouncementThread`]: randy_model::channel::ChannelType::AnnouncementThread
+    /// [`archive_timestamp`]: randy_model::channel::thread::ThreadMetadata::archive_timestamp
+    /// [`GuildAnnouncement`]: randy_model::channel::ChannelType::GuildAnnouncement
+    /// [`GuildText`]: randy_model::channel::ChannelType::GuildText
+    /// [`PublicThread`]: randy_model::channel::ChannelType::PublicThread
+    /// [`READ_MESSAGE_HISTORY`]: randy_model::guild::Permissions::READ_MESSAGE_HISTORY
     pub const fn public_archived_threads(
         &self,
         channel_id: Id<ChannelMarker>,
@@ -2035,8 +2035,8 @@ impl Client {
     /// [`PrivateThread`], and the current user is the creator of the
     /// thread.
     ///
-    /// [`MANAGE_THREADS`]: twilight_model::guild::Permissions::MANAGE_THREADS
-    /// [`PrivateThread`]: twilight_model::channel::ChannelType::PrivateThread
+    /// [`MANAGE_THREADS`]: randy_model::guild::Permissions::MANAGE_THREADS
+    /// [`PrivateThread`]: randy_model::channel::ChannelType::PrivateThread
     pub const fn remove_thread_member(
         &self,
         channel_id: Id<ChannelMarker>,
@@ -2047,7 +2047,7 @@ impl Client {
 
     /// Returns a [`ThreadMember`] in a thread.
     ///
-    /// [`ThreadMember`]: twilight_model::channel::thread::ThreadMember
+    /// [`ThreadMember`]: randy_model::channel::thread::ThreadMember
     pub const fn thread_member(
         &self,
         channel_id: Id<ChannelMarker>,
@@ -2058,7 +2058,7 @@ impl Client {
 
     /// Returns the [`ThreadMember`]s of the thread.
     ///
-    /// [`ThreadMember`]: twilight_model::channel::thread::ThreadMember
+    /// [`ThreadMember`]: randy_model::channel::thread::ThreadMember
     pub const fn thread_members(&self, channel_id: Id<ChannelMarker>) -> GetThreadMembers<'_> {
         GetThreadMembers::new(self, channel_id)
     }
@@ -2120,7 +2120,7 @@ impl Client {
     ///
     /// ```no_run
     /// # use twilight_http::Client;
-    /// # use twilight_model::id::Id;
+    /// # use randy_model::id::Id;
     /// #
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -2174,7 +2174,7 @@ impl Client {
     /// ```no_run
     /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// let client = Client::new("my token".to_owned());
     /// let id = Id::new(432);
@@ -2220,7 +2220,7 @@ impl Client {
     /// ```no_run
     /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// let client = Client::new("token".to_owned());
     /// client
@@ -2249,7 +2249,7 @@ impl Client {
     ///
     /// ```no_run
     /// # use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -2274,7 +2274,7 @@ impl Client {
     ///
     /// ```no_run
     /// # use twilight_http::Client;
-    /// # use twilight_model::id::Id;
+    /// # use randy_model::id::Id;
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// # let client = Client::new("token".to_owned());
@@ -2309,7 +2309,7 @@ impl Client {
     ///
     /// ```no_run
     /// # use twilight_http::Client;
-    /// use twilight_model::{guild::scheduled_event::PrivacyLevel, id::Id, util::Timestamp};
+    /// use randy_model::{guild::scheduled_event::PrivacyLevel, id::Id, util::Timestamp};
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// # let client = Client::new("token".to_owned());
@@ -2333,7 +2333,7 @@ impl Client {
     ///
     /// ```no_run
     /// # use twilight_http::Client;
-    /// use twilight_model::{guild::scheduled_event::PrivacyLevel, id::Id, util::Timestamp};
+    /// use randy_model::{guild::scheduled_event::PrivacyLevel, id::Id, util::Timestamp};
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// # let client = Client::new("token".to_owned());
@@ -2413,9 +2413,9 @@ impl Client {
     /// `channel_id` field is cleared and the [`channel_id`] method has no
     /// effect. Additionally, you must set a location with [`location`].
     ///
-    /// [`EntityType::External`]: twilight_model::guild::scheduled_event::EntityType::External
-    /// [`EntityType::StageInstance`]: twilight_model::guild::scheduled_event::EntityType::StageInstance
-    /// [`EntityType::Voice`]: twilight_model::guild::scheduled_event::EntityType::Voice
+    /// [`EntityType::External`]: randy_model::guild::scheduled_event::EntityType::External
+    /// [`EntityType::StageInstance`]: randy_model::guild::scheduled_event::EntityType::StageInstance
+    /// [`EntityType::Voice`]: randy_model::guild::scheduled_event::EntityType::Voice
     /// [`channel_id`]: UpdateGuildScheduledEvent::channel_id
     /// [`location`]: UpdateGuildScheduledEvent::location
     pub const fn update_guild_scheduled_event(
@@ -2432,7 +2432,7 @@ impl Client {
     ///
     /// ```no_run
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -2474,7 +2474,7 @@ impl Client {
     ///
     /// ```no_run
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -2496,7 +2496,7 @@ impl Client {
     ///
     /// ```no_run
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -2527,7 +2527,7 @@ impl Client {
     ///
     /// ```no_run
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -2578,7 +2578,7 @@ impl Client {
     ///
     /// ```no_run
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -2610,7 +2610,7 @@ impl Client {
     ///
     /// ```no_run
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -2637,7 +2637,7 @@ impl Client {
     ///
     /// ```no_run
     /// use twilight_http::{Client, request::application::monetization::CreateTestEntitlementOwner};
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -2669,7 +2669,7 @@ impl Client {
     ///
     /// ```no_run
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -2696,7 +2696,7 @@ impl Client {
     ///
     /// ```no_run
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -2725,7 +2725,7 @@ impl Client {
     ///
     /// ```no_run
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -2754,7 +2754,7 @@ impl Client {
     ///
     /// ```no_run
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -2775,7 +2775,7 @@ impl Client {
     ///
     /// ```no_run
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -2800,7 +2800,7 @@ impl Client {
     ///
     /// ```no_run
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -2829,7 +2829,7 @@ impl Client {
     ///
     /// ```no_run
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -2859,7 +2859,7 @@ impl Client {
     ///
     /// ```no_run
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {

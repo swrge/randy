@@ -7,7 +7,7 @@ use crate::{
     response::{Response, ResponseFuture},
 };
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     guild::scheduled_event::{EntityType, GuildScheduledEvent},
     util::Timestamp,
 };

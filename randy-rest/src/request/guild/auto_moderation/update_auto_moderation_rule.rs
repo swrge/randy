@@ -7,7 +7,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     guild::auto_moderation::{
         AutoModerationAction, AutoModerationEventType, AutoModerationRule,
         AutoModerationTriggerMetadata,
@@ -34,7 +34,7 @@ struct UpdateAutoModerationRuleFields<'a> {
 ///
 /// Requires the [`MANAGE_GUILD`] permission.
 ///
-/// [`MANAGE_GUILD`]: twilight_model::guild::Permissions::MANAGE_GUILD
+/// [`MANAGE_GUILD`]: randy_model::guild::Permissions::MANAGE_GUILD
 #[must_use = "requests must be configured and executed"]
 pub struct UpdateAutoModerationRule<'a> {
     auto_moderation_rule_id: Id<AutoModerationRuleMarker>,

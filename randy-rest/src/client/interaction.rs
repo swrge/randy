@@ -13,7 +13,7 @@ use crate::{
     },
     Client,
 };
-use twilight_model::{
+use randy_model::{
     application::command::{permissions::CommandPermission, Command},
     http::interaction::InteractionResponse,
     id::{
@@ -33,7 +33,7 @@ use twilight_model::{
 /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// use std::env;
 /// use twilight_http::Client;
-/// use twilight_model::id::Id;
+/// use randy_model::id::Id;
 ///
 /// let client = Client::new(env::var("DISCORD_TOKEN")?);
 /// let application_id = Id::new(123);
@@ -68,7 +68,7 @@ impl<'a> InteractionClient<'a> {
     ///
     /// This endpoint is not bound to the application's global rate limit.
     ///
-    /// [`InteractionResponseData`]: twilight_model::http::interaction::InteractionResponseData
+    /// [`InteractionResponseData`]: randy_model::http::interaction::InteractionResponseData
     /// [`twilight-util`]: https://docs.rs/twilight-util/latest/index.html
     /// [associated builder]: https://docs.rs/twilight-util/latest/twilight_util/builder/struct.InteractionResponseDataBuilder.html
     pub const fn create_response(
@@ -122,7 +122,7 @@ impl<'a> InteractionClient<'a> {
     /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use std::env;
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// let client = Client::new(env::var("DISCORD_TOKEN")?);
     /// let application_id = Id::new(1);

@@ -296,7 +296,7 @@ impl<T> ResponseFuture<T> {
     ///     sync::{Arc, Mutex},
     /// };
     /// use twilight_http::{error::ErrorType, Client};
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// let channel_id = Id::new(1);
     /// let message_id = Id::new(2);

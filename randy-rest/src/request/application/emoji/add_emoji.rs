@@ -8,7 +8,7 @@ use crate::{
 };
 
 use serde::Serialize;
-use twilight_model::{
+use randy_model::{
     guild::Emoji,
     id::{marker::ApplicationMarker, Id},
 };

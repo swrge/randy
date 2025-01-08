@@ -1,6 +1,6 @@
 use std::future::IntoFuture;
 
-use twilight_model::{
+use randy_model::{
     application::monetization::Entitlement,
     id::{
         marker::{ApplicationMarker, EntitlementMarker, GuildMarker, SkuMarker, UserMarker},

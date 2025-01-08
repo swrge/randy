@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::oauth::Application;
+use randy_model::oauth::Application;
 
 #[must_use = "requests must be configured and executed"]
 pub struct GetUserApplicationInfo<'a> {

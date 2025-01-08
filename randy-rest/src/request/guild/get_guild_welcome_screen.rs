@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     guild::invite::WelcomeScreen,
     id::{marker::GuildMarker, Id},
 };
@@ -16,7 +16,7 @@ use twilight_model::{
 /// If the welcome screen is not enabled, this requires the [`MANAGE_GUILD`]
 /// permission.
 ///
-/// [`MANAGE_GUILD`]: twilight_model::guild::Permissions::MANAGE_GUILD
+/// [`MANAGE_GUILD`]: randy_model::guild::Permissions::MANAGE_GUILD
 #[must_use = "requests must be configured and executed"]
 pub struct GetGuildWelcomeScreen<'a> {
     guild_id: Id<GuildMarker>,

@@ -6,7 +6,7 @@ use crate::{
     request::{channel::reaction::RequestReactionType, Method},
 };
 use std::fmt::{Display, Formatter, Result as FmtResult};
-use twilight_model::id::{
+use randy_model::id::{
     marker::{RoleMarker, SkuMarker},
     Id,
 };
@@ -3038,7 +3038,7 @@ impl Display for Route<'_> {
 mod tests {
     use super::Route;
     use crate::request::{channel::reaction::RequestReactionType, Method};
-    use twilight_model::id::Id;
+    use randy_model::id::Id;
 
     /// Test a route for each method.
     #[test]

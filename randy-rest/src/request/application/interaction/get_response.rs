@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     channel::Message,
     id::{marker::ApplicationMarker, Id},
 };
@@ -22,7 +22,7 @@ use twilight_model::{
 /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// use std::env;
 /// use twilight_http::{request::AuditLogReason, Client};
-/// use twilight_model::id::Id;
+/// use randy_model::id::Id;
 ///
 /// let client = Client::new(env::var("DISCORD_TOKEN")?);
 /// let application_id = Id::new(1);
@@ -85,7 +85,7 @@ mod tests {
     use crate::{client::Client, request::TryIntoRequest};
     use std::error::Error;
     use twilight_http_ratelimiting::Path;
-    use twilight_model::id::Id;
+    use randy_model::id::Id;
 
     #[test]
     fn delete_followup_message() -> Result<(), Box<dyn Error>> {

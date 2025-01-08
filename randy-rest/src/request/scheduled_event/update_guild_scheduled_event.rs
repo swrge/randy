@@ -8,7 +8,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     guild::scheduled_event::{EntityType, GuildScheduledEvent, PrivacyLevel, Status},
     id::{
         marker::{ChannelMarker, GuildMarker, ScheduledEventMarker},

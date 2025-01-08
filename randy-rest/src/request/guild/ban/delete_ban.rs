@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::id::{
+use randy_model::id::{
     marker::{GuildMarker, UserMarker},
     Id,
 };
@@ -20,7 +20,7 @@ use twilight_validate::request::{audit_reason as validate_audit_reason, Validati
 ///
 /// ```no_run
 /// use twilight_http::Client;
-/// use twilight_model::id::Id;
+/// use randy_model::id::Id;
 ///
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {

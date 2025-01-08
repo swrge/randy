@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::id::{marker::ChannelMarker, Id};
+use randy_model::id::{marker::ChannelMarker, Id};
 
 /// Delete the stage instance of a stage channel.
 ///

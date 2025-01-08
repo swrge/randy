@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     http::channel_position::Position,
     id::{marker::GuildMarker, Id},
 };

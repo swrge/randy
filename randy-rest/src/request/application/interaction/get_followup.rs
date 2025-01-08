@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     channel::Message,
     id::{
         marker::{ApplicationMarker, MessageMarker},
@@ -25,7 +25,7 @@ use twilight_model::{
 /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// use std::env;
 /// use twilight_http::{request::AuditLogReason, Client};
-/// use twilight_model::id::Id;
+/// use randy_model::id::Id;
 ///
 /// let client = Client::new(env::var("DISCORD_TOKEN")?);
 /// let application_id = Id::new(1);
@@ -98,7 +98,7 @@ mod tests {
     };
     use static_assertions::assert_impl_all;
     use std::error::Error;
-    use twilight_model::id::{
+    use randy_model::id::{
         marker::{ApplicationMarker, MessageMarker},
         Id,
     };

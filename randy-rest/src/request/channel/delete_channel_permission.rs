@@ -1,6 +1,6 @@
 use super::DeleteChannelPermissionConfigured;
 use crate::client::Client;
-use twilight_model::id::{
+use randy_model::id::{
     marker::{ChannelMarker, RoleMarker, UserMarker},
     Id,
 };

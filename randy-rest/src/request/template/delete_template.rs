@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::id::{marker::GuildMarker, Id};
+use randy_model::id::{marker::GuildMarker, Id};
 
 /// Delete a template by ID and code.
 #[must_use = "requests must be configured and executed"]

@@ -7,7 +7,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     channel::{thread::AutoArchiveDuration, Channel},
     id::{
         marker::{ChannelMarker, TagMarker},
@@ -84,8 +84,8 @@ impl<'a> UpdateThread<'a> {
     /// Requires that the user have [`SEND_MESSAGES`] in the thread. However, if
     /// the thread is locked, the user must have [`MANAGE_THREADS`].
     ///
-    /// [`SEND_MESSAGES`]: twilight_model::guild::Permissions::SEND_MESSAGES
-    /// [`MANAGE_THREADS`]: twilight_model::guild::Permissions::MANAGE_THREADS
+    /// [`SEND_MESSAGES`]: randy_model::guild::Permissions::SEND_MESSAGES
+    /// [`MANAGE_THREADS`]: randy_model::guild::Permissions::MANAGE_THREADS
     pub fn archived(mut self, archived: bool) -> Self {
         if let Ok(fields) = self.fields.as_mut() {
             fields.archived = Some(archived);
@@ -120,7 +120,7 @@ impl<'a> UpdateThread<'a> {
     /// If the thread is already locked, only users with [`MANAGE_THREADS`] can
     /// unlock it.
     ///
-    /// [`MANAGE_THREADS`]: twilight_model::guild::Permissions::MANAGE_THREADS
+    /// [`MANAGE_THREADS`]: randy_model::guild::Permissions::MANAGE_THREADS
     pub fn locked(mut self, locked: bool) -> Self {
         if let Ok(fields) = self.fields.as_mut() {
             fields.locked = Some(locked);
@@ -222,7 +222,7 @@ mod tests {
         Client,
     };
     use std::error::Error;
-    use twilight_model::id::Id;
+    use randy_model::id::Id;
 
     #[test]
     fn request() -> Result<(), Box<dyn Error>> {

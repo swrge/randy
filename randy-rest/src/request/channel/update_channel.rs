@@ -7,7 +7,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     channel::{
         forum::{DefaultReaction, ForumLayout, ForumSortOrder, ForumTag},
         permission_overwrite::PermissionOverwrite,
@@ -220,7 +220,7 @@ impl<'a> UpdateChannel<'a> {
     ///
     /// [Discord Docs/Channel Object]: https://discordapp.com/developers/docs/resources/channel#channel-object-channel-structure
     /// [`ForumTopicInvalid`]: twilight_validate::channel::ChannelValidationErrorType::ForumTopicInvalid
-    /// [`GuildForum`]: twilight_model::channel::ChannelType::GuildForum
+    /// [`GuildForum`]: randy_model::channel::ChannelType::GuildForum
     pub fn forum_topic(mut self, topic: Option<&'a str>) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             if let Some(topic) = topic {

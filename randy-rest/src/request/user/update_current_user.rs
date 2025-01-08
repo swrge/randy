@@ -7,7 +7,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::user::User;
+use randy_model::user::User;
 use twilight_validate::request::{
     audit_reason as validate_audit_reason, username as validate_username, ValidationError,
 };

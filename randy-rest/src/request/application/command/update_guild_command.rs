@@ -7,7 +7,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     application::command::{Command, CommandOption},
     id::{
         marker::{ApplicationMarker, CommandMarker, GuildMarker},

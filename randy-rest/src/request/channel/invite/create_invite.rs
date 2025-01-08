@@ -7,7 +7,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     guild::invite::{Invite, TargetType},
     id::{
         marker::{ApplicationMarker, ChannelMarker, UserMarker},
@@ -45,7 +45,7 @@ struct CreateInviteFields {
 ///
 /// ```no_run
 /// use twilight_http::Client;
-/// use twilight_model::id::Id;
+/// use randy_model::id::Id;
 ///
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -56,7 +56,7 @@ struct CreateInviteFields {
 /// # Ok(()) }
 /// ```
 ///
-/// [`CREATE_INVITE`]: twilight_model::guild::Permissions::CREATE_INVITE
+/// [`CREATE_INVITE`]: randy_model::guild::Permissions::CREATE_INVITE
 #[must_use = "requests must be configured and executed"]
 pub struct CreateInvite<'a> {
     channel_id: Id<ChannelMarker>,
@@ -96,7 +96,7 @@ impl<'a> CreateInvite<'a> {
     /// ```no_run
     /// use std::env;
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -139,7 +139,7 @@ impl<'a> CreateInvite<'a> {
     /// ```no_run
     /// use std::env;
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -272,7 +272,7 @@ mod tests {
     use super::CreateInvite;
     use crate::Client;
     use std::error::Error;
-    use twilight_model::id::Id;
+    use randy_model::id::Id;
 
     #[test]
     fn max_age() -> Result<(), Box<dyn Error>> {

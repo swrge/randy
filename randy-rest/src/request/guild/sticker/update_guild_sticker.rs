@@ -7,7 +7,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     channel::message::sticker::Sticker,
     id::{
         marker::{GuildMarker, StickerMarker},
@@ -35,7 +35,7 @@ struct UpdateGuildStickerFields<'a> {
 ///
 /// ```no_run
 /// use twilight_http::Client;
-/// use twilight_model::id::Id;
+/// use randy_model::id::Id;
 ///
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {

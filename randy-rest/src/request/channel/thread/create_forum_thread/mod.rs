@@ -11,7 +11,7 @@ use crate::{
     routing::Route,
 };
 use serde::{Deserialize, Serialize};
-use twilight_model::{
+use randy_model::{
     channel::{thread::AutoArchiveDuration, Channel, Message},
     id::{
         marker::{ChannelMarker, TagMarker},
@@ -42,7 +42,7 @@ struct CreateForumThreadFields<'a> {
 ///
 /// Requires the [`SEND_MESSAGES`] permission.
 ///
-/// [`SEND_MESSAGES`]: twilight_model::guild::Permissions::SEND_MESSAGES
+/// [`SEND_MESSAGES`]: randy_model::guild::Permissions::SEND_MESSAGES
 #[must_use = "requests must be configured and executed"]
 pub struct CreateForumThread<'a> {
     attachment_manager: AttachmentManager<'a>,

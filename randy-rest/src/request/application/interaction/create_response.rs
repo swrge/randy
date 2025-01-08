@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     http::interaction::InteractionResponse,
     id::{marker::InteractionMarker, Id},
 };
@@ -92,7 +92,7 @@ mod tests {
     use crate::{client::Client, request::TryIntoRequest};
     use std::error::Error;
     use twilight_http_ratelimiting::Path;
-    use twilight_model::{
+    use randy_model::{
         http::interaction::{InteractionResponse, InteractionResponseType},
         id::Id,
     };

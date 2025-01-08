@@ -18,7 +18,7 @@
 //!
 //! ```no_run
 //! # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
-//! # use twilight_model::id::Id;
+//! # use randy_model::id::Id;
 //! #
 //! # let guild_id = Id::new(1);
 //! # let user_id = Id::new(2);

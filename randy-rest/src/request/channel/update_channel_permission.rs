@@ -7,7 +7,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     guild::Permissions,
     http::permission_overwrite::{PermissionOverwrite, PermissionOverwriteType},
     id::{
@@ -39,7 +39,7 @@ struct UpdateChannelPermissionFields {
 /// # use twilight_http::Client;
 /// # let client = Client::new("my token".to_owned());
 /// #
-/// use twilight_model::{
+/// use randy_model::{
 ///     guild::Permissions,
 ///     http::permission_overwrite::{PermissionOverwrite, PermissionOverwriteType},
 ///     id::Id,

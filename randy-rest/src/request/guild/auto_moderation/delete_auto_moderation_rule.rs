@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::id::{
+use randy_model::id::{
     marker::{AutoModerationRuleMarker, GuildMarker},
     Id,
 };
@@ -16,7 +16,7 @@ use twilight_validate::request::{audit_reason as validate_audit_reason, Validati
 ///
 /// Requires the [`MANAGE_GUILD`] permission.
 ///
-/// [`MANAGE_GUILD`]: twilight_model::guild::Permissions::MANAGE_GUILD
+/// [`MANAGE_GUILD`]: randy_model::guild::Permissions::MANAGE_GUILD
 #[must_use = "requests must be configured and executed"]
 pub struct DeleteAutoModerationRule<'a> {
     auto_moderation_rule_id: Id<AutoModerationRuleMarker>,

@@ -7,7 +7,7 @@ use crate::{
     routing::Route,
 };
 use std::{collections::HashMap, future::IntoFuture};
-use twilight_model::{
+use randy_model::{
     application::command::{Command, CommandType},
     guild::Permissions,
     id::{marker::ApplicationMarker, Id},

@@ -6,7 +6,7 @@ use crate::{
     Error,
 };
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     guild::Member,
     id::{marker::GuildMarker, Id},
 };

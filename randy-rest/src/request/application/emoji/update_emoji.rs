@@ -1,6 +1,6 @@
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     guild::Emoji,
     id::{
         marker::{ApplicationMarker, EmojiMarker},

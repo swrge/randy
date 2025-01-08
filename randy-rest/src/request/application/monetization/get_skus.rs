@@ -1,6 +1,6 @@
 use std::future::IntoFuture;
 
-use twilight_model::{
+use randy_model::{
     application::monetization::Sku,
     id::{marker::ApplicationMarker, Id},
 };

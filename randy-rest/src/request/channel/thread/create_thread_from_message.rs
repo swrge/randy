@@ -7,7 +7,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     channel::{thread::AutoArchiveDuration, Channel},
     id::{
         marker::{ChannelMarker, MessageMarker},
@@ -37,12 +37,12 @@ struct CreateThreadFromMessageFields<'a> {
 /// The thread's ID will be the same as its parent message. This ensures only
 /// one thread can be created per message.
 ///
-/// [`AnnouncementThread`]: twilight_model::channel::ChannelType::AnnouncementThread
-/// [`GuildAnnouncement`]: twilight_model::channel::ChannelType::GuildAnnouncement
-/// [`GuildForum`]: twilight_model::channel::ChannelType::GuildForum
-/// [`GuildPublicThread`]: twilight_model::channel::ChannelType::GuildPublicThread
-/// [`GuildText`]: twilight_model::channel::ChannelType::GuildText
-/// [`PublicThread`]: twilight_model::channel::ChannelType::PublicThread
+/// [`AnnouncementThread`]: randy_model::channel::ChannelType::AnnouncementThread
+/// [`GuildAnnouncement`]: randy_model::channel::ChannelType::GuildAnnouncement
+/// [`GuildForum`]: randy_model::channel::ChannelType::GuildForum
+/// [`GuildPublicThread`]: randy_model::channel::ChannelType::GuildPublicThread
+/// [`GuildText`]: randy_model::channel::ChannelType::GuildText
+/// [`PublicThread`]: randy_model::channel::ChannelType::PublicThread
 #[must_use = "requests must be configured and executed"]
 pub struct CreateThreadFromMessage<'a> {
     channel_id: Id<ChannelMarker>,

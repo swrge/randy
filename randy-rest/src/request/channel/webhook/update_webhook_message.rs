@@ -12,7 +12,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     channel::{
         message::{AllowedMentions, Component, Embed},
         Message,
@@ -61,7 +61,7 @@ struct UpdateWebhookMessageFields<'a> {
 /// ```no_run
 /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// use twilight_http::Client;
-/// use twilight_model::{channel::message::AllowedMentions, id::Id};
+/// use randy_model::{channel::message::AllowedMentions, id::Id};
 ///
 /// let client = Client::new("token".to_owned());
 /// client
@@ -238,7 +238,7 @@ impl<'a> UpdateWebhookMessage<'a> {
     /// ```no_run
     /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     /// use twilight_util::builder::embed::EmbedBuilder;
     ///
     /// let client = Client::new("token".to_owned());
@@ -405,7 +405,7 @@ mod tests {
         request::{Nullable, Request, TryIntoRequest},
         routing::Route,
     };
-    use twilight_model::id::Id;
+    use randy_model::id::Id;
 
     #[test]
     fn request() {

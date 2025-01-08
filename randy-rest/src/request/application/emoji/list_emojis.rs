@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
     Client, Error, Response,
 };
-use twilight_model::{
+use randy_model::{
     application::EmojiList,
     id::{marker::ApplicationMarker, Id},
 };

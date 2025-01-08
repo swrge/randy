@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::guild::invite::Invite;
+use randy_model::guild::invite::Invite;
 
 struct GetInviteFields {
     with_counts: bool,

@@ -150,7 +150,7 @@ pub enum ErrorType {
     ///
     /// ```no_run
     /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// # let channel_id = twilight_model::id::Id::new(1);
+    /// # let channel_id = randy_model::id::Id::new(1);
     /// use std::env;
     /// use twilight_http::{client::Client, request::TryIntoRequest};
     ///
@@ -166,7 +166,7 @@ pub enum ErrorType {
     ///
     /// ```no_run
     /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// # let channel_id = twilight_model::id::Id::new(1);
+    /// # let channel_id = randy_model::id::Id::new(1);
     /// use std::{env, error::Error};
     /// use twilight_http::{client::Client, error::ErrorType, request::TryIntoRequest};
     ///

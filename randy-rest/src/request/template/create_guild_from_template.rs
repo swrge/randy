@@ -7,7 +7,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::guild::Guild;
+use randy_model::guild::Guild;
 use twilight_validate::request::{guild_name as validate_guild_name, ValidationError};
 
 #[derive(Serialize)]

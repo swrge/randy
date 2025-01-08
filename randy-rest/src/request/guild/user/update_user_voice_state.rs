@@ -7,7 +7,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::id::{
+use randy_model::id::{
     marker::{ChannelMarker, GuildMarker, UserMarker},
     Id,
 };
@@ -57,7 +57,7 @@ impl<'a> UpdateUserVoiceState<'a> {
     /// - When suppressed, the user will have their `request_to_speak_timestamp`
     ///   removed.
     ///
-    /// [`MUTE_MEMBERS`]: twilight_model::guild::Permissions::MUTE_MEMBERS
+    /// [`MUTE_MEMBERS`]: randy_model::guild::Permissions::MUTE_MEMBERS
     pub const fn suppress(mut self) -> Self {
         self.fields.suppress = Some(true);
 

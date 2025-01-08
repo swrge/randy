@@ -28,7 +28,7 @@ pub use self::{
 
 use serde::Serialize;
 use std::collections::HashMap;
-use twilight_model::{
+use randy_model::{
     application::command::{CommandOption, CommandType},
     guild::Permissions,
     id::{marker::ApplicationMarker, Id},
@@ -36,7 +36,7 @@ use twilight_model::{
 
 /// Version of [`Command`] but with borrowed fields.
 ///
-/// [`Command`]: twilight_model::application::command::Command
+/// [`Command`]: randy_model::application::command::Command
 #[derive(Serialize)]
 struct CommandBorrowed<'a> {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -64,7 +64,7 @@ struct CommandBorrowed<'a> {
 mod tests {
     use super::CommandBorrowed;
     use std::collections::HashMap;
-    use twilight_model::{
+    use randy_model::{
         application::command::{Command, CommandType},
         guild::Permissions,
         id::Id,

@@ -7,7 +7,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::id::{
+use randy_model::id::{
     marker::{GuildMarker, UserMarker},
     Id,
 };
@@ -33,7 +33,7 @@ struct CreateBanFields {
 ///
 /// ```no_run
 /// use twilight_http::{request::AuditLogReason, Client};
-/// use twilight_model::id::Id;
+/// use randy_model::id::Id;
 ///
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -145,7 +145,7 @@ mod tests {
     use http::header::HeaderValue;
     use std::error::Error;
     use twilight_http_ratelimiting::Method;
-    use twilight_model::id::{
+    use randy_model::id::{
         marker::{GuildMarker, UserMarker},
         Id,
     };

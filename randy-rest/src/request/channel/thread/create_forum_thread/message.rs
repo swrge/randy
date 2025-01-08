@@ -9,7 +9,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::{future::IntoFuture, mem};
-use twilight_model::{
+use randy_model::{
     channel::message::{AllowedMentions, Component, Embed, MessageFlags},
     http::attachment::Attachment,
     id::{marker::StickerMarker, Id},

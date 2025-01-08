@@ -1,5 +1,5 @@
 use std::future::IntoFuture;
-use twilight_model::id::{
+use randy_model::id::{
     marker::{ApplicationMarker, EmojiMarker},
     Id,
 };

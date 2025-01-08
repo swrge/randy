@@ -11,7 +11,7 @@ use std::{
     error::Error,
     fmt::{Display, Formatter, Result as FmtResult},
 };
-use twilight_model::{
+use randy_model::{
     channel::ChannelType,
     guild::{
         AfkTimeout, DefaultMessageNotificationLevel, ExplicitContentFilter, PartialGuild,

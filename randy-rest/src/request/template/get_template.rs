@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::guild::template::Template;
+use randy_model::guild::template::Template;
 
 /// Get a template by its code.
 #[must_use = "requests must be configured and executed"]

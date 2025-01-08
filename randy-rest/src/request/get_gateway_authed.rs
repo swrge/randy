@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::gateway::connection_info::BotConnectionInfo;
+use randy_model::gateway::connection_info::BotConnectionInfo;
 
 /// Get information about the gateway, authenticated as a bot user.
 ///

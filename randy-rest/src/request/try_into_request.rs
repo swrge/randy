@@ -320,7 +320,7 @@ use crate::error::Error;
 /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// use std::{env, str};
 /// use twilight_http::{client::Client, request::TryIntoRequest};
-/// use twilight_model::{channel::Message, id::Id};
+/// use randy_model::{channel::Message, id::Id};
 ///
 /// let client = Client::new(env::var("DISCORD_TOKEN")?);
 /// let channel_id = Id::new(1);
@@ -371,7 +371,7 @@ mod tests {
     use crate::{client::Client, request::Method};
     use static_assertions::assert_obj_safe;
     use std::error::Error;
-    use twilight_model::id::Id;
+    use randy_model::id::Id;
 
     assert_obj_safe!(TryIntoRequest);
 

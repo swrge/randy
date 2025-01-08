@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::user::CurrentUser;
+use randy_model::user::CurrentUser;
 
 /// Get information about the current user.
 #[must_use = "requests must be configured and executed"]

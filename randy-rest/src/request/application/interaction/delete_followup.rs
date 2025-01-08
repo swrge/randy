@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::id::{
+use randy_model::id::{
     marker::{ApplicationMarker, MessageMarker},
     Id,
 };
@@ -21,7 +21,7 @@ use twilight_model::id::{
 /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// use std::env;
 /// use twilight_http::Client;
-/// use twilight_model::id::Id;
+/// use randy_model::id::Id;
 ///
 /// let client = Client::new(env::var("DISCORD_TOKEN")?);
 /// let application_id = Id::new(1);
@@ -93,7 +93,7 @@ mod tests {
         routing::Route,
     };
     use std::error::Error;
-    use twilight_model::id::Id;
+    use randy_model::id::Id;
 
     #[test]
     fn request() -> Result<(), Box<dyn Error>> {

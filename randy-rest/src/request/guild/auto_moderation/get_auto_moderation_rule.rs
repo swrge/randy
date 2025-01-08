@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     guild::auto_moderation::AutoModerationRule,
     id::{
         marker::{AutoModerationRuleMarker, GuildMarker},
@@ -18,7 +18,7 @@ use twilight_model::{
 ///
 /// Requires the [`MANAGE_GUILD`] permission.
 ///
-/// [`MANAGE_GUILD`]: twilight_model::guild::Permissions::MANAGE_GUILD
+/// [`MANAGE_GUILD`]: randy_model::guild::Permissions::MANAGE_GUILD
 #[must_use = "requests must be configured and executed"]
 pub struct GetAutoModerationRule<'a> {
     auto_moderation_rule_id: Id<AutoModerationRuleMarker>,

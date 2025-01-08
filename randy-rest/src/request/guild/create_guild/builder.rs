@@ -3,7 +3,7 @@ use std::{
     error::Error,
     fmt::{Display, Formatter, Result as FmtResult},
 };
-use twilight_model::{
+use randy_model::{
     channel::ChannelType,
     guild::Permissions,
     http::permission_overwrite::PermissionOverwrite,
@@ -821,7 +821,7 @@ mod tests {
     };
     use static_assertions::assert_impl_all;
     use std::fmt::Debug;
-    use twilight_model::{
+    use randy_model::{
         channel::ChannelType,
         guild::Permissions,
         http::permission_overwrite::{PermissionOverwrite, PermissionOverwriteType},

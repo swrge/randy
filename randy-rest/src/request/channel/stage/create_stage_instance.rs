@@ -7,7 +7,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     channel::{stage_instance::PrivacyLevel, StageInstance},
     id::{
         marker::{ChannelMarker, ScheduledEventMarker},
@@ -81,7 +81,7 @@ impl<'a> CreateStageInstance<'a> {
     /// The stage moderator must have [`Permissions::MENTION_EVERYONE`] for this
     /// notification to be sent.
     ///
-    /// [`Permissions::MENTION_EVERYONE`]: twilight_model::guild::Permissions::MENTION_EVERYONE
+    /// [`Permissions::MENTION_EVERYONE`]: randy_model::guild::Permissions::MENTION_EVERYONE
     pub fn send_start_notification(mut self, send_start_notification: bool) -> Self {
         if let Ok(fields) = self.fields.as_mut() {
             fields.send_start_notification = Some(send_start_notification);

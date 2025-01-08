@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     channel::thread::ThreadsListing,
     id::{marker::ChannelMarker, Id},
 };
@@ -21,12 +21,12 @@ use twilight_model::{
 ///
 /// When called in a [`GuildAnnouncement`] channel, returns [`AnnouncementThread`]s.
 ///
-/// [`AnnouncementThread`]: twilight_model::channel::ChannelType::AnnouncementThread
-/// [`archive_timestamp`]: twilight_model::channel::thread::ThreadMetadata::archive_timestamp
-/// [`GuildAnnouncement`]: twilight_model::channel::ChannelType::GuildAnnouncement
-/// [`GuildText`]: twilight_model::channel::ChannelType::GuildText
-/// [`PublicThread`]: twilight_model::channel::ChannelType::PublicThread
-/// [`READ_MESSAGE_HISTORY`]: twilight_model::guild::Permissions::READ_MESSAGE_HISTORY
+/// [`AnnouncementThread`]: randy_model::channel::ChannelType::AnnouncementThread
+/// [`archive_timestamp`]: randy_model::channel::thread::ThreadMetadata::archive_timestamp
+/// [`GuildAnnouncement`]: randy_model::channel::ChannelType::GuildAnnouncement
+/// [`GuildText`]: randy_model::channel::ChannelType::GuildText
+/// [`PublicThread`]: randy_model::channel::ChannelType::PublicThread
+/// [`READ_MESSAGE_HISTORY`]: randy_model::guild::Permissions::READ_MESSAGE_HISTORY
 #[must_use = "requests must be configured and executed"]
 pub struct GetPublicArchivedThreads<'a> {
     before: Option<&'a str>,

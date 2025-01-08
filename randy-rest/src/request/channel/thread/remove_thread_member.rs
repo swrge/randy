@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::id::{
+use randy_model::id::{
     marker::{ChannelMarker, UserMarker},
     Id,
 };
@@ -18,8 +18,8 @@ use twilight_model::id::{
 /// Requires the [`MANAGE_THREADS`] permission, unless both the thread is a
 /// [`PrivateThread`], and the current user is the creator of the thread.
 ///
-/// [`PrivateThread`]: twilight_model::channel::ChannelType::PrivateThread
-/// [`MANAGE_THREADS`]: twilight_model::guild::Permissions::MANAGE_THREADS
+/// [`PrivateThread`]: randy_model::channel::ChannelType::PrivateThread
+/// [`MANAGE_THREADS`]: randy_model::guild::Permissions::MANAGE_THREADS
 #[must_use = "requests must be configured and executed"]
 pub struct RemoveThreadMember<'a> {
     channel_id: Id<ChannelMarker>,

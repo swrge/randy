@@ -7,7 +7,7 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     id::{
         marker::{ChannelMarker, MessageMarker, UserMarker},
         Id,

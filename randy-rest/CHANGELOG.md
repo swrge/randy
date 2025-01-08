@@ -1633,7 +1633,7 @@ The Allowed Mentions API has been reworked and moved to `twilight-model`. Use it
 like so:
 
 ```rust
-use twilight_model::channel::message::AllowedMentions;
+use randy_model::channel::message::AllowedMentions;
 
 let allowed_mentions = AllowedMentions::builder()
     .replied_user()
@@ -1864,7 +1864,7 @@ occur. `error::Error`'s `BuildingClient` has been removed as building clients
 can no longer fail. All Reqwest errors are now `hyper` errors.
 
 A couple of re-exports have been removed. Use
-`twilight_model::user::CurrentUserGuild` instead of
+`randy_model::user::CurrentUserGuild` instead of
 `request::user::get_current_user_guilds::CurrentUserGuild`. Additionally, use
 `request::channel::allowed_mentions` instead of
 `request::channel::message::allowed_mentions`.
@@ -1939,7 +1939,7 @@ The MSRV is now set to Rust 1.48.
 ### Enhancements
 
 The `request::user::get_current_user_guilds::CurrentUserGuild` type has been
-moved to `twilight_model::user::CurrentUserGuild`. A re-export has been left
+moved to `randy_model::user::CurrentUserGuild`. A re-export has been left
 in its place ([#625] - [@AsianIntel]).
 
 ### Misc.

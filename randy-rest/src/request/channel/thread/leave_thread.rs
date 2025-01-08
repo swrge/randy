@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::id::{marker::ChannelMarker, Id};
+use randy_model::id::{marker::ChannelMarker, Id};
 
 /// Remove the current user from a thread.
 ///

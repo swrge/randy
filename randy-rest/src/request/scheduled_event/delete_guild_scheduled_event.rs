@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     guild::scheduled_event::GuildScheduledEvent,
     id::{
         marker::{GuildMarker, ScheduledEventMarker},
@@ -20,7 +20,7 @@ use twilight_model::{
 ///
 /// ```no_run
 /// # use twilight_http::Client;
-/// # use twilight_model::id::Id;
+/// # use randy_model::id::Id;
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// # let client = Client::new("token".to_owned());

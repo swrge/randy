@@ -1,7 +1,7 @@
 use std::future::IntoFuture;
 
 use serde::ser::{Serialize, SerializeStruct, Serializer};
-use twilight_model::{
+use randy_model::{
     application::monetization::Entitlement,
     id::{
         marker::{ApplicationMarker, GuildMarker, SkuMarker, UserMarker},
@@ -105,7 +105,7 @@ impl TryIntoRequest for CreateTestEntitlement<'_> {
 #[cfg(test)]
 mod tests {
     use serde_test::Token;
-    use twilight_model::id::Id;
+    use randy_model::id::Id;
 
     use super::{CreateTestEntitlementFields, CreateTestEntitlementOwner};
 

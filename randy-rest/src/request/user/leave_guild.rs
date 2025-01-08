@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::id::{marker::GuildMarker, Id};
+use randy_model::id::{marker::GuildMarker, Id};
 
 /// Leave a guild by id.
 #[must_use = "requests must be configured and executed"]

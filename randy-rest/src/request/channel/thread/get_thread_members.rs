@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     channel::thread::ThreadMember,
     id::{
         marker::{ChannelMarker, UserMarker},
@@ -23,7 +23,7 @@ struct GetThreadMembersFields {
 
 /// Returns the [`ThreadMember`]s of the thread.
 ///
-/// [`ThreadMember`]: twilight_model::channel::thread::ThreadMember
+/// [`ThreadMember`]: randy_model::channel::thread::ThreadMember
 #[must_use = "requests must be configured and executed"]
 pub struct GetThreadMembers<'a> {
     channel_id: Id<ChannelMarker>,

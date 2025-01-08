@@ -11,7 +11,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     channel::message::{AllowedMentions, Component, Embed, MessageFlags},
     http::attachment::Attachment,
     id::{
@@ -64,7 +64,7 @@ pub(crate) struct ExecuteWebhookFields<'a> {
 /// ```no_run
 /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// use twilight_http::Client;
-/// use twilight_model::id::Id;
+/// use randy_model::id::Id;
 ///
 /// let client = Client::new("my token".to_owned());
 /// let id = Id::new(432);
@@ -266,7 +266,7 @@ impl<'a> ExecuteWebhook<'a> {
     /// ```no_run
     /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     /// use twilight_util::builder::embed::EmbedBuilder;
     ///
     /// let client = Client::new("token".to_owned());
@@ -289,7 +289,7 @@ impl<'a> ExecuteWebhook<'a> {
     /// ```no_run
     /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use twilight_http::Client;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     /// use twilight_util::builder::embed::EmbedBuilder;
     ///
     /// let client = Client::new("token".to_owned());

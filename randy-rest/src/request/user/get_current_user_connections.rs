@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::user::Connection;
+use randy_model::user::Connection;
 
 /// Get the current user's connections.
 ///

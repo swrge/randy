@@ -18,7 +18,7 @@
 //! ```no_run
 //! # #[tokio::main]
 //! # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-//! # let user_id = twilight_model::id::Id::new(1);
+//! # let user_id = randy_model::id::Id::new(1);
 //! use std::env;
 //! use twilight_http::Client;
 //!
@@ -32,7 +32,7 @@
 //! }
 //!
 //! // Twilight already knows to deserialize it into a
-//! // `twilight_model::user::User`.
+//! // `randy_model::user::User`.
 //! let user = response.model().await?;
 //!
 //! println!("user's name: {}:{}", user.name, user.discriminator);
@@ -161,7 +161,7 @@ pub enum DeserializeBodyErrorType {
 /// ```no_run
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-/// # let user_id = twilight_model::id::Id::new(1);
+/// # let user_id = randy_model::id::Id::new(1);
 /// use std::env;
 /// use twilight_http::Client;
 ///
@@ -215,7 +215,7 @@ impl<T> Response<T> {
     /// ```no_run
     /// # #[tokio::main]
     /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// # let user_id = twilight_model::id::Id::new(1);
+    /// # let user_id = randy_model::id::Id::new(1);
     /// use std::env;
     /// use twilight_http::Client;
     ///
@@ -368,7 +368,7 @@ impl<T: DeserializeOwned> Response<ListBody<T>> {
 /// ```no_run
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-/// # let channel_id = twilight_model::id::Id::new(1);
+/// # let channel_id = randy_model::id::Id::new(1);
 /// use std::env;
 /// use twilight_http::Client;
 ///
@@ -420,8 +420,8 @@ impl<'a> Iterator for HeaderIter<'a> {
 /// ```no_run
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-/// # let channel_id = twilight_model::id::Id::new(1);
-/// # let message_id = twilight_model::id::Id::new(2);
+/// # let channel_id = randy_model::id::Id::new(1);
+/// # let message_id = randy_model::id::Id::new(2);
 /// use std::env;
 /// use twilight_http::Client;
 ///
@@ -466,8 +466,8 @@ impl Future for BytesFuture {
 /// ```no_run
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-/// # let guild_id = twilight_model::id::Id::new(1);
-/// # let emoji_id = twilight_model::id::Id::new(2);
+/// # let guild_id = randy_model::id::Id::new(1);
+/// # let emoji_id = randy_model::id::Id::new(2);
 /// use std::env;
 /// use twilight_http::Client;
 ///
@@ -532,8 +532,8 @@ impl<T: DeserializeOwned + Unpin> Future for ModelFuture<T> {
 /// ```no_run
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-/// # let channel_id = twilight_model::id::Id::new(1);
-/// # let message_id = twilight_model::id::Id::new(2);
+/// # let channel_id = randy_model::id::Id::new(1);
+/// # let message_id = randy_model::id::Id::new(2);
 /// use std::env;
 /// use twilight_http::Client;
 ///
@@ -618,7 +618,7 @@ mod tests {
     };
     use static_assertions::assert_impl_all;
     use std::{fmt::Debug, future::Future, iter::FusedIterator};
-    use twilight_model::{channel::Message, guild::Emoji};
+    use randy_model::{channel::Message, guild::Emoji};
 
     #[cfg(feature = "decompression")]
     use std::error::Error;
@@ -637,7 +637,7 @@ mod tests {
     async fn test_decompression() -> Result<(), Box<dyn Error + Send + Sync>> {
         use super::decompress;
         use http_body_util::Full;
-        use twilight_model::guild::invite::Invite;
+        use randy_model::guild::invite::Invite;
 
         const COMPRESSED: [u8; 553] = [
             27, 235, 4, 0, 44, 10, 99, 99, 102, 244, 145, 235, 87, 95, 83, 76, 203, 31, 27, 6, 65,

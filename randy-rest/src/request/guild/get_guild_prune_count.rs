@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     guild::GuildPrune,
     id::{
         marker::{GuildMarker, RoleMarker},
@@ -103,7 +103,7 @@ impl TryIntoRequest for GetGuildPruneCount<'_> {
 mod tests {
     use super::GetGuildPruneCount;
     use crate::{request::TryIntoRequest, Client};
-    use twilight_model::id::Id;
+    use randy_model::id::Id;
 
     #[test]
     fn days() {

@@ -12,7 +12,7 @@ pub use self::{
 };
 use percent_encoding::{utf8_percent_encode, NON_ALPHANUMERIC};
 use std::fmt::{Display, Formatter, Result as FmtResult};
-use twilight_model::id::{marker::EmojiMarker, Id};
+use randy_model::id::{marker::EmojiMarker, Id};
 
 /// Handle a reaction of either a custom or unicode emoji.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
@@ -42,7 +42,7 @@ pub enum RequestReactionType<'a> {
 ///
 /// ```
 /// use twilight_http::request::channel::reaction::RequestReactionType;
-/// use twilight_model::id::Id;
+/// use randy_model::id::Id;
 ///
 /// let reaction = RequestReactionType::Custom {
 ///     id: Id::new(123),
@@ -99,7 +99,7 @@ mod tests {
         fmt::{Debug, Display},
         hash::Hash,
     };
-    use twilight_model::id::Id;
+    use randy_model::id::Id;
 
     assert_fields!(RequestReactionType::Custom: id, name);
     assert_fields!(RequestReactionType::Unicode: name);

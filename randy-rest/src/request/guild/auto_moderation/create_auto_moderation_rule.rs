@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use serde::Serialize;
-use twilight_model::{
+use randy_model::{
     guild::auto_moderation::{
         AutoModerationActionType, AutoModerationEventType, AutoModerationKeywordPresetType,
         AutoModerationRule, AutoModerationTriggerType,
@@ -90,7 +90,7 @@ struct CreateAutoModerationRuleFields<'a> {
 /// ```no_run
 /// # #[tokio::main] async fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// use twilight_http::Client;
-/// use twilight_model::{guild::auto_moderation::AutoModerationEventType, id::Id};
+/// use randy_model::{guild::auto_moderation::AutoModerationEventType, id::Id};
 ///
 /// let client = Client::new("my token".to_owned());
 ///
@@ -104,7 +104,7 @@ struct CreateAutoModerationRuleFields<'a> {
 /// # Ok(()) }
 /// ```
 ///
-/// [`MANAGE_GUILD`]: twilight_model::guild::Permissions::MANAGE_GUILD
+/// [`MANAGE_GUILD`]: randy_model::guild::Permissions::MANAGE_GUILD
 #[must_use = "requests must be configured and executed"]
 pub struct CreateAutoModerationRule<'a> {
     fields: Result<CreateAutoModerationRuleFields<'a>, ValidationError>,

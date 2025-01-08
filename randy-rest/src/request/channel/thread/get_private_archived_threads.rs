@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     channel::thread::ThreadsListing,
     id::{marker::ChannelMarker, Id},
 };
@@ -15,8 +15,8 @@ use twilight_model::{
 ///
 /// Requires both [`READ_MESSAGE_HISTORY`] and [`MANAGE_THREADS`].
 ///
-/// [`MANAGE_THREADS`]: twilight_model::guild::Permissions::MANAGE_THREADS
-/// [`READ_MESSAGE_HISTORY`]: twilight_model::guild::Permissions::READ_MESSAGE_HISTORY
+/// [`MANAGE_THREADS`]: randy_model::guild::Permissions::MANAGE_THREADS
+/// [`READ_MESSAGE_HISTORY`]: randy_model::guild::Permissions::READ_MESSAGE_HISTORY
 #[must_use = "requests must be configured and executed"]
 pub struct GetPrivateArchivedThreads<'a> {
     before: Option<&'a str>,

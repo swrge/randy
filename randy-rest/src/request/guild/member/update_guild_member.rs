@@ -7,7 +7,7 @@ use crate::{
 };
 use serde::Serialize;
 use std::future::IntoFuture;
-use twilight_model::{
+use randy_model::{
     guild::Member,
     id::{
         marker::{ChannelMarker, GuildMarker, RoleMarker, UserMarker},
@@ -98,7 +98,7 @@ impl<'a> UpdateGuildMember<'a> {
     ///
     /// [Guild Timeout]: https://support.discord.com/hc/en-us/articles/4413305239191-Time-Out-FAQ
     /// [`CommunicationDisabledUntil`]: twilight_validate::request::ValidationErrorType::CommunicationDisabledUntil
-    /// [`MODERATE_MEMBERS`]: twilight_model::guild::Permissions::MODERATE_MEMBERS
+    /// [`MODERATE_MEMBERS`]: randy_model::guild::Permissions::MODERATE_MEMBERS
     pub fn communication_disabled_until(mut self, timestamp: Option<Timestamp>) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             if let Some(timestamp) = timestamp {
@@ -214,7 +214,7 @@ mod tests {
         Client,
     };
     use std::error::Error;
-    use twilight_model::id::{
+    use randy_model::id::{
         marker::{GuildMarker, UserMarker},
         Id,
     };

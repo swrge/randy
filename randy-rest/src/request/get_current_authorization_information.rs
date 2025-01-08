@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::oauth::CurrentAuthorizationInformation;
+use randy_model::oauth::CurrentAuthorizationInformation;
 
 /// Retrieve information about the current OAuth2 authorization.
 ///

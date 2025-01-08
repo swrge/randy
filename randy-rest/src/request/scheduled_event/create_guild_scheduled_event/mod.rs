@@ -16,7 +16,7 @@ use crate::{
     routing::Route,
 };
 use serde::Serialize;
-use twilight_model::{
+use randy_model::{
     guild::scheduled_event::{EntityType, GuildScheduledEvent, PrivacyLevel},
     id::{
         marker::{ChannelMarker, GuildMarker},
@@ -66,7 +66,7 @@ struct CreateGuildScheduledEventFields<'a> {
 ///
 /// ```no_run
 /// # use twilight_http::Client;
-/// use twilight_model::{guild::scheduled_event::PrivacyLevel, id::Id, util::Timestamp};
+/// use randy_model::{guild::scheduled_event::PrivacyLevel, id::Id, util::Timestamp};
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// # let client = Client::new("token".to_owned());
@@ -90,7 +90,7 @@ struct CreateGuildScheduledEventFields<'a> {
 ///
 /// ```no_run
 /// # use twilight_http::Client;
-/// use twilight_model::{guild::scheduled_event::PrivacyLevel, id::Id, util::Timestamp};
+/// use randy_model::{guild::scheduled_event::PrivacyLevel, id::Id, util::Timestamp};
 /// # #[tokio::main]
 /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// # let client = Client::new("token".to_owned());

@@ -8,7 +8,7 @@ pub use self::{
 };
 
 use crate::Client;
-use twilight_model::id::{
+use randy_model::id::{
     marker::{ApplicationMarker, GuildMarker},
     Id,
 };

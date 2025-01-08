@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_model::id::{marker::ChannelMarker, Id};
+use randy_model::id::{marker::ChannelMarker, Id};
 use twilight_validate::request::{audit_reason as validate_audit_reason, ValidationError};
 
 /// Clear the permissions for a target ID in a channel.

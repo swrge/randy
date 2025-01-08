@@ -1,7 +1,7 @@
 use std::future::IntoFuture;
 
 use serde::Serialize;
-use twilight_model::oauth::{
+use randy_model::oauth::{
     Application, ApplicationFlags, ApplicationIntegrationMap, ApplicationIntegrationTypeConfig,
     InstallParams,
 };
