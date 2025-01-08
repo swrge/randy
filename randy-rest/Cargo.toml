@@ -1,5 +1,5 @@
-[workspace]
-resolver = "2"
+#[workspace]
+#resolver = "2"
 
 [package]
 name = "randy-rest"
@@ -53,5 +53,5 @@ rustls-aws-lc-rs = ["rustls-aws_lc_rs"] # Alias for convenience, underscores are
 [dev-dependencies]
 serde_test = { default-features = false, version = "1" }
 static_assertions = { default-features = false, version = "1.1.0" }
-twilight-util = { default-features = false, features = ["builder"], git = "https://github.com/swrge/randy-tools", version = "0.1.0" }
+twilight-util = { default-features = false, features = ["builder"], git = "https://github.com/swrge/randy-tools", version = "0.1.0", package = "randy-tools" }
 tokio = { default-features = false, features = ["macros", "rt-multi-thread"], version = "1.0" }
