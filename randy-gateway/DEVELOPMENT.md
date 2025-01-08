@@ -1,4 +1,4 @@
-# `twilight-http` development
+# `randy-rest` development
 
 ## Gateway tests
 

@@ -63,7 +63,7 @@ pub enum ChannelErrorType {
 
 /// Failure when fetching the recommended number of shards to use from Discord's
 /// REST API.
-#[cfg(feature = "twilight-http")]
+#[cfg(feature = "randy-rest")]
 #[derive(Debug)]
 pub struct StartRecommendedError {
     /// Type of error.
@@ -72,7 +72,7 @@ pub struct StartRecommendedError {
     pub(crate) source: Option<Box<dyn Error + Send + Sync>>,
 }
 
-#[cfg(feature = "twilight-http")]
+#[cfg(feature = "randy-rest")]
 impl StartRecommendedError {
     /// Immutable reference to the type of error that occurred.
     #[must_use = "retrieving the type has no effect if left unused"]
@@ -98,7 +98,7 @@ impl StartRecommendedError {
     }
 }
 
-#[cfg(feature = "twilight-http")]
+#[cfg(feature = "randy-rest")]
 impl Display for StartRecommendedError {
     fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         match self.kind {
@@ -110,7 +110,7 @@ impl Display for StartRecommendedError {
     }
 }
 
-#[cfg(feature = "twilight-http")]
+#[cfg(feature = "randy-rest")]
 impl Error for StartRecommendedError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         self.source
@@ -120,7 +120,7 @@ impl Error for StartRecommendedError {
 }
 
 /// Type of [`StartRecommendedError`] that occurred.
-#[cfg(feature = "twilight-http")]
+#[cfg(feature = "randy-rest")]
 #[derive(Debug)]
 pub enum StartRecommendedErrorType {
     /// Received gateway event failed to be deserialized.

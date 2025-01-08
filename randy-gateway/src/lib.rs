@@ -47,14 +47,14 @@ pub use self::{
 pub use randy_model::gateway::{CloseFrame, Intents, ShardId};
 
 #[doc(no_inline)]
-pub use twilight_gateway_queue as queue;
-#[doc(no_inline)]
 pub use randy_model::gateway::event::{Event, EventType};
+#[doc(no_inline)]
+pub use twilight_gateway_queue as queue;
 
-#[cfg(feature = "twilight-http")]
+#[cfg(feature = "randy-rest")]
 use self::error::{StartRecommendedError, StartRecommendedErrorType};
-#[cfg(feature = "twilight-http")]
-use twilight_http::Client;
+#[cfg(feature = "randy-rest")]
+use randy_rest::Client;
 
 /// Discord Gateway API version used by this crate.
 pub const API_VERSION: u8 = 10;
@@ -170,7 +170,7 @@ where
 /// Panics if loading TLS certificates fails.
 ///
 /// [`GetGatewayAuthed`]: twilight_http::request::GetGatewayAuthed
-#[cfg(feature = "twilight-http")]
+#[cfg(feature = "randy-rest")]
 pub async fn create_recommended<F, Q>(
     client: &Client,
     config: Config<Q>,

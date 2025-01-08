@@ -34,7 +34,7 @@ from a `Fn(ShardId, ConfigBuilder) -> Config` closure, with the help of the
   * `rustls-aws_lc_rs`: [`aws-lc-rs`] as the crypto provider, recommended for
     performance and widely used platforms
   * none of the above: install your own via [`CryptoProvider::install_default`]
-* `twilight-http` (*default*): enable the `stream::create_recommended` function
+* `randy-rest` (*default*): enable the `stream::create_recommended` function
 * Zlib (mutually exclusive)
   * `zlib-stock` (*default*): [`flate2`]'s stock zlib implementation
   * `zlib-simd`: use [`zlib-ng`] for zlib, may have better performance

@@ -947,7 +947,7 @@ support version 8 of the Discord Gateway API.
 
 ### Changes
 
-`twilight-gateway` now depends on `twilight-http` 0.2 and `twilight-model` 0.2.
+`twilight-gateway` now depends on `randy-rest` 0.2 and `twilight-model` 0.2.
 
 `randy_model::gateway::Intents` is now re-exported as
 `twilight_gateway::Intents`.
