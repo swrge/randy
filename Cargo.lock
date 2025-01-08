@@ -242,6 +242,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
+name = "chrono"
+version = "0.4.39"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7e36cc9d416881d2e24f9a963be5fb1cd90966419ac844274161d10488b3e825"
+dependencies = [
+ "num-traits",
+]
+
+[[package]]
 name = "ciborium"
 version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1488,7 +1497,7 @@ dependencies = [
 [[package]]
 name = "randy-gateway"
 version = "0.1.0"
-source = "git+https://github.com/swrge/randy-gateway#fd1f9abc3b77330dbec7795fb2b2b380655f57b5"
+source = "git+https://github.com/swrge/randy-gateway#2d636e36d3011d4df98881ab6bbb3ca0dd54952d"
 dependencies = [
  "bitflags",
  "fastrand",
@@ -1521,7 +1530,7 @@ dependencies = [
 [[package]]
 name = "randy-model"
 version = "0.1.0"
-source = "git+https://github.com/swrge/randy-model#b5ea899723f14536da39ab140ae7a103a2ccbfa5"
+source = "git+https://github.com/swrge/randy-model#089d28653cfbea6afc080a41ce7c3486b83e67c1"
 dependencies = [
  "bitflags",
  "serde",
@@ -1555,7 +1564,7 @@ dependencies = [
  "percent-encoding",
  "randy-model 0.1.0 (git+https://github.com/swrge/randy-model)",
  "randy-ratelimiting",
- "randy-tools",
+ "randy-tools 0.1.0 (git+https://github.com/swrge/randy-tools)",
  "randy-validate",
  "rustls",
  "serde",
@@ -1595,12 +1604,23 @@ dependencies = [
  "dashmap",
  "randy-gateway 0.1.0 (git+https://github.com/swrge/randy-gateway)",
  "randy-model 0.1.0 (git+https://github.com/swrge/randy-model)",
- "randy-tools",
+ "randy-tools 0.1.0 (git+https://github.com/swrge/randy-tools)",
  "serde",
  "static_assertions",
  "tokio",
  "tracing",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "randy-tools"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "randy-model 0.1.0 (git+https://github.com/swrge/randy-model)",
+ "randy-validate",
+ "static_assertions",
+ "time",
 ]
 
 [[package]]
@@ -2082,6 +2102,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "35e7868883861bd0e56d9ac6efcaaca0d6d5d82a2a7ec8209ff492c07cf37b21"
 dependencies = [
  "deranged",
+ "itoa",
  "num-conv",
  "powerfmt",
  "serde",
