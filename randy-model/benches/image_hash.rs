@@ -1,5 +1,5 @@
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
-use twilight_model::util::image_hash::ImageHash;
+use randy_model::util::image_hash::ImageHash;
 
 fn parse_hash(hash: &str) {
     let _ = ImageHash::parse(hash.as_bytes()).unwrap();

@@ -1,12 +1,12 @@
 use criterion::{criterion_group, criterion_main, Criterion};
 
-use serde::de::DeserializeSeed;
-use serde_json::Deserializer;
-use twilight_model::gateway::{
+use randy_model::gateway::{
     event::GatewayEventDeserializer,
     payload::incoming::{MemberChunk, TypingStart},
     GatewayReaction,
 };
+use serde::de::DeserializeSeed;
+use serde_json::Deserializer;
 
 fn gateway_event_role_delete() {
     let input = r#"{
