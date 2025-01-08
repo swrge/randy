@@ -45,7 +45,7 @@ use std::{
     fmt::{Display, Formatter, Result as FmtResult},
     time::{Duration, SystemTime},
 };
-use twilight_model::{
+use randy_model::{
     channel::{permission_overwrite::PermissionOverwrite, ChannelType},
     guild::Permissions,
     id::{
@@ -185,7 +185,7 @@ pub enum ChannelErrorType {
     /// The reasons this could happen could be due to the cache missing a
     /// [`RoleCreate`] event or a user application race condition.
     ///
-    /// [`RoleCreate`]: twilight_model::gateway::payload::incoming::RoleCreate
+    /// [`RoleCreate`]: randy_model::gateway::payload::incoming::RoleCreate
     RoleUnavailable {
         /// ID of the role that the user has but details about is missing.
         role_id: Id<RoleMarker>,
@@ -275,7 +275,7 @@ pub enum RootErrorType {
     /// The reasons this could happen could be due to the cache missing a
     /// [`RoleCreate`] event or a user application race condition.
     ///
-    /// [`RoleCreate`]: twilight_model::gateway::payload::incoming::RoleCreate
+    /// [`RoleCreate`]: randy_model::gateway::payload::incoming::RoleCreate
     RoleUnavailable {
         /// ID of the role that the user has but details about is missing.
         role_id: Id<RoleMarker>,
@@ -364,7 +364,7 @@ impl<'a, CacheModels: CacheableModels> InMemoryCachePermissions<'a, CacheModels>
     /// ```no_run
     /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use twilight_cache_inmemory::DefaultInMemoryCache;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// let cache = DefaultInMemoryCache::new();
     ///
@@ -389,7 +389,7 @@ impl<'a, CacheModels: CacheableModels> InMemoryCachePermissions<'a, CacheModels>
     /// Returns a [`ChannelErrorType::RoleUnavailable`] error type if one of the
     /// member's roles is not in the cache.
     ///
-    /// [`Permissions::all`]: twilight_model::guild::Permissions::all
+    /// [`Permissions::all`]: randy_model::guild::Permissions::all
     /// [`ResourceType::CHANNEL`]: crate::ResourceType::CHANNEL
     /// [`ResourceType::MEMBER`]: crate::ResourceType::MEMBER
     /// [`ResourceType::ROLE`]: crate::ResourceType::ROLE
@@ -458,7 +458,7 @@ impl<'a, CacheModels: CacheableModels> InMemoryCachePermissions<'a, CacheModels>
     /// ```no_run
     /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use twilight_cache_inmemory::DefaultInMemoryCache;
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// let cache = DefaultInMemoryCache::new();
     ///
@@ -480,7 +480,7 @@ impl<'a, CacheModels: CacheableModels> InMemoryCachePermissions<'a, CacheModels>
     /// Returns a [`RootErrorType::RoleUnavailable`] error type if one of the
     /// member's roles is not in the cache.
     ///
-    /// [`Permissions::all`]: twilight_model::guild::Permissions::all
+    /// [`Permissions::all`]: randy_model::guild::Permissions::all
     /// [`ResourceType::MEMBER`]: crate::ResourceType::MEMBER
     /// [`ResourceType::ROLE`]: crate::ResourceType::ROLE
     /// [`ResourceType`]: crate::ResourceType
@@ -656,7 +656,7 @@ mod tests {
         str::FromStr,
         time::{Duration, SystemTime},
     };
-    use twilight_model::{
+    use randy_model::{
         channel::{
             permission_overwrite::{PermissionOverwrite, PermissionOverwriteType},
             Channel, ChannelType,

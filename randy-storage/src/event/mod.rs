@@ -17,7 +17,7 @@ pub mod voice_state;
 use std::{borrow::Cow, collections::HashSet};
 
 use crate::{config::ResourceType, CacheableModels, InMemoryCache, UpdateCache};
-use twilight_model::{
+use randy_model::{
     gateway::payload::incoming::{Ready, UnavailableGuild, UserUpdate},
     id::{marker::GuildMarker, Id},
     user::{CurrentUser, User},

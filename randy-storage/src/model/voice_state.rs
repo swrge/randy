@@ -1,5 +1,5 @@
 use serde::Serialize;
-use twilight_model::{
+use randy_model::{
     id::{
         marker::{ChannelMarker, GuildMarker, UserMarker},
         Id,
@@ -12,7 +12,7 @@ use crate::CacheableVoiceState;
 
 /// Represents a cached [`VoiceState`].
 ///
-/// [`VoiceState`]: twilight_model::voice::VoiceState
+/// [`VoiceState`]: randy_model::voice::VoiceState
 #[allow(clippy::struct_excessive_bools)]
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct CachedVoiceState {
@@ -164,7 +164,7 @@ mod tests {
     use serde::Serialize;
     use static_assertions::{assert_fields, assert_impl_all};
     use std::fmt::Debug;
-    use twilight_model::{
+    use randy_model::{
         id::{
             marker::{ChannelMarker, GuildMarker, UserMarker},
             Id,

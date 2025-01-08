@@ -24,7 +24,7 @@
 
 use crate::model::member::ComputedInteractionMember;
 use std::fmt::Debug;
-use twilight_model::{
+use randy_model::{
     application::interaction::InteractionMember,
     channel::{
         message::{Reaction, Sticker},
@@ -49,7 +49,7 @@ use twilight_model::{
     voice::VoiceState,
 };
 #[cfg(feature = "permission-calculator")]
-use twilight_model::{channel::permission_overwrite::PermissionOverwrite, guild::Permissions};
+use randy_model::{channel::permission_overwrite::PermissionOverwrite, guild::Permissions};
 
 /// Super-trait for the generic cached representations of Discord API models.
 pub trait CacheableModels: Clone + Debug {

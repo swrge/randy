@@ -1,5 +1,5 @@
 use crate::{config::ResourceType, CacheableModels, InMemoryCache, UpdateCache};
-use twilight_model::{
+use randy_model::{
     gateway::{payload::incoming::PresenceUpdate, presence::Presence},
     id::{marker::GuildMarker, Id},
 };
@@ -41,7 +41,7 @@ impl<CacheModels: CacheableModels> UpdateCache<CacheModels> for PresenceUpdate {
 #[cfg(test)]
 mod tests {
     use crate::{test, DefaultInMemoryCache};
-    use twilight_model::{
+    use randy_model::{
         gateway::{
             event::Event,
             payload::incoming::PresenceUpdate,

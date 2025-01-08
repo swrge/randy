@@ -1,6 +1,6 @@
 use crate::{config::ResourceType, CacheableModels, GuildResource, InMemoryCache, UpdateCache};
 use std::borrow::Cow;
-use twilight_model::{
+use randy_model::{
     gateway::payload::incoming::GuildEmojisUpdate,
     guild::Emoji,
     id::{marker::GuildMarker, Id},
@@ -73,7 +73,7 @@ impl<CacheModels: CacheableModels> UpdateCache<CacheModels> for GuildEmojisUpdat
 #[cfg(test)]
 mod tests {
     use crate::{test, DefaultInMemoryCache};
-    use twilight_model::{
+    use randy_model::{
         gateway::payload::incoming::GuildEmojisUpdate,
         id::{marker::EmojiMarker, Id},
         user::User,

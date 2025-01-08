@@ -1,5 +1,5 @@
 use crate::DefaultInMemoryCache;
-use twilight_model::{
+use randy_model::{
     channel::{
         message::{
             sticker::{Sticker, StickerFormatType, StickerType},

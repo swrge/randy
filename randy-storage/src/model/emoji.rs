@@ -1,6 +1,6 @@
 use crate::CacheableEmoji;
 use serde::Serialize;
-use twilight_model::{
+use randy_model::{
     guild::Emoji,
     id::{
         marker::{EmojiMarker, RoleMarker, UserMarker},
@@ -10,7 +10,7 @@ use twilight_model::{
 
 /// Represents a cached [`Emoji`].
 ///
-/// [`Emoji`]: twilight_model::guild::Emoji
+/// [`Emoji`]: randy_model::guild::Emoji
 #[allow(clippy::struct_excessive_bools)]
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct CachedEmoji {
@@ -115,7 +115,7 @@ mod tests {
     use serde::Serialize;
     use static_assertions::{assert_fields, assert_impl_all};
     use std::fmt::Debug;
-    use twilight_model::{guild::Emoji, id::Id};
+    use randy_model::{guild::Emoji, id::Id};
 
     assert_fields!(
         CachedEmoji: id,

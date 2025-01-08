@@ -15,7 +15,7 @@
 use crate::{CacheableModels, GuildResource, InMemoryCache};
 use dashmap::{iter::Iter, mapref::multiple::RefMulti};
 use std::{hash::Hash, ops::Deref};
-use twilight_model::id::{
+use randy_model::id::{
     marker::{
         ChannelMarker, EmojiMarker, GuildMarker, IntegrationMarker, MessageMarker, RoleMarker,
         StageMarker, StickerMarker, UserMarker,
@@ -99,7 +99,7 @@ impl<K: Eq + Hash, V> Deref for IterReference<'_, K, V> {
 ///
 /// ```no_run
 /// use twilight_cache_inmemory::DefaultInMemoryCache;
-/// use twilight_model::id::Id;
+/// use randy_model::id::Id;
 ///
 /// let cache = DefaultInMemoryCache::new();
 ///
@@ -261,7 +261,7 @@ mod tests {
     use crate::{test, DefaultCacheModels, DefaultInMemoryCache};
     use static_assertions::assert_impl_all;
     use std::{borrow::Cow, fmt::Debug};
-    use twilight_model::{
+    use randy_model::{
         id::{marker::UserMarker, Id},
         user::User,
     };

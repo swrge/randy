@@ -1,7 +1,7 @@
 //! Cached message-related models.
 
 use serde::Serialize;
-use twilight_model::{
+use randy_model::{
     application::interaction::InteractionType,
     channel::{
         message::{
@@ -56,7 +56,7 @@ impl CachedMessageInteraction {
         self.user_id
     }
 
-    /// Construct a cached message interaction from its [`twilight_model`] form.
+    /// Construct a cached message interaction from its [`randy_model`] form.
     #[allow(clippy::missing_const_for_fn)]
     pub(crate) fn from_model(message_interaction: MessageInteraction) -> Self {
         // Reasons for dropping fields:
@@ -90,7 +90,7 @@ impl PartialEq<MessageInteraction> for CachedMessageInteraction {
 
 /// Represents a cached [`Message`].
 ///
-/// [`Message`]: twilight_model::channel::Message
+/// [`Message`]: randy_model::channel::Message
 #[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct CachedMessage {
     activity: Option<MessageActivity>,
@@ -150,7 +150,7 @@ impl CachedMessage {
     /// Refer to the documentation for [`Message::attachments`] for caveats with
     /// receiving the attachments of messages.
     ///
-    /// [`Message::attachments`]: twilight_model::channel::Message::attachments
+    /// [`Message::attachments`]: randy_model::channel::Message::attachments
     pub fn attachments(&self) -> &[Attachment] {
         &self.attachments
     }
@@ -172,7 +172,7 @@ impl CachedMessage {
     /// Refer to the documentation for [`Message::components`] for caveats with
     /// receiving the components of messages.
     ///
-    /// [`Message::components`]: twilight_model::channel::Message::components
+    /// [`Message::components`]: randy_model::channel::Message::components
     pub fn components(&self) -> &[Component] {
         &self.components
     }
@@ -182,7 +182,7 @@ impl CachedMessage {
     /// Refer to the documentation for [`Message::content`] for caveats with
     /// receiving the content of messages.
     ///
-    /// [`Message::content`]: twilight_model::channel::Message::content
+    /// [`Message::content`]: randy_model::channel::Message::content
     pub fn content(&self) -> &str {
         &self.content
     }
@@ -197,7 +197,7 @@ impl CachedMessage {
     /// Refer to the documentation for [`Message::embeds`] for caveats with
     /// receiving the embeds of messages.
     ///
-    /// [`Message::embeds`]: twilight_model::channel::Message::embeds
+    /// [`Message::embeds`]: randy_model::channel::Message::embeds
     pub fn embeds(&self) -> &[Embed] {
         &self.embeds
     }
@@ -457,7 +457,7 @@ mod tests {
     use serde::Serialize;
     use static_assertions::{assert_fields, assert_impl_all};
     use std::fmt::Debug;
-    use twilight_model::channel::message::Message;
+    use randy_model::channel::message::Message;
 
     assert_fields!(
         CachedMessage: activity,

@@ -3,7 +3,7 @@ use crate::{
     traits::{CacheableCurrentUser, CacheableMessage},
     CacheableModels, InMemoryCache, UpdateCache,
 };
-use twilight_model::{
+use randy_model::{
     channel::message::{EmojiReactionType, Reaction, ReactionCountDetails},
     gateway::payload::incoming::{
         ReactionAdd, ReactionRemove, ReactionRemoveAll, ReactionRemoveEmoji,
@@ -141,7 +141,7 @@ fn reactions_eq(a: &EmojiReactionType, b: &EmojiReactionType) -> bool {
 mod tests {
     use super::reactions_eq;
     use crate::{model::CachedMessage, test};
-    use twilight_model::{
+    use randy_model::{
         channel::message::{EmojiReactionType, Reaction},
         gateway::{
             payload::incoming::{ReactionRemove, ReactionRemoveAll, ReactionRemoveEmoji},

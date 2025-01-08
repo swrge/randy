@@ -1,5 +1,5 @@
 use crate::{traits::CacheableChannel, CacheableModels, InMemoryCache, ResourceType, UpdateCache};
-use twilight_model::{
+use randy_model::{
     channel::Channel,
     gateway::payload::incoming::{ChannelCreate, ChannelDelete, ChannelPinsUpdate, ChannelUpdate},
     id::{marker::ChannelMarker, Id},
@@ -86,7 +86,7 @@ impl<CacheModels: CacheableModels> UpdateCache<CacheModels> for ChannelUpdate {
 #[cfg(test)]
 mod tests {
     use crate::{test, DefaultInMemoryCache};
-    use twilight_model::gateway::{
+    use randy_model::gateway::{
         event::Event,
         payload::incoming::{ChannelDelete, ChannelUpdate},
     };

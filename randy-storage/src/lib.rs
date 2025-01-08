@@ -47,14 +47,7 @@ use dashmap::{
     mapref::{entry::Entry, one::Ref},
     DashMap, DashSet,
 };
-use std::{
-    collections::{HashSet, VecDeque},
-    fmt::{Debug, Formatter, Result as FmtResult},
-    hash::Hash,
-    ops::Deref,
-    sync::Mutex,
-};
-use twilight_model::{
+use randy_model::{
     channel::{Channel, StageInstance},
     gateway::event::Event,
     guild::{scheduled_event::GuildScheduledEvent, GuildIntegration, Role},
@@ -66,6 +59,13 @@ use twilight_model::{
         Id,
     },
     user::{CurrentUser, User},
+};
+use std::{
+    collections::{HashSet, VecDeque},
+    fmt::{Debug, Formatter, Result as FmtResult},
+    hash::Hash,
+    ops::Deref,
+    sync::Mutex,
 };
 
 /// Resource associated with a guild.
@@ -185,7 +185,7 @@ fn upsert_guild_item<K: Eq + Hash, V: PartialEq>(
 /// scale of nanoseconds. If only a couple of small fields are necessary from a
 /// reference consider copying or cloning them.
 ///
-/// [`Intents`]: ::twilight_model::gateway::Intents
+/// [`Intents`]: ::randy_model::gateway::Intents
 // When adding a field here, be sure to add it to `InMemoryCache::clear` if
 // necessary.
 #[allow(clippy::type_complexity)]
@@ -380,7 +380,7 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     /// ```no_run
     /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use twilight_cache_inmemory::{DefaultInMemoryCache, ResourceType};
-    /// use twilight_model::id::Id;
+    /// use randy_model::id::Id;
     ///
     /// let resource_types = ResourceType::CHANNEL | ResourceType::MEMBER | ResourceType::ROLE;
     ///
@@ -427,8 +427,8 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// This requires the [`DIRECT_MESSAGES`] or [`GUILD_MESSAGES`] intents.
     ///
-    /// [`DIRECT_MESSAGES`]: ::twilight_model::gateway::Intents::DIRECT_MESSAGES
-    /// [`GUILD_MESSAGES`]: ::twilight_model::gateway::Intents::GUILD_MESSAGES
+    /// [`DIRECT_MESSAGES`]: ::randy_model::gateway::Intents::DIRECT_MESSAGES
+    /// [`GUILD_MESSAGES`]: ::randy_model::gateway::Intents::GUILD_MESSAGES
     pub fn channel_messages(
         &self,
         channel_id: Id<ChannelMarker>,
@@ -440,7 +440,7 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// This requires the [`GUILD_EMOJIS_AND_STICKERS`] intent.
     ///
-    /// [`GUILD_EMOJIS_AND_STICKERS`]: ::twilight_model::gateway::Intents::GUILD_EMOJIS_AND_STICKERS
+    /// [`GUILD_EMOJIS_AND_STICKERS`]: ::randy_model::gateway::Intents::GUILD_EMOJIS_AND_STICKERS
     pub fn emoji(
         &self,
         emoji_id: Id<EmojiMarker>,
@@ -452,7 +452,7 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// This requires the [`GUILDS`] intent.
     ///
-    /// [`GUILDS`]: ::twilight_model::gateway::Intents::GUILDS
+    /// [`GUILDS`]: ::randy_model::gateway::Intents::GUILDS
     pub fn guild(
         &self,
         guild_id: Id<GuildMarker>,
@@ -464,7 +464,7 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// This requires the [`GUILDS`] intent.
     ///
-    /// [`GUILDS`]: ::twilight_model::gateway::Intents::GUILDS
+    /// [`GUILDS`]: ::randy_model::gateway::Intents::GUILDS
     pub fn guild_channels(
         &self,
         guild_id: Id<GuildMarker>,
@@ -477,8 +477,8 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     /// This requires both the [`GUILDS`] and [`GUILD_EMOJIS_AND_STICKERS`]
     /// intents.
     ///
-    /// [`GUILDS`]: ::twilight_model::gateway::Intents::GUILDS
-    /// [`GUILD_EMOJIS_AND_STICKERS`]: ::twilight_model::gateway::Intents::GUILD_EMOJIS_AND_STICKERS
+    /// [`GUILDS`]: ::randy_model::gateway::Intents::GUILDS
+    /// [`GUILD_EMOJIS_AND_STICKERS`]: ::randy_model::gateway::Intents::GUILD_EMOJIS_AND_STICKERS
     pub fn guild_emojis(
         &self,
         guild_id: Id<GuildMarker>,
@@ -491,7 +491,7 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     /// This requires the [`GUILD_INTEGRATIONS`] intent. The
     /// [`ResourceType::INTEGRATION`] resource type must be enabled.
     ///
-    /// [`GUILD_INTEGRATIONS`]: twilight_model::gateway::Intents::GUILD_INTEGRATIONS
+    /// [`GUILD_INTEGRATIONS`]: randy_model::gateway::Intents::GUILD_INTEGRATIONS
     pub fn guild_integrations(
         &self,
         guild_id: Id<GuildMarker>,
@@ -505,7 +505,7 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// This requires the [`GUILD_MEMBERS`] intent.
     ///
-    /// [`GUILD_MEMBERS`]: ::twilight_model::gateway::Intents::GUILD_MEMBERS
+    /// [`GUILD_MEMBERS`]: ::randy_model::gateway::Intents::GUILD_MEMBERS
     pub fn guild_members(
         &self,
         guild_id: Id<GuildMarker>,
@@ -519,7 +519,7 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// This requires the [`GUILD_PRESENCES`] intent.
     ///
-    /// [`GUILD_PRESENCES`]: ::twilight_model::gateway::Intents::GUILD_PRESENCES
+    /// [`GUILD_PRESENCES`]: ::randy_model::gateway::Intents::GUILD_PRESENCES
     pub fn guild_presences(
         &self,
         guild_id: Id<GuildMarker>,
@@ -531,7 +531,7 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// This requires the [`GUILDS`] intent.
     ///
-    /// [`GUILDS`]: ::twilight_model::gateway::Intents::GUILDS
+    /// [`GUILDS`]: ::randy_model::gateway::Intents::GUILDS
     pub fn guild_roles(
         &self,
         guild_id: Id<GuildMarker>,
@@ -543,7 +543,7 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// This requires the [`GUILDS`] intent.
     ///
-    /// [`GUILDS`]: ::twilight_model::gateway::Intents::GUILDS
+    /// [`GUILDS`]: ::randy_model::gateway::Intents::GUILDS
     pub fn scheduled_events(
         &self,
         guild_id: Id<GuildMarker>,
@@ -557,7 +557,7 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// This requires the [`GUILDS`] intent.
     ///
-    /// [`GUILDS`]: twilight_model::gateway::Intents::GUILDS
+    /// [`GUILDS`]: randy_model::gateway::Intents::GUILDS
     pub fn guild_stage_instances(
         &self,
         guild_id: Id<GuildMarker>,
@@ -573,8 +573,8 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     /// guild. This requires the [`GUILDS`] and [`GUILD_EMOJIS_AND_STICKERS`]
     /// intents and the [`STICKER`] resource type.
     ///
-    /// [`GUILDS`]: twilight_model::gateway::Intents::GUILDS
-    /// [`GUILD_EMOJIS_AND_STICKERS`]: ::twilight_model::gateway::Intents::GUILD_EMOJIS_AND_STICKERS
+    /// [`GUILDS`]: randy_model::gateway::Intents::GUILDS
+    /// [`GUILD_EMOJIS_AND_STICKERS`]: ::randy_model::gateway::Intents::GUILD_EMOJIS_AND_STICKERS
     /// [`STICKER`]: crate::config::ResourceType::STICKER
     pub fn guild_stickers(
         &self,
@@ -587,8 +587,8 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// This requires both the [`GUILDS`] and [`GUILD_VOICE_STATES`] intents.
     ///
-    /// [`GUILDS`]: ::twilight_model::gateway::Intents::GUILDS
-    /// [`GUILD_VOICE_STATES`]: ::twilight_model::gateway::Intents::GUILD_VOICE_STATES
+    /// [`GUILDS`]: ::randy_model::gateway::Intents::GUILDS
+    /// [`GUILD_VOICE_STATES`]: ::randy_model::gateway::Intents::GUILD_VOICE_STATES
     pub fn guild_voice_states(
         &self,
         guild_id: Id<GuildMarker>,
@@ -601,7 +601,7 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     /// This requires the [`GUILD_INTEGRATIONS`] intent. The
     /// [`ResourceType::INTEGRATION`] resource type must be enabled.
     ///
-    /// [`GUILD_INTEGRATIONS`]: twilight_model::gateway::Intents::GUILD_INTEGRATIONS
+    /// [`GUILD_INTEGRATIONS`]: randy_model::gateway::Intents::GUILD_INTEGRATIONS
     #[allow(clippy::type_complexity)]
     pub fn integration(
         &self,
@@ -623,7 +623,7 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// This requires the [`GUILD_MEMBERS`] intent.
     ///
-    /// [`GUILD_MEMBERS`]: ::twilight_model::gateway::Intents::GUILD_MEMBERS
+    /// [`GUILD_MEMBERS`]: ::randy_model::gateway::Intents::GUILD_MEMBERS
     #[allow(clippy::type_complexity)]
     pub fn member(
         &self,
@@ -638,8 +638,8 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     /// This requires one or both of the [`GUILD_MESSAGES`] or
     /// [`DIRECT_MESSAGES`] intents.
     ///
-    /// [`GUILD_MESSAGES`]: ::twilight_model::gateway::Intents::GUILD_MESSAGES
-    /// [`DIRECT_MESSAGES`]: ::twilight_model::gateway::Intents::DIRECT_MESSAGES
+    /// [`GUILD_MESSAGES`]: ::randy_model::gateway::Intents::GUILD_MESSAGES
+    /// [`DIRECT_MESSAGES`]: ::randy_model::gateway::Intents::DIRECT_MESSAGES
     pub fn message(
         &self,
         message_id: Id<MessageMarker>,
@@ -651,7 +651,7 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// This requires the [`GUILD_PRESENCES`] intent.
     ///
-    /// [`GUILD_PRESENCES`]: ::twilight_model::gateway::Intents::GUILD_PRESENCES
+    /// [`GUILD_PRESENCES`]: ::randy_model::gateway::Intents::GUILD_PRESENCES
     #[allow(clippy::type_complexity)]
     pub fn presence(
         &self,
@@ -665,7 +665,7 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// This requires the [`GUILDS`] intent.
     ///
-    /// [`GUILDS`]: ::twilight_model::gateway::Intents::GUILDS
+    /// [`GUILDS`]: ::randy_model::gateway::Intents::GUILDS
     pub fn role(
         &self,
         role_id: Id<RoleMarker>,
@@ -677,7 +677,7 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// This requires the [`GUILDS`] intent.
     ///
-    /// [`GUILDS`]: ::twilight_model::gateway::Intents::GUILDS
+    /// [`GUILDS`]: ::randy_model::gateway::Intents::GUILDS
     pub fn scheduled_event(
         &self,
         event_id: Id<ScheduledEventMarker>,
@@ -691,7 +691,7 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// This requires the [`GUILDS`] intent.
     ///
-    /// [`GUILDS`]: twilight_model::gateway::Intents::GUILDS
+    /// [`GUILDS`]: randy_model::gateway::Intents::GUILDS
     pub fn stage_instance(
         &self,
         stage_id: Id<StageMarker>,
@@ -704,8 +704,8 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     /// This is the O(1) operation. This requires the [`GUILDS`] and the
     /// [`GUILD_EMOJIS_AND_STICKERS`] intents and the [`STICKER`] resource type.
     ///
-    /// [`GUILDS`]: twilight_model::gateway::Intents::GUILDS
-    /// [`GUILD_EMOJIS_AND_STICKERS`]: ::twilight_model::gateway::Intents::GUILD_EMOJIS_AND_STICKERS
+    /// [`GUILDS`]: randy_model::gateway::Intents::GUILDS
+    /// [`GUILD_EMOJIS_AND_STICKERS`]: ::randy_model::gateway::Intents::GUILD_EMOJIS_AND_STICKERS
     /// [`STICKER`]: crate::config::ResourceType::STICKER
     pub fn sticker(
         &self,
@@ -718,7 +718,7 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// This requires the [`GUILD_MEMBERS`] intent.
     ///
-    /// [`GUILD_MEMBERS`]: ::twilight_model::gateway::Intents::GUILD_MEMBERS
+    /// [`GUILD_MEMBERS`]: ::randy_model::gateway::Intents::GUILD_MEMBERS
     pub fn user(
         &self,
         user_id: Id<UserMarker>,
@@ -734,8 +734,8 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// Requires the [`USER`] resource type.
     ///
-    /// [`MemberAdd`]: twilight_model::gateway::payload::incoming::MemberAdd
-    /// [`InteractionCreate`]: twilight_model::gateway::payload::incoming::InteractionCreate
+    /// [`MemberAdd`]: randy_model::gateway::payload::incoming::MemberAdd
+    /// [`InteractionCreate`]: randy_model::gateway::payload::incoming::InteractionCreate
     /// [`USER`]: crate::config::ResourceType::USER
     pub fn user_guilds(
         &self,
@@ -748,8 +748,8 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// This requires both the [`GUILDS`] and [`GUILD_VOICE_STATES`] intents.
     ///
-    /// [`GUILDS`]: ::twilight_model::gateway::Intents::GUILDS
-    /// [`GUILD_VOICE_STATES`]: ::twilight_model::gateway::Intents::GUILD_VOICE_STATES
+    /// [`GUILDS`]: ::randy_model::gateway::Intents::GUILDS
+    /// [`GUILD_VOICE_STATES`]: ::randy_model::gateway::Intents::GUILD_VOICE_STATES
     pub fn voice_channel_states(
         &self,
         channel_id: Id<ChannelMarker>,
@@ -767,8 +767,8 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// This requires both the [`GUILDS`] and [`GUILD_VOICE_STATES`] intents.
     ///
-    /// [`GUILDS`]: ::twilight_model::gateway::Intents::GUILDS
-    /// [`GUILD_VOICE_STATES`]: ::twilight_model::gateway::Intents::GUILD_VOICE_STATES
+    /// [`GUILDS`]: ::randy_model::gateway::Intents::GUILDS
+    /// [`GUILD_VOICE_STATES`]: ::randy_model::gateway::Intents::GUILD_VOICE_STATES
     #[allow(clippy::type_complexity)]
     pub fn voice_state(
         &self,
@@ -784,8 +784,8 @@ impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     ///
     /// This requires both the [`GUILDS`] and [`GUILD_MEMBERS`] intents.
     ///
-    /// [`GUILDS`]: twilight_model::gateway::Intents::GUILDS
-    /// [`GUILD_MEMBERS`]: twilight_model::gateway::Intents::GUILD_MEMBERS
+    /// [`GUILDS`]: randy_model::gateway::Intents::GUILDS
+    /// [`GUILD_MEMBERS`]: randy_model::gateway::Intents::GUILD_MEMBERS
     pub fn member_highest_role(
         &self,
         guild_id: Id<GuildMarker>,
@@ -864,7 +864,7 @@ impl<CacheModels: CacheableModels> Default for InMemoryCache<CacheModels> {
 }
 
 mod private {
-    use twilight_model::gateway::{
+    use randy_model::gateway::{
         event::Event,
         payload::incoming::{
             ChannelCreate, ChannelDelete, ChannelPinsUpdate, ChannelUpdate, GuildCreate,
@@ -1051,7 +1051,7 @@ impl<CacheModels: CacheableModels> UpdateCache<CacheModels> for Event {
 #[cfg(test)]
 mod tests {
     use crate::{test, DefaultInMemoryCache};
-    use twilight_model::{
+    use randy_model::{
         gateway::payload::incoming::RoleDelete,
         guild::{Member, MemberFlags, Permissions, Role, RoleFlags},
         id::Id,

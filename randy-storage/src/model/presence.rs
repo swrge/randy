@@ -1,5 +1,5 @@
 use serde::Serialize;
-use twilight_model::{
+use randy_model::{
     gateway::presence::{Activity, ClientStatus, Presence, Status},
     id::{
         marker::{GuildMarker, UserMarker},
@@ -11,7 +11,7 @@ use crate::CacheablePresence;
 
 /// Represents a cached [`Presence`].
 ///
-/// [`Presence`]: twilight_model::gateway::presence::Presence
+/// [`Presence`]: randy_model::gateway::presence::Presence
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct CachedPresence {
     pub(crate) activities: Vec<Activity>,
@@ -86,7 +86,7 @@ mod tests {
     use serde::Serialize;
     use static_assertions::{assert_fields, assert_impl_all};
     use std::fmt::Debug;
-    use twilight_model::gateway::presence::Presence;
+    use randy_model::gateway::presence::Presence;
 
     assert_fields!(
         CachedPresence: activities,

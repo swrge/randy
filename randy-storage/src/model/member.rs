@@ -1,7 +1,7 @@
 use std::ops::Deref;
 
 use serde::Serialize;
-use twilight_model::{
+use randy_model::{
     application::interaction::InteractionMember,
     gateway::payload::incoming::MemberUpdate,
     guild::{Member, MemberFlags, PartialMember},
@@ -40,7 +40,7 @@ impl Deref for ComputedInteractionMember {
 
 /// Represents a cached [`Member`].
 ///
-/// [`Member`]: twilight_model::guild::Member
+/// [`Member`]: randy_model::guild::Member
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct CachedMember {
     pub(crate) avatar: Option<ImageHash>,
@@ -298,7 +298,7 @@ impl CacheableMember for CachedMember {
 mod tests {
     use super::CachedMember;
     use static_assertions::assert_fields;
-    use twilight_model::{
+    use randy_model::{
         guild::{Member, MemberFlags, PartialMember},
         id::Id,
         user::User,

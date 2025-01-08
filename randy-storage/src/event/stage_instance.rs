@@ -1,5 +1,5 @@
 use crate::{config::ResourceType, CacheableModels, InMemoryCache, UpdateCache};
-use twilight_model::{
+use randy_model::{
     channel::StageInstance,
     gateway::payload::incoming::{StageInstanceCreate, StageInstanceDelete, StageInstanceUpdate},
     id::{
@@ -77,7 +77,7 @@ impl<CacheModels: CacheableModels> UpdateCache<CacheModels> for StageInstanceUpd
 #[cfg(test)]
 mod tests {
     use crate::DefaultInMemoryCache;
-    use twilight_model::{
+    use randy_model::{
         channel::{stage_instance::PrivacyLevel, StageInstance},
         gateway::payload::incoming::{
             StageInstanceCreate, StageInstanceDelete, StageInstanceUpdate,

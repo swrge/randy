@@ -1,6 +1,6 @@
 use crate::{config::ResourceType, CacheableModels, InMemoryCache, UpdateCache};
 use std::borrow::Cow;
-use twilight_model::gateway::payload::incoming::{
+use randy_model::gateway::payload::incoming::{
     MessageCreate, MessageDelete, MessageDeleteBulk, MessageUpdate,
 };
 
@@ -125,7 +125,7 @@ impl<CacheModels: CacheableModels> UpdateCache<CacheModels> for MessageUpdate {
 #[cfg(test)]
 mod tests {
     use crate::{DefaultInMemoryCache, ResourceType};
-    use twilight_model::{
+    use randy_model::{
         channel::message::{Message, MessageFlags, MessageType},
         gateway::payload::incoming::MessageCreate,
         guild::{MemberFlags, PartialMember},

@@ -1,7 +1,7 @@
 use crate::CacheableVoiceState;
 use crate::{config::ResourceType, CacheableModels, InMemoryCache, UpdateCache};
-use twilight_model::gateway::payload::incoming::VoiceStateUpdate;
-use twilight_model::voice::VoiceState;
+use randy_model::gateway::payload::incoming::VoiceStateUpdate;
+use randy_model::voice::VoiceState;
 
 impl<CacheModels: CacheableModels> InMemoryCache<CacheModels> {
     pub(crate) fn cache_voice_states(&self, voice_states: impl IntoIterator<Item = VoiceState>) {
@@ -90,7 +90,7 @@ impl<CacheModels: CacheableModels> UpdateCache<CacheModels> for VoiceStateUpdate
 mod tests {
     use crate::{model::CachedVoiceState, test, DefaultInMemoryCache, ResourceType};
     use std::str::FromStr;
-    use twilight_model::{
+    use randy_model::{
         gateway::payload::incoming::VoiceStateUpdate,
         guild::{Member, MemberFlags},
         id::{

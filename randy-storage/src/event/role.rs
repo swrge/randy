@@ -1,5 +1,5 @@
 use crate::{config::ResourceType, CacheableModels, InMemoryCache, UpdateCache};
-use twilight_model::{
+use randy_model::{
     gateway::payload::incoming::{RoleCreate, RoleDelete, RoleUpdate},
     guild::Role,
     id::{
@@ -77,7 +77,7 @@ impl<CacheModels: CacheableModels> UpdateCache<CacheModels> for RoleUpdate {
 #[cfg(test)]
 mod tests {
     use crate::{test, DefaultInMemoryCache};
-    use twilight_model::{gateway::payload::incoming::RoleCreate, id::Id};
+    use randy_model::{gateway::payload::incoming::RoleCreate, id::Id};
 
     #[test]
     fn insert_role_on_event() {

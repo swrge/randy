@@ -1,7 +1,7 @@
 use crate::{config::ResourceType, CacheableGuild, CacheableModels, InMemoryCache, UpdateCache};
 use dashmap::DashMap;
 use std::{collections::HashSet, hash::Hash, mem};
-use twilight_model::{
+use randy_model::{
     gateway::payload::incoming::{GuildCreate, GuildDelete, GuildUpdate},
     guild::Guild,
     id::{marker::GuildMarker, Id},
@@ -175,7 +175,7 @@ impl<CacheModels: CacheableModels> UpdateCache<CacheModels> for GuildUpdate {
 mod tests {
     use crate::{test, DefaultInMemoryCache};
     use std::str::FromStr;
-    use twilight_model::{
+    use randy_model::{
         channel::{
             thread::{AutoArchiveDuration, ThreadMember, ThreadMetadata},
             Channel, ChannelType,
@@ -366,7 +366,7 @@ mod tests {
         let guild = test::guild(Id::new(1), None);
 
         cache.update(&GuildCreate::Unavailable(
-            twilight_model::guild::UnavailableGuild {
+            randy_model::guild::UnavailableGuild {
                 id: guild.id,
                 unavailable: true,
             },
@@ -378,7 +378,7 @@ mod tests {
         assert!(cache.unavailable_guilds.get(&guild.id).is_none());
 
         cache.update(&GuildCreate::Unavailable(
-            twilight_model::guild::UnavailableGuild {
+            randy_model::guild::UnavailableGuild {
                 id: guild.id,
                 unavailable: true,
             },

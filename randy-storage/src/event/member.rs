@@ -6,7 +6,7 @@ use crate::{
     traits::{CacheableGuild, CacheableMember},
     CacheableModels, InMemoryCache, UpdateCache,
 };
-use twilight_model::{
+use randy_model::{
     application::interaction::InteractionMember,
     gateway::payload::incoming::{MemberAdd, MemberChunk, MemberRemove, MemberUpdate},
     guild::{Member, PartialMember},
@@ -182,7 +182,7 @@ impl<CacheModels: CacheableModels> UpdateCache<CacheModels> for MemberUpdate {
 mod tests {
     use crate::{test, DefaultInMemoryCache};
     use std::borrow::Cow;
-    use twilight_model::{gateway::payload::incoming::MemberRemove, id::Id};
+    use randy_model::{gateway::payload::incoming::MemberRemove, id::Id};
 
     #[test]
     fn cache_guild_member() {

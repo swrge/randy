@@ -1,5 +1,5 @@
 use serde::Serialize;
-use twilight_model::{
+use randy_model::{
     channel::message::{
         sticker::{StickerFormatType, StickerType},
         Sticker,
@@ -14,7 +14,7 @@ use crate::CacheableSticker;
 
 /// Representation of a cached [`Sticker`].
 ///
-/// [`Sticker`]: twilight_model::channel::message::sticker::Sticker
+/// [`Sticker`]: randy_model::channel::message::sticker::Sticker
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct CachedSticker {
     /// Whether the sticker is available.
@@ -158,7 +158,7 @@ mod tests {
     use serde::Serialize;
     use static_assertions::{assert_fields, assert_impl_all};
     use std::fmt::Debug;
-    use twilight_model::{
+    use randy_model::{
         channel::message::{
             sticker::{StickerFormatType, StickerType},
             Sticker,

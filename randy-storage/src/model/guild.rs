@@ -1,7 +1,7 @@
 use std::slice::Iter;
 
 use serde::Serialize;
-use twilight_model::{
+use randy_model::{
     gateway::payload::incoming::GuildUpdate,
     guild::{
         scheduled_event::GuildScheduledEvent, AfkTimeout, DefaultMessageNotificationLevel,
@@ -19,7 +19,7 @@ use crate::CacheableGuild;
 
 /// Represents a cached [`Guild`].
 ///
-/// [`Guild`]: twilight_model::guild::Guild
+/// [`Guild`]: randy_model::guild::Guild
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct CachedGuild {
     pub(crate) afk_channel_id: Option<Id<ChannelMarker>>,

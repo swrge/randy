@@ -1,5 +1,5 @@
 use crate::{config::ResourceType, CacheableModels, InMemoryCache, UpdateCache};
-use twilight_model::gateway::payload::incoming::{
+use randy_model::gateway::payload::incoming::{
     ThreadCreate, ThreadDelete, ThreadListSync, ThreadUpdate,
 };
 

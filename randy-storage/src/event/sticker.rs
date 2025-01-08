@@ -4,7 +4,7 @@ use crate::{
     config::ResourceType, CacheableModels, CacheableSticker, GuildResource, InMemoryCache,
     UpdateCache,
 };
-use twilight_model::{
+use randy_model::{
     channel::message::Sticker,
     gateway::payload::incoming::GuildStickersUpdate,
     id::{marker::GuildMarker, Id},
@@ -82,7 +82,7 @@ impl<CacheModels: CacheableModels> UpdateCache<CacheModels> for GuildStickersUpd
 #[cfg(test)]
 mod tests {
     use crate::{test, DefaultCacheModels, InMemoryCache};
-    use twilight_model::id::{
+    use randy_model::id::{
         marker::{GuildMarker, StickerMarker},
         Id,
     };

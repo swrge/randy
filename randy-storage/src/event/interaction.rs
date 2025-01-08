@@ -1,6 +1,6 @@
 use crate::{config::ResourceType, CacheableModels, InMemoryCache, UpdateCache};
 use std::borrow::Cow;
-use twilight_model::{
+use randy_model::{
     application::interaction::InteractionData, gateway::payload::incoming::InteractionCreate,
 };
 
@@ -61,7 +61,7 @@ impl<CacheModels: CacheableModels> UpdateCache<CacheModels> for InteractionCreat
 mod tests {
     use crate::DefaultInMemoryCache;
     use std::collections::HashMap;
-    use twilight_model::{
+    use randy_model::{
         application::{
             command::CommandType,
             interaction::{

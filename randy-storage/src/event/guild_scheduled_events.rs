@@ -1,4 +1,4 @@
-use twilight_model::{
+use randy_model::{
     gateway::payload::incoming::{
         GuildScheduledEventCreate, GuildScheduledEventDelete, GuildScheduledEventUpdate,
         GuildScheduledEventUserAdd, GuildScheduledEventUserRemove,
@@ -104,7 +104,7 @@ impl<CacheModels: CacheableModels> UpdateCache<CacheModels> for GuildScheduledEv
 #[cfg(test)]
 mod tests {
     use crate::{test, DefaultInMemoryCache};
-    use twilight_model::{
+    use randy_model::{
         gateway::payload::incoming::{
             GuildScheduledEventCreate, GuildScheduledEventUserAdd, GuildScheduledEventUserRemove,
         },

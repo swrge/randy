@@ -790,7 +790,7 @@ Replace documentation links with intra-doc links ([#524] - [@nickelc]).
 ### Misc.
 
 Use the renamed
-`twilight_model::gateway::payload::identify::IdentityInfo::compress` model
+`randy_model::gateway::payload::identify::IdentityInfo::compress` model
 field ([#624] - [@chamburr]).
 
 ## [0.2.2] - 2020-11-20
