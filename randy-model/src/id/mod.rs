@@ -29,7 +29,7 @@
 //! easily casted in order to fulfill this:
 //!
 //! ```
-//! use twilight_model::id::{
+//! use randy_model::id::{
 //!     marker::{GuildMarker, RoleMarker},
 //!     Id,
 //! };
@@ -98,7 +98,7 @@ impl<T> Id<T> {
     /// # Examples
     ///
     /// ```
-    /// use twilight_model::id::{marker::GenericMarker, Id};
+    /// use randy_model::id::{marker::GenericMarker, Id};
     ///
     /// const ID: Id<GenericMarker> = Id::new(123);
     ///
@@ -136,7 +136,7 @@ impl<T> Id<T> {
     /// # Examples
     ///
     /// ```
-    /// use twilight_model::id::{marker::GenericMarker, Id};
+    /// use randy_model::id::{marker::GenericMarker, Id};
     ///
     /// assert!(Id::<GenericMarker>::new_checked(123).is_some());
     /// assert!(Id::<GenericMarker>::new_checked(0).is_none());
@@ -160,7 +160,7 @@ impl<T> Id<T> {
     /// Create an ID with a value and then confirm its inner value:
     ///
     /// ```
-    /// use twilight_model::id::{marker::ChannelMarker, Id};
+    /// use randy_model::id::{marker::ChannelMarker, Id};
     ///
     /// let channel_id = Id::<ChannelMarker>::new(7);
     ///
@@ -178,7 +178,7 @@ impl<T> Id<T> {
     ///
     /// ```
     /// use std::num::NonZeroU64;
-    /// use twilight_model::id::{marker::ChannelMarker, Id};
+    /// use randy_model::id::{marker::ChannelMarker, Id};
     ///
     /// let channel_id = Id::<ChannelMarker>::new(7);
     ///
@@ -195,7 +195,7 @@ impl<T> Id<T> {
     /// Cast a role ID to a guild ID, useful for the `@everyone` role:
     ///
     /// ```
-    /// use twilight_model::id::{
+    /// use randy_model::id::{
     ///     marker::{GuildMarker, RoleMarker},
     ///     Id,
     /// };

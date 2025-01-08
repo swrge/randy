@@ -69,7 +69,7 @@ pub(crate) mod discriminator {
 /// Display the discriminator value `16` as a string:
 ///
 /// ```
-/// use twilight_model::user::DiscriminatorDisplay;
+/// use randy_model::user::DiscriminatorDisplay;
 ///
 /// let display = DiscriminatorDisplay::new(16);
 /// assert_eq!("0016", display.to_string());
@@ -86,7 +86,7 @@ impl DiscriminatorDisplay {
     /// Display the discriminator value `5` as a string:
     ///
     /// ```
-    /// use twilight_model::user::DiscriminatorDisplay;
+    /// use randy_model::user::DiscriminatorDisplay;
     ///
     /// let display = DiscriminatorDisplay::new(5);
     /// assert_eq!("0005", display.to_string());

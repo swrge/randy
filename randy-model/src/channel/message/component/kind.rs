@@ -86,7 +86,7 @@ impl ComponentType {
     /// Check the [`ActionRow`] variant's name:
     ///
     /// ```
-    /// use twilight_model::channel::message::component::ComponentType;
+    /// use randy_model::channel::message::component::ComponentType;
     ///
     /// assert_eq!("ActionRow", ComponentType::ActionRow.name());
     /// ```

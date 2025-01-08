@@ -173,7 +173,7 @@ impl AuditLogChangeKey {
     /// Check the names of the [`Allow`] and [`BannerHash`] keys:
     ///
     /// ```
-    /// use twilight_model::guild::audit_log::AuditLogChangeKey;
+    /// use randy_model::guild::audit_log::AuditLogChangeKey;
     ///
     /// assert_eq!("allow", AuditLogChangeKey::Allow.name());
     /// assert_eq!("banner_hash", AuditLogChangeKey::BannerHash.name());

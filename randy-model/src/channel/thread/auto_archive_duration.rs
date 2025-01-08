@@ -17,7 +17,7 @@ impl AutoArchiveDuration {
     /// # Examples
     ///
     /// ```
-    /// use twilight_model::channel::thread::AutoArchiveDuration;
+    /// use randy_model::channel::thread::AutoArchiveDuration;
     ///
     /// assert_eq!(60, AutoArchiveDuration::Hour.number());
     /// ```

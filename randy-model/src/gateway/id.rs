@@ -118,7 +118,7 @@ impl ShardId {
     /// shards:
     ///
     /// ```
-    /// use twilight_model::gateway::ShardId;
+    /// use randy_model::gateway::ShardId;
     ///
     /// let id = ShardId::new(13, 24);
     /// ```

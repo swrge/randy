@@ -1238,7 +1238,7 @@ updating Audit Log Change Keys with new variants. Changes were generic
 variants with typed `new` and `old` values - checked against the API -
 which may or may not both always be present, or never.
 
-The `twilight_model::guild::audit_log` module is now entirely documented
+The `randy_model::guild::audit_log` module is now entirely documented
 and tested as well. This has been manually tested by creating as many
 different audit log changes as could be created in the API and then
 deserializing the past 100 entries.
@@ -1352,14 +1352,14 @@ Remove references to `Guild::nsfw`, `Guild::region`, `PartialGuild::nsfw`,
 
 Replace the following usages:
 ```diff
--twilight_model::channel::invite::TargetUserType
-+twilight_model::channel::invite::TargetType
+-randy_model::channel::invite::TargetUserType
++randy_model::channel::invite::TargetType
 
--twilight_model::gateway::payload::update_status::UpdateStatus
-+twilight_model::gateway::payload::update_presence::UpdatePresence
+-randy_model::gateway::payload::update_status::UpdateStatus
++randy_model::gateway::payload::update_presence::UpdatePresence
 
--twilight_model::gateway::payload::update_status::UpdateStatusInfo
-+twilight_model::gateway::payload::update_presence::UpdatePresencePayload
+-randy_model::gateway::payload::update_status::UpdateStatusInfo
++randy_model::gateway::payload::update_presence::UpdatePresencePayload
 ```
 
 ### Additions
@@ -1371,12 +1371,12 @@ Support for Slash Commands has been added. New models are present in the
 
 The following models have been updated:
 
-- `twilight_model::channel::message::MessageFlags`: added `EPHEMERAL`
-- `twilight_model::channel::Message`: added `application_id`, `interaction`
-- `twilight_model::channel::WebhookType`: added `Application`
-- `twilight_model::gateway::Event`: added `InteractionCreate`
-- `twilight_model::gateway::payload::Ready`: added `application`
-- `twilight_model::guild::PartialMember`: added `permissions`
+- `randy_model::channel::message::MessageFlags`: added `EPHEMERAL`
+- `randy_model::channel::Message`: added `application_id`, `interaction`
+- `randy_model::channel::WebhookType`: added `Application`
+- `randy_model::gateway::Event`: added `InteractionCreate`
+- `randy_model::gateway::payload::Ready`: added `application`
+- `randy_model::guild::PartialMember`: added `permissions`
 
 ### Changes
 
@@ -1783,7 +1783,7 @@ The MSRV is now set to Rust 1.48.
 ### Enhancements
 
 The `request::user::get_current_user_guilds::CurrentUserGuild` type has been
-moved to `twilight_model::user::CurrentUserGuild`. A re-export has been left
+moved to `randy_model::user::CurrentUserGuild`. A re-export has been left
 in its place ([#625] - [@AsianIntel]).
 
 ### Misc.

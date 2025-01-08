@@ -7,7 +7,7 @@
 //! ```
 //! # fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! use std::str::FromStr;
-//! use twilight_model::util::Timestamp;
+//! use randy_model::util::Timestamp;
 //!
 //! let timestamp = Timestamp::from_str("2020-02-02T02:02:02.020000+00:00")?;
 //!
@@ -21,7 +21,7 @@
 //! ```
 //! # use std::error::Error;
 //! # fn foo() -> Result<(), Box<dyn Error>> {
-//! use twilight_model::util::Timestamp;
+//! use randy_model::util::Timestamp;
 //!
 //! let timestamp = Timestamp::from_secs(1_580_608_922)?;
 //!
@@ -121,7 +121,7 @@ impl Timestamp {
     ///
     /// ```
     /// use std::str::FromStr;
-    /// use twilight_model::util::Timestamp;
+    /// use randy_model::util::Timestamp;
     ///
     /// // Date and time in UTC with +00:00 offsets are supported:
     /// assert!(Timestamp::parse("2021-01-01T01:01:01.010000+00:00").is_ok());
@@ -159,7 +159,7 @@ impl Timestamp {
     /// ```
     /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use std::str::FromStr;
-    /// use twilight_model::util::Timestamp;
+    /// use randy_model::util::Timestamp;
     ///
     /// let timestamp = Timestamp::from_str("2021-08-10T11:16:37.020000+00:00")?;
     /// assert_eq!(1_628_594_197, timestamp.as_secs());
@@ -179,7 +179,7 @@ impl Timestamp {
     /// ```
     /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
     /// use std::str::FromStr;
-    /// use twilight_model::util::Timestamp;
+    /// use randy_model::util::Timestamp;
     ///
     /// let timestamp = Timestamp::from_str("2021-08-10T11:16:37.123456+00:00")?;
     /// assert_eq!(1_628_594_197_123_456, timestamp.as_micros());
@@ -215,7 +215,7 @@ impl FromStr for Timestamp {
     ///
     /// ```
     /// use std::str::FromStr;
-    /// use twilight_model::util::Timestamp;
+    /// use randy_model::util::Timestamp;
     ///
     /// assert!(Timestamp::from_str("2021-01-01T01:01:01.010000+00:00").is_ok());
     /// assert!(Timestamp::from_str("2021-01-01T01:01:01+00:00").is_ok());

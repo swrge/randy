@@ -14,7 +14,7 @@ use std::fmt::{Formatter, Result as FmtResult};
 /// Activity buttons with a URL deserialize and serialize as a struct:
 ///
 /// ```
-/// use twilight_model::gateway::presence::activity_button::{ActivityButton, ActivityButtonLink};
+/// use randy_model::gateway::presence::activity_button::{ActivityButton, ActivityButtonLink};
 ///
 /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// const JSON: &str = r#"{
@@ -38,7 +38,7 @@ use std::fmt::{Formatter, Result as FmtResult};
 /// vice versa.
 ///
 /// ```
-/// use twilight_model::gateway::presence::activity_button::{ActivityButton, ActivityButtonText};
+/// use randy_model::gateway::presence::activity_button::{ActivityButton, ActivityButtonText};
 ///
 /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// assert_eq!(
@@ -199,7 +199,7 @@ pub struct ActivityButtonLink {
 /// simply the string "test" and vice versa.
 ///
 /// ```ignore
-/// use twilight_model::gateway::presence::activity_button::ActivityButtonText;
+/// use randy_model::gateway::presence::activity_button::ActivityButtonText;
 ///
 /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// assert_eq!(

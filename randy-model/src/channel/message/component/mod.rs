@@ -41,7 +41,7 @@ use std::fmt::{Formatter, Result as FmtResult};
 /// ## Button
 ///
 /// ```
-/// use twilight_model::channel::message::component::{ActionRow, Button, ButtonStyle, Component};
+/// use randy_model::channel::message::component::{ActionRow, Button, ButtonStyle, Component};
 ///
 /// Component::ActionRow(ActionRow {
 ///     components: Vec::from([Component::Button(Button {
@@ -59,7 +59,7 @@ use std::fmt::{Formatter, Result as FmtResult};
 /// ## Select menu
 ///
 /// ```
-/// use twilight_model::{
+/// use randy_model::{
 ///     channel::message::{
 ///         component::{ActionRow, Component, SelectMenu, SelectMenuOption, SelectMenuType},
 ///         EmojiReactionType,
@@ -133,7 +133,7 @@ impl Component {
     /// Type of component that this is.
     ///
     /// ```
-    /// use twilight_model::channel::message::component::{
+    /// use randy_model::channel::message::component::{
     ///     Button, ButtonStyle, Component, ComponentType,
     /// };
     ///

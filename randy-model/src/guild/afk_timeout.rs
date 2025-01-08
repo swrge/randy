@@ -8,7 +8,7 @@ use std::time::Duration;
 /// # Examples
 ///
 /// ```
-/// use twilight_model::guild::AfkTimeout;
+/// use randy_model::guild::AfkTimeout;
 ///
 /// assert_eq!(300, AfkTimeout::FIVE_MINUTES);
 /// ```
@@ -39,7 +39,7 @@ impl AfkTimeout {
     /// # Examples
     ///
     /// ```
-    /// use twilight_model::guild::AfkTimeout;
+    /// use randy_model::guild::AfkTimeout;
     ///
     /// assert_eq!(60, AfkTimeout::ONE_MINUTE.get());
     /// ```

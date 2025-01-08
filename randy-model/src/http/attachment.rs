@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 /// description for screen readers:
 ///
 /// ```
-/// use twilight_model::http::attachment::Attachment;
+/// use randy_model::http::attachment::Attachment;
 ///
 /// let filename = "twilight_sparkle.json".to_owned();
 /// let file_content = br#"{
@@ -54,7 +54,7 @@ impl Attachment {
     /// Create an attachment with a grocery list named "grocerylist.txt":
     ///
     /// ```
-    /// use twilight_model::http::attachment::Attachment;
+    /// use randy_model::http::attachment::Attachment;
     ///
     /// let filename = "grocerylist.txt".to_owned();
     /// let file_content = b"Apples\nGrapes\nLemonade".to_vec();

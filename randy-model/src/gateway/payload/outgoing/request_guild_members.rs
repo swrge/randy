@@ -144,7 +144,7 @@ impl RequestGuildMembersBuilder {
     /// their presences:
     ///
     /// ```
-    /// use twilight_model::{gateway::payload::outgoing::RequestGuildMembers, id::Id};
+    /// use randy_model::{gateway::payload::outgoing::RequestGuildMembers, id::Id};
     ///
     /// let request = RequestGuildMembers::builder(Id::new(1))
     ///     .presences(true)
@@ -181,7 +181,7 @@ impl RequestGuildMembersBuilder {
     /// Request a member within a guild and specify a nonce of "test":
     ///
     /// ```
-    /// use twilight_model::{
+    /// use randy_model::{
     ///     gateway::payload::outgoing::request_guild_members::{
     ///         RequestGuildMemberId, RequestGuildMembers,
     ///     },
@@ -222,7 +222,7 @@ impl RequestGuildMembersBuilder {
     /// Request two members within one guild and specify a nonce of "test":
     ///
     /// ```
-    /// use twilight_model::{
+    /// use randy_model::{
     ///     gateway::payload::outgoing::request_guild_members::{
     ///         RequestGuildMemberId,
     ///         RequestGuildMembers,

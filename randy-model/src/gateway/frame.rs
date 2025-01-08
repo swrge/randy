@@ -46,7 +46,7 @@ impl<'a> CloseFrame<'a> {
     /// # Examples
     ///
     /// ```
-    /// use twilight_model::gateway::CloseFrame;
+    /// use randy_model::gateway::CloseFrame;
     ///
     /// let frame = CloseFrame::new(1000, "reason here");
     ///

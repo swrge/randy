@@ -57,7 +57,7 @@ impl Ord for Role {
     /// Compare the position of two roles:
     ///
     /// ```
-    /// # use twilight_model::{guild::{Permissions, Role, RoleFlags}, id::Id};
+    /// # use randy_model::{guild::{Permissions, Role, RoleFlags}, id::Id};
     /// # use std::cmp::Ordering;
     /// let role_a = Role {
     ///     id: Id::new(123),
@@ -98,7 +98,7 @@ impl Ord for Role {
     /// Compare the position of two roles with the same position:
     ///
     /// ```
-    /// # use twilight_model::{guild::{Permissions, Role, RoleFlags}, id::Id};
+    /// # use randy_model::{guild::{Permissions, Role, RoleFlags}, id::Id};
     /// # use std::cmp::Ordering;
     /// let role_a = Role {
     ///     id: Id::new(123),

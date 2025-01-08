@@ -154,7 +154,7 @@ impl ImageHash {
     ///
     /// ```
     /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// use twilight_model::util::ImageHash;
+    /// use randy_model::util::ImageHash;
     ///
     /// let input = "1acefe340fafb4ecefae407f3abdb323";
     /// let parsed = ImageHash::parse(input.as_bytes())?;
@@ -180,7 +180,7 @@ impl ImageHash {
     ///
     /// ```
     /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// use twilight_model::util::ImageHash;
+    /// use randy_model::util::ImageHash;
     ///
     /// let input = "b2a6536641da91a0b59bd66557c56c36";
     /// let parsed = ImageHash::parse(input.as_bytes())?;
@@ -194,7 +194,7 @@ impl ImageHash {
     ///
     /// ```
     /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// use twilight_model::util::ImageHash;
+    /// use randy_model::util::ImageHash;
     ///
     /// let input = "a_b2a6536641da91a0b59bd66557c56c36";
     /// let parsed = ImageHash::parse(input.as_bytes())?;
@@ -268,7 +268,7 @@ impl ImageHash {
     ///
     /// ```
     /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// use twilight_model::util::ImageHash;
+    /// use randy_model::util::ImageHash;
     ///
     /// let input = b"f49d812ca33c1cbbeec96b9f64487c7c";
     /// let hash = ImageHash::parse(input)?;
@@ -297,7 +297,7 @@ impl ImageHash {
     ///
     /// ```
     /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// use twilight_model::util::ImageHash;
+    /// use randy_model::util::ImageHash;
     ///
     /// let animated_input = "a_5145104ad8e8c9e765883813e4abbcc8";
     /// let animated_hash = ImageHash::parse(animated_input.as_bytes())?;
@@ -320,7 +320,7 @@ impl ImageHash {
     ///
     /// ```
     /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// use twilight_model::util::ImageHash;
+    /// use randy_model::util::ImageHash;
     ///
     /// let input = b"1d9811c4cd3782148915c522b02878fc";
     /// let hash = ImageHash::parse(input)?;
@@ -415,7 +415,7 @@ impl Display for ImageHash {
     ///
     /// ```
     /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// use twilight_model::util::ImageHash;
+    /// use randy_model::util::ImageHash;
     ///
     /// let input = "a_b0e09d6697b11e9c79a89e5e3756ddee";
     /// let parsed = ImageHash::parse(input.as_bytes())?;
@@ -525,7 +525,7 @@ impl TryFrom<&str> for ImageHash {
 ///
 /// ```
 /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
-/// use twilight_model::util::ImageHash;
+/// use randy_model::util::ImageHash;
 ///
 /// let input = b"1d9811c4cd3782148915c522b02878fc";
 /// let hash = ImageHash::parse(input)?;
