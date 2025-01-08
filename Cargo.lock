@@ -72,6 +72,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "55cc3b69f167a1ef2e161439aa98aed94e6028e5f9a59be9a6ffb47aef1651f9"
 
 [[package]]
+name = "anyhow"
+version = "1.0.95"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "34ac096ce696dc2fcabef30516bb13c0a68a11d30131d3df6f04711467681b04"
+
+[[package]]
 name = "async-trait"
 version = "0.1.85"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -344,6 +350,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
 
 [[package]]
+name = "crc32fast"
+version = "1.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a97769d94ddab943e4510d138150169a2758b5ef3eb191a9ee688de3e23ef7b3"
+dependencies = [
+ "cfg-if",
+]
+
+[[package]]
 name = "criterion"
 version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -474,6 +489,18 @@ name = "fastrand"
 version = "2.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "37909eebbb50d72f9059c3b6d82c0463f2ff062c9e95845c43a6c9c0355411be"
+
+[[package]]
+name = "flate2"
+version = "1.0.35"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c936bfdafb507ebbf50b8074c54fa31c5be9a1e7e5f467dd659697041407d07c"
+dependencies = [
+ "crc32fast",
+ "libz-ng-sys",
+ "libz-sys",
+ "miniz_oxide",
+]
 
 [[package]]
 name = "float-cmp"
@@ -1096,6 +1123,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "libz-ng-sys"
+version = "1.1.21"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7cee1488e961a80d172564fd6fcda11d8a4ac6672c06fe008e9213fa60520c2b"
+dependencies = [
+ "cmake",
+ "libc",
+]
+
+[[package]]
+name = "libz-sys"
+version = "1.1.21"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "df9b68e50e6e0b26f672573834882eb57759f6db9b3be2ea3c35c91188bb4eaa"
+dependencies = [
+ "cc",
+ "pkg-config",
+ "vcpkg",
+]
+
+[[package]]
 name = "linked-hash-map"
 version = "0.5.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1415,6 +1463,31 @@ dependencies = [
 [[package]]
 name = "randy-gateway"
 version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "bitflags",
+ "fastrand",
+ "flate2",
+ "futures-core",
+ "futures-sink",
+ "randy-model 0.1.0 (git+https://github.com/swrge/randy-model)",
+ "randy-rest 0.1.0 (git+https://github.com/swrge/randy-rest)",
+ "serde",
+ "serde_json",
+ "serde_test",
+ "simd-json",
+ "static_assertions",
+ "tokio",
+ "tokio-stream",
+ "tokio-websockets",
+ "tracing",
+ "tracing-subscriber",
+ "twilight-gateway-queue",
+]
+
+[[package]]
+name = "randy-gateway"
+version = "0.1.0"
 source = "git+https://github.com/swrge/randy-gateway#fd1f9abc3b77330dbec7795fb2b2b380655f57b5"
 dependencies = [
  "bitflags",
@@ -1495,12 +1568,32 @@ dependencies = [
 ]
 
 [[package]]
+name = "randy-rest"
+version = "0.1.0"
+source = "git+https://github.com/swrge/randy-rest#b705b3367c397b44bb9afae9ec58d2b7411fce7f"
+dependencies = [
+ "fastrand",
+ "http",
+ "http-body-util",
+ "hyper",
+ "hyper-util",
+ "percent-encoding",
+ "randy-model 0.1.0 (git+https://github.com/swrge/randy-model)",
+ "randy-ratelimiting",
+ "randy-validate",
+ "serde",
+ "serde_json",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "randy-storage"
 version = "0.1.0"
 dependencies = [
  "bitflags",
  "dashmap",
- "randy-gateway",
+ "randy-gateway 0.1.0 (git+https://github.com/swrge/randy-gateway)",
  "randy-model 0.1.0 (git+https://github.com/swrge/randy-model)",
  "randy-tools",
  "serde",
@@ -2095,6 +2188,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "tokio-stream"
+version = "0.1.17"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "eca58d7bba4a75707817a2c44174253f9236b2d5fbd055602e9d5c07c139a047"
+dependencies = [
+ "futures-core",
+ "pin-project-lite",
+ "tokio",
+]
+
+[[package]]
 name = "tokio-util"
 version = "0.7.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2113,6 +2217,7 @@ version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bad3d80d26e290444b67405d54661959107d3aadc6ecc35d717a626b5e208c51"
 dependencies = [
+ "aws-lc-rs",
  "base64",
  "bytes",
  "fastrand",
@@ -2120,13 +2225,18 @@ dependencies = [
  "futures-sink",
  "http",
  "httparse",
+ "openssl",
+ "ring",
  "rustls-native-certs",
  "rustls-pki-types",
+ "rustls-platform-verifier",
  "sha1_smol",
  "simdutf8",
  "tokio",
+ "tokio-native-tls",
  "tokio-rustls",
  "tokio-util",
+ "webpki-roots",
 ]
 
 [[package]]
