@@ -24,7 +24,7 @@ use std::fmt::{Debug, Display, Formatter, Result as FmtResult};
 /// [gateway close event]: Self::GatewayClose
 #[derive(Clone, Debug, PartialEq)]
 pub enum Event {
-    /// Message was blocked by AutoMod according to a rule.
+    /// Message was blocked by `AutoMod` according to a rule.
     AutoModerationActionExecution(AutoModerationActionExecution),
     /// Sent when an auto moderation rule is created.
     AutoModerationRuleCreate(AutoModerationRuleCreate),

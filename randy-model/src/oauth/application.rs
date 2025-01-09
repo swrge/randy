@@ -28,7 +28,7 @@ pub struct Application {
     /// When `false`, only the app owner can add the app to guilds
     pub bot_public: bool,
     /// When `true`, the app's bot will only join upon completion of the
-    /// full OAuth2 code grant flow
+    /// full `OAuth2` code grant flow
     pub bot_require_code_grant: bool,
     /// Default rich presence invite cover image.
     #[serde(skip_serializing_if = "Option::is_none")]

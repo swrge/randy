@@ -36,7 +36,7 @@ pub struct GuildIntegration {
     pub revoked: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub role_id: Option<Id<RoleMarker>>,
-    /// An array of [OAuth2 scopes] which the application has been authorized for.
+    /// An array of [`OAuth2` scopes] which the application has been authorized for.
     ///
     /// [OAuth2 scopes]: crate::oauth::scope
     #[serde(skip_serializing_if = "Option::is_none")]

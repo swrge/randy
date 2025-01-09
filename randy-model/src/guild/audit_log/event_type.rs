@@ -220,11 +220,11 @@ pub enum AuditLogEventType {
     ///
     /// [`AutoModerationRule`]: crate::guild::auto_moderation::AutoModerationRule
     AutoModerationRuleDelete,
-    /// Message has been blocked by AutoMod.
+    /// Message has been blocked by `AutoMod`.
     AutoModerationBlockMessage,
-    /// Message has been flagged by AutoMod.
+    /// Message has been flagged by `AutoMod`.
     AutoModerationFlagToChannel,
-    /// A member has been timed out by AutoMod.
+    /// A member has been timed out by `AutoMod`.
     AutoModerationUserCommunicationDisabled,
     /// Creator monetization request was created.
     CreatorMonetizationRequestCreated,

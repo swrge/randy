@@ -19,7 +19,7 @@ pub struct CurrentUser {
     pub avatar: Option<ImageHash>,
     /// Hash of the user's banner image.
     pub banner: Option<ImageHash>,
-    /// Whether the user belongs to an OAuth2 application.
+    /// Whether the user belongs to an `OAuth2` application.
     #[serde(default)]
     pub bot: bool,
     /// Discriminator used to differentiate people with the same username.

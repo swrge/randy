@@ -16,7 +16,7 @@ pub enum GuildIntegrationType {
     Discord,
     /// Integration is a Twitch connection.
     Twitch,
-    /// Integration is a YouTube connection.
+    /// Integration is a `YouTube` connection.
     YouTube,
     /// Integration is a Guild Subscription.
     GuildSubscription,
