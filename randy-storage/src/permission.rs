@@ -40,11 +40,6 @@ use crate::{
     traits::{CacheableChannel, CacheableGuild, CacheableMember, CacheableRole},
     CacheableModels,
 };
-use std::{
-    error::Error,
-    fmt::{Display, Formatter, Result as FmtResult},
-    time::{Duration, SystemTime},
-};
 use randy_model::{
     channel::{permission_overwrite::PermissionOverwrite, ChannelType},
     guild::Permissions,
@@ -53,7 +48,12 @@ use randy_model::{
         Id,
     },
 };
-use twilight_util::permission_calculator::PermissionCalculator;
+use randy_tools::permission_calculator::PermissionCalculator;
+use std::{
+    error::Error,
+    fmt::{Display, Formatter, Result as FmtResult},
+    time::{Duration, SystemTime},
+};
 
 /// Permissions a member is allowed to have when their
 /// [communication has been disabled].
@@ -649,13 +649,6 @@ mod tests {
         ChannelError, ChannelErrorType, InMemoryCachePermissions, RootError, RootErrorType,
     };
     use crate::{test, DefaultCacheModels, DefaultInMemoryCache};
-    use static_assertions::{assert_fields, assert_impl_all};
-    use std::{
-        error::Error,
-        fmt::Debug,
-        str::FromStr,
-        time::{Duration, SystemTime},
-    };
     use randy_model::{
         channel::{
             permission_overwrite::{PermissionOverwrite, PermissionOverwriteType},
@@ -673,6 +666,13 @@ mod tests {
             Id,
         },
         util::Timestamp,
+    };
+    use static_assertions::{assert_fields, assert_impl_all};
+    use std::{
+        error::Error,
+        fmt::Debug,
+        str::FromStr,
+        time::{Duration, SystemTime},
     };
 
     assert_fields!(ChannelErrorType::ChannelUnavailable: channel_id);
