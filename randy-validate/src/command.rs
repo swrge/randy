@@ -1,13 +1,13 @@
 //! Constants, error types, and functions for validating [`Command`]s.
 
+use randy_model::application::command::{
+    Command, CommandOption, CommandOptionChoice, CommandOptionChoiceValue, CommandOptionType,
+    CommandType,
+};
 use std::{
     collections::{HashMap, HashSet},
     error::Error,
     fmt::{Display, Formatter, Result as FmtResult},
-};
-use twilight_model::application::command::{
-    Command, CommandOption, CommandOptionChoice, CommandOptionChoiceValue, CommandOptionType,
-    CommandType,
 };
 
 /// Maximum number of choices an option can have.
@@ -733,7 +733,7 @@ pub const fn guild_permissions(count: usize) -> Result<(), CommandValidationErro
 #[cfg(test)]
 mod tests {
     use super::*;
-    use twilight_model::id::Id;
+    use randy_model::id::Id;
 
     #[test]
     fn choice_name_limit() {

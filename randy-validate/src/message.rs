@@ -1,20 +1,20 @@
 //! Constants, error types, and functions for validating [`Message`] fields.
 //!
-//! [`Message`]: twilight_model::channel::Message
+//! [`Message`]: randy_model::channel::Message
 
 use crate::{
     component::{ComponentValidationErrorType, COMPONENT_COUNT},
     embed::{chars as embed_chars, EmbedValidationErrorType, EMBED_TOTAL_LENGTH},
     request::ValidationError,
 };
-use std::{
-    error::Error,
-    fmt::{Display, Formatter, Result as FmtResult},
-};
-use twilight_model::{
+use randy_model::{
     channel::message::{Component, Embed},
     http::attachment::Attachment,
     id::{marker::StickerMarker, Id},
+};
+use std::{
+    error::Error,
+    fmt::{Display, Formatter, Result as FmtResult},
 };
 
 /// Maximum length of an attachment's description.

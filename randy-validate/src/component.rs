@@ -1,12 +1,12 @@
 //! Constants, error types, and functions for validating [`Component`]s.
 
+use randy_model::channel::message::component::{
+    ActionRow, Button, ButtonStyle, Component, ComponentType, SelectMenu, SelectMenuOption,
+    SelectMenuType, TextInput,
+};
 use std::{
     error::Error,
     fmt::{Debug, Display, Formatter, Result as FmtResult},
-};
-use twilight_model::channel::message::component::{
-    ActionRow, Button, ButtonStyle, Component, ComponentType, SelectMenu, SelectMenuOption,
-    SelectMenuType, TextInput,
 };
 
 /// Maximum number of [`Component`]s allowed inside an [`ActionRow`].
@@ -795,7 +795,7 @@ pub fn text_input(text_input: &TextInput) -> Result<(), ComponentValidationError
 /// components is too many for an [`ActionRow`].
 ///
 /// [`ActionRowComponentCount`]: ComponentValidationErrorType::ActionRowComponentCount
-/// [`ActionRow`]: twilight_model::application::component::ActionRow
+/// [`ActionRow`]: randy_model::application::component::ActionRow
 const fn component_action_row_components(
     components: &[Component],
 ) -> Result<(), ComponentValidationError> {
@@ -857,7 +857,7 @@ fn component_custom_id(custom_id: impl AsRef<str>) -> Result<(), ComponentValida
 /// Returns an error of type [`SelectOptionDescriptionLength`] if the provided
 /// select option description is too long.
 ///
-/// [`SelectMenuOption::description`]: twilight_model::application::component::select_menu::SelectMenuOption::description
+/// [`SelectMenuOption::description`]: randy_model::application::component::select_menu::SelectMenuOption::description
 /// [`SelectOptionDescriptionLength`]: ComponentValidationErrorType::SelectOptionDescriptionLength
 fn component_option_description(
     description: impl AsRef<str>,
@@ -946,7 +946,7 @@ const fn component_select_default_values_count(
 /// [the minimum][`SELECT_MAXIMUM_VALUES_REQUIREMENT`] or larger than
 /// [the maximum][`SELECT_MAXIMUM_VALUES_LIMIT`].
 ///
-/// [`SelectMenu::max_values`]: twilight_model::application::component::select_menu::SelectMenu::max_values
+/// [`SelectMenu::max_values`]: randy_model::application::component::select_menu::SelectMenu::max_values
 /// [`SelectMaximumValuesCount`]: ComponentValidationErrorType::SelectMaximumValuesCount
 const fn component_select_max_values(count: usize) -> Result<(), ComponentValidationError> {
     if count > SELECT_MAXIMUM_VALUES_LIMIT {
@@ -972,7 +972,7 @@ const fn component_select_max_values(count: usize) -> Result<(), ComponentValida
 /// of values that must be chosen is larger than
 /// [the maximum][`SELECT_MINIMUM_VALUES_LIMIT`].
 ///
-/// [`SelectMenu::min_values`]: twilight_model::application::component::select_menu::SelectMenu::min_values
+/// [`SelectMenu::min_values`]: randy_model::application::component::select_menu::SelectMenu::min_values
 /// [`SelectMinimumValuesCount`]: ComponentValidationErrorType::SelectMinimumValuesCount
 const fn component_select_min_values(count: usize) -> Result<(), ComponentValidationError> {
     if count > SELECT_MINIMUM_VALUES_LIMIT {
@@ -991,7 +991,7 @@ const fn component_select_min_values(count: usize) -> Result<(), ComponentValida
 /// Returns an error of type [`SelectOptionLabelLength`] if the provided select
 /// option label is too long.
 ///
-/// [`SelectMenuOption::label`]: twilight_model::application::component::select_menu::SelectMenuOption::label
+/// [`SelectMenuOption::label`]: randy_model::application::component::select_menu::SelectMenuOption::label
 /// [`SelectOptionLabelLength`]: ComponentValidationErrorType::SelectOptionLabelLength
 fn component_select_option_label(label: impl AsRef<str>) -> Result<(), ComponentValidationError> {
     let chars = label.as_ref().chars().count();
@@ -1012,7 +1012,7 @@ fn component_select_option_label(label: impl AsRef<str>) -> Result<(), Component
 /// Returns an error of type [`SelectOptionValueLength`] if the provided select
 /// option value is too long.
 ///
-/// [`SelectMenuOption::value`]: twilight_model::application::component::select_menu::SelectMenuOption::value
+/// [`SelectMenuOption::value`]: randy_model::application::component::select_menu::SelectMenuOption::value
 /// [`SelectOptionValueLength`]: ComponentValidationErrorType::SelectOptionValueLength
 fn component_select_option_value(value: impl AsRef<str>) -> Result<(), ComponentValidationError> {
     let chars = value.as_ref().chars().count();
@@ -1036,9 +1036,9 @@ fn component_select_option_value(value: impl AsRef<str>) -> Result<(), Component
 /// Returns an error of type [`SelectOptionCount`] if the provided list of
 /// [`SelectMenuOption`]s is too many for a [`SelectMenu`].
 ///
-/// [`SelectMenu::options`]: twilight_model::application::component::select_menu::SelectMenu::options
-/// [`SelectMenuOption`]: twilight_model::application::component::select_menu::SelectMenuOption
-/// [`SelectMenu`]: twilight_model::application::component::select_menu::SelectMenu
+/// [`SelectMenu::options`]: randy_model::application::component::select_menu::SelectMenu::options
+/// [`SelectMenuOption`]: randy_model::application::component::select_menu::SelectMenuOption
+/// [`SelectMenu`]: randy_model::application::component::select_menu::SelectMenu
 /// [`SelectOptionCount`]: ComponentValidationErrorType::SelectOptionCount
 const fn component_select_options(
     options: &[SelectMenuOption],
@@ -1061,7 +1061,7 @@ const fn component_select_options(
 /// Returns an error of type [`SelectPlaceholderLength`] if the provided select
 /// placeholder is too long.
 ///
-/// [`SelectMenu::placeholder`]: twilight_model::application::component::select_menu::SelectMenu::placeholder
+/// [`SelectMenu::placeholder`]: randy_model::application::component::select_menu::SelectMenu::placeholder
 /// [`SelectPlaceholderLength`]: ComponentValidationErrorType::SelectPlaceHolderLength
 fn component_select_placeholder(
     placeholder: impl AsRef<str>,
@@ -1086,7 +1086,7 @@ fn component_select_placeholder(
 /// Returns an error of type [`TextInputLabelLength`] if the provided
 /// label is too long.
 ///
-/// [`TextInput::label`]: twilight_model::application::component::text_input::TextInput::label
+/// [`TextInput::label`]: randy_model::application::component::text_input::TextInput::label
 /// [`TextInputLabelLength`]: ComponentValidationErrorType::TextInputLabelLength
 fn component_text_input_label(label: impl AsRef<str>) -> Result<(), ComponentValidationError> {
     let len = label.as_ref().len();
@@ -1106,7 +1106,7 @@ fn component_text_input_label(label: impl AsRef<str>) -> Result<(), ComponentVal
 ///
 /// Returns an error of type [`TextInputMaxLength`] if the length is invalid.
 ///
-/// [`TextInput::max_length`]: twilight_model::application::component::text_input::TextInput::max_length
+/// [`TextInput::max_length`]: randy_model::application::component::text_input::TextInput::max_length
 /// [`TextInputMaxLength`]: ComponentValidationErrorType::TextInputMaxLength
 const fn component_text_input_max(len: u16) -> Result<(), ComponentValidationError> {
     let len = len as usize;
@@ -1126,7 +1126,7 @@ const fn component_text_input_max(len: u16) -> Result<(), ComponentValidationErr
 ///
 /// Returns an error of type [`TextInputMinLength`] if the length is invalid.
 ///
-/// [`TextInput::min_length`]: twilight_model::application::component::text_input::TextInput::min_length
+/// [`TextInput::min_length`]: randy_model::application::component::text_input::TextInput::min_length
 /// [`TextInputMinLength`]: ComponentValidationErrorType::TextInputMinLength
 const fn component_text_input_min(len: u16) -> Result<(), ComponentValidationError> {
     let len = len as usize;
@@ -1149,7 +1149,7 @@ const fn component_text_input_min(len: u16) -> Result<(), ComponentValidationErr
 /// Returns an error of type [`TextInputPlaceholderLength`] if the provided
 /// placeholder is too long.
 ///
-/// [`TextInput::placeholder`]: twilight_model::application::component::text_input::TextInput::placeholder
+/// [`TextInput::placeholder`]: randy_model::application::component::text_input::TextInput::placeholder
 /// [`TextInputPlaceholderLength`]: ComponentValidationErrorType::TextInputPlaceholderLength
 fn component_text_input_placeholder(
     placeholder: impl AsRef<str>,
@@ -1171,7 +1171,7 @@ fn component_text_input_placeholder(
 ///
 /// Returns an error of type [`TextInputValueLength`] if the length is invalid.
 ///
-/// [`TextInput::value_length`]: twilight_model::application::component::text_input::TextInput::value
+/// [`TextInput::value_length`]: randy_model::application::component::text_input::TextInput::value
 /// [`TextInputValueLength`]: ComponentValidationErrorType::TextInputValueLength
 fn component_text_input_value(value: impl AsRef<str>) -> Result<(), ComponentValidationError> {
     let chars = value.as_ref().chars().count();
@@ -1189,8 +1189,8 @@ fn component_text_input_value(value: impl AsRef<str>) -> Result<(), ComponentVal
 #[cfg(test)]
 mod tests {
     use super::*;
+    use randy_model::channel::message::EmojiReactionType;
     use static_assertions::{assert_fields, assert_impl_all};
-    use twilight_model::channel::message::EmojiReactionType;
 
     assert_fields!(ComponentValidationErrorType::ActionRowComponentCount: count);
     assert_fields!(ComponentValidationErrorType::ComponentCount: count);

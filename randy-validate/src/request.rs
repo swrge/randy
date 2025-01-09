@@ -2,14 +2,14 @@
 //!
 //! These functions are generally not related to a specific Discord model.
 
+use randy_model::id::marker::{ChannelMarker, RoleMarker};
+use randy_model::id::Id;
+use randy_model::util::Timestamp;
 use std::{
     error::Error,
     fmt::{Display, Formatter, Result as FmtResult},
     time::{SystemTime, UNIX_EPOCH},
 };
-use twilight_model::id::marker::{ChannelMarker, RoleMarker};
-use twilight_model::id::Id;
-use twilight_model::util::Timestamp;
 
 /// The maximum audit log reason length in UTF-16 codepoints.
 pub const AUDIT_REASON_MAX: usize = 512;

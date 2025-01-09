@@ -1,10 +1,10 @@
 //! Constants, error types, and functions for validating [`Embed`]s.
 
+use randy_model::channel::message::Embed;
 use std::{
     error::Error,
     fmt::{Display, Formatter, Result as FmtResult},
 };
-use twilight_model::channel::message::Embed;
 
 /// The maximum embed author name length in codepoints.
 pub const AUTHOR_NAME_LENGTH: usize = 256;
@@ -355,12 +355,12 @@ pub fn chars(embed: &Embed) -> usize {
 #[cfg(test)]
 mod tests {
     use super::{EmbedValidationError, EmbedValidationErrorType};
-    use static_assertions::assert_impl_all;
-    use std::fmt::Debug;
-    use twilight_model::channel::message::{
+    use randy_model::channel::message::{
         embed::{EmbedAuthor, EmbedField, EmbedFooter},
         Embed,
     };
+    use static_assertions::assert_impl_all;
+    use std::fmt::Debug;
 
     assert_impl_all!(EmbedValidationErrorType: Debug, Send, Sync);
     assert_impl_all!(EmbedValidationError: Debug, Send, Sync);

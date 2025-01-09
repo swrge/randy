@@ -1,10 +1,10 @@
 //! Constants, error types, and functions for validating channel fields.
 
+use randy_model::channel::ChannelType;
 use std::{
     error::Error,
     fmt::{Display, Formatter, Result as FmtResult},
 };
-use twilight_model::channel::ChannelType;
 
 /// Minimum bitrate of a voice channel.
 pub const CHANNEL_BITRATE_MIN: u32 = 8000;
