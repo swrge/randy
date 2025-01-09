@@ -1,6 +1,6 @@
 use criterion::{criterion_group, criterion_main, Criterion};
 use http::header::{HeaderMap, HeaderName as HttpHeaderName, HeaderValue};
-use twilight_http_ratelimiting::headers::RatelimitHeaders;
+use randy_ratelimiting::headers::RatelimitHeaders;
 
 fn global_header_iter(map: &HeaderMap) {
     let iter = map.iter().map(|(k, v)| (k.as_str(), v.as_bytes()));
