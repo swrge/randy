@@ -1,12 +1,20 @@
 [workspace]
 resolver = "2"
 members = [
-    "randy-storage","randy-rest", "randy-model", "randy-gateway", "randy-tools", "randy-validate", "randy-ratelimiting"
+    # core-deps
+    "randy-storage",
+    "randy-rest",
+    "randy-model",
+    "randy-gateway",
+    "randy-tools",
+    "randy-validate",
+    "randy-ratelimiting"
 ]
 
 [workspace.package]
 name = "randy"
-authors = ["swrge"]
+description = "randombot's second coming"
+authors = ["swrge", "Twilight Contributors"]
 edition = "2021"
 rust-version = "1.84.0"
 license = "ISC"

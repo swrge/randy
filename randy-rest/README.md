@@ -1,13 +1,9 @@
 # twilight-http
 
-[![codecov badge][]][codecov link] [![discord badge][]][discord link] [![github badge][]][github link] [![license badge][]][license link] ![rust badge]
+[![codecov badge][]][codecov link] [![github badge][]][github link] [![license badge][]][license link] ![rust badge]
 
-HTTP support for the twilight ecosystem.
+HTTP support for randy. Do not use unless you know what you're doing.
 
-## Examples
-
-There are a few usage examples located in the [root of the `twilight`
-repository][github examples link].
 
 ## Features
 
@@ -131,8 +127,6 @@ DNS resolver on the application level.
 [`webpki-roots`]: https://crates.io/crates/webpki-roots
 [codecov badge]: https://img.shields.io/codecov/c/gh/twilight-rs/twilight?logo=codecov&style=for-the-badge&token=E9ERLJL0L2
 [codecov link]: https://app.codecov.io/gh/twilight-rs/twilight/
-[discord badge]: https://img.shields.io/discord/745809834183753828?color=%237289DA&label=discord%20server&logo=discord&style=for-the-badge
-[discord link]: https://discord.gg/7jj8n7D
 [github badge]: https://img.shields.io/badge/github-twilight-6f42c1.svg?style=for-the-badge&logo=github
 [github examples link]: https://github.com/twilight-rs/twilight/tree/main/examples
 [github link]: https://github.com/twilight-rs/twilight

@@ -1,8 +1,10 @@
-# twilight-gateway
+# randy-gateway
 
-[![codecov badge][]][codecov link] [![discord badge][]][discord link] [![github badge][]][github link] [![license badge][]][license link] ![rust badge]
+[![codecov badge][]][codecov link] [![github badge][]][github link] [![license badge][]][license link] ![rust badge]
 
-`twilight-gateway` is an implementation of Discord's sharding gateway sessions.
+`randy-gateway` is a modified fork of `twilight-gateway` for randy.
+Do not use this unless you have a good reason to, use `twilight-gateway` instead.
+
 This is responsible for receiving stateful events in real-time from Discord and
 sending *some* stateful information.
 
@@ -11,11 +13,7 @@ connection to Discord's gateway. Much of its functionality can be configured,
 and it's used to receive gateway events or raw Websocket messages, useful for
 load balancing and microservices.
 
-Multiple shards may easily be created at once, with a per shard config created
-from a `Fn(ShardId, ConfigBuilder) -> Config` closure, with the help of the
-`create_` set of functions. These functions will reuse shards' TLS context and
-[session queue][queue], something otherwise achieved by cloning an existing
-[`Config`].
+The `Session` type can be used to keep the bot from losing events in case of shutdown.
 
 ## Features
 
@@ -50,11 +48,11 @@ use std::{
     sync::atomic::{AtomicBool, Ordering},
 };
 use tokio::signal;
-use twilight_gateway::{
+use randy_gateway::{
     error::ReceiveMessageErrorType, CloseFrame, Config, Event, EventTypeFlags, Intents, Shard,
     StreamExt as _,
 };
-use twilight_http::Client;
+use randy_rest::Client;
 
 static SHUTDOWN: AtomicBool = AtomicBool::new(false);
 
@@ -67,7 +65,7 @@ async fn main() -> anyhow::Result<()> {
     let config = Config::new(token, Intents::GUILDS);
 
     let shards =
-        twilight_gateway::create_recommended(&client, config, |_, builder| builder.build()).await?;
+        randy_gateway::create_recommended(&client, config, |_, builder| builder.build()).await?;
     let mut senders = Vec::with_capacity(shards.len());
     let mut tasks = Vec::with_capacity(shards.len());
 
@@ -109,8 +107,8 @@ async fn runner(mut shard: Shard) {
 }
 ```
 
-There are a few additional examples located in the
-[repository][github examples link].
+There are a few additional examples located in the official
+[twilight repository][github examples link].
 
 [`CryptoProvider::install_default`]: https://docs.rs/rustls/latest/rustls/crypto/struct.CryptoProvider.html#method.install_default
 [`aws-lc-rs`]: https://crates.io/crates/aws-lc-rs
@@ -125,8 +123,6 @@ There are a few additional examples located in the
 [`zlib-ng`]: https://github.com/zlib-ng/zlib-ng
 [codecov badge]: https://img.shields.io/codecov/c/gh/twilight-rs/twilight?logo=codecov&style=for-the-badge&token=E9ERLJL0L2
 [codecov link]: https://app.codecov.io/gh/twilight-rs/twilight/
-[discord badge]: https://img.shields.io/discord/745809834183753828?color=%237289DA&label=discord%20server&logo=discord&style=for-the-badge
-[discord link]: https://discord.gg/7jj8n7D
 [github badge]: https://img.shields.io/badge/github-twilight-6f42c1.svg?style=for-the-badge&logo=github
 [github examples link]: https://github.com/twilight-rs/twilight/tree/main/examples
 [github link]: https://github.com/twilight-rs/twilight

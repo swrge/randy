@@ -1,10 +1,10 @@
-# twilight-cache-inmemory
+# randy-storage
 
-[![codecov badge][]][codecov link] [![discord badge][]][discord link] [![github badge][]][github link] [![license badge][]][license link] ![rust badge]
+[![codecov badge][]][codecov link] [![github badge][]][github link] [![license badge][]][license link] ![rust badge]
 
-`twilight-cache-inmemory` is an in-process-memory cache for the
-[`twilight-rs`] ecosystem. It's responsible for processing events and
-caching things like guilds, channels, users, and voice states.
+`randy-storage` is an in-process-memory cache for randy.
+It's responsible for processing events and caching things like guilds, channels, users, and voice states.
+Do not use unless you know what you are doing, use `twilight-cache-inmemory` instead.
 
 ## Statistics
 
@@ -34,8 +34,8 @@ Update a cache with events that come in through the gateway:
 
 ```rust,no_run
 use std::{env, error::Error};
-use twilight_cache_inmemory::DefaultInMemoryCache;
-use twilight_gateway::{EventTypeFlags, Intents, Shard, ShardId, StreamExt as _};
+use randy_storage::DefaultInMemoryCache;
+use randy_gateway::{EventTypeFlags, Intents, Shard, ShardId, StreamExt as _};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -71,8 +71,6 @@ All first-party crates are licensed under [ISC][LICENSE.md]
 [`twilight-rs`]: https://github.com/twilight-rs/twilight
 [codecov badge]: https://img.shields.io/codecov/c/gh/twilight-rs/twilight?logo=codecov&style=for-the-badge&token=E9ERLJL0L2
 [codecov link]: https://app.codecov.io/gh/twilight-rs/twilight/
-[discord badge]: https://img.shields.io/discord/745809834183753828?color=%237289DA&label=discord%20server&logo=discord&style=for-the-badge
-[discord link]: https://discord.gg/7jj8n7D
 [github badge]: https://img.shields.io/badge/github-twilight-6f42c1.svg?style=for-the-badge&logo=github
 [github link]: https://github.com/twilight-rs/twilight
 [license badge]: https://img.shields.io/badge/license-ISC-blue.svg?style=for-the-badge&logo=pastebin
