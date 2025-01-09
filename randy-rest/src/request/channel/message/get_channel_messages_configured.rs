@@ -13,7 +13,7 @@ use randy_model::{
         Id,
     },
 };
-use twilight_validate::request::{
+use randy_validate::request::{
     get_channel_messages_limit as validate_get_channel_messages_limit, ValidationError,
 };
 
@@ -66,7 +66,7 @@ impl<'a> GetChannelMessagesConfigured<'a> {
     /// Returns an error of type [`GetChannelMessages`] error type if the amount
     /// is less than 1 or greater than 100.
     ///
-    /// [`GetChannelMessages`]: twilight_validate::request::ValidationErrorType::GetChannelMessages
+    /// [`GetChannelMessages`]: randy_validate::request::ValidationErrorType::GetChannelMessages
     pub fn limit(mut self, limit: u16) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_get_channel_messages_limit(limit)?;

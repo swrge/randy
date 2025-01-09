@@ -10,7 +10,7 @@ use randy_model::{
     channel::Channel,
     id::{marker::ChannelMarker, Id},
 };
-use twilight_validate::request::{audit_reason as validate_audit_reason, ValidationError};
+use randy_validate::request::{audit_reason as validate_audit_reason, ValidationError};
 
 /// Delete a channel by ID.
 #[must_use = "requests must be configured and executed"]

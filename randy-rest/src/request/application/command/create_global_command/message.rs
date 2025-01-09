@@ -12,7 +12,7 @@ use randy_model::{
     guild::Permissions,
     id::{marker::ApplicationMarker, Id},
 };
-use twilight_validate::command::{name as validate_name, CommandValidationError};
+use randy_validate::command::{name as validate_name, CommandValidationError};
 
 struct CreateGlobalMessageCommandFields<'a> {
     default_member_permissions: Option<Permissions>,
@@ -92,7 +92,7 @@ impl<'a> CreateGlobalMessageCommand<'a> {
     ///
     /// Returns an error of type [`NameLengthInvalid`] if the name is invalid.
     ///
-    /// [`NameLengthInvalid`]: twilight_validate::command::CommandValidationErrorType::NameLengthInvalid
+    /// [`NameLengthInvalid`]: randy_validate::command::CommandValidationErrorType::NameLengthInvalid
     pub fn name_localizations(mut self, localizations: &'a HashMap<String, String>) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             for name in localizations.values() {

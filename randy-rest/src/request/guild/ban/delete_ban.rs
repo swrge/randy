@@ -10,7 +10,7 @@ use randy_model::id::{
     marker::{GuildMarker, UserMarker},
     Id,
 };
-use twilight_validate::request::{audit_reason as validate_audit_reason, ValidationError};
+use randy_validate::request::{audit_reason as validate_audit_reason, ValidationError};
 
 /// Remove a ban from a user in a guild.
 ///

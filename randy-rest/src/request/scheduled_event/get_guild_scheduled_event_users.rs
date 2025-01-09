@@ -13,7 +13,7 @@ use randy_model::{
         Id,
     },
 };
-use twilight_validate::request::{
+use randy_validate::request::{
     scheduled_event_get_users as validate_scheduled_event_get_users, ValidationError,
 };
 
@@ -98,7 +98,7 @@ impl<'a> GetGuildScheduledEventUsers<'a> {
     /// Returns an error of type [`ScheduledEventGetUsers`] if the limit is
     /// invalid.
     ///
-    /// [`ScheduledEventGetUsers`]: twilight_validate::request::ValidationErrorType::ScheduledEventGetUsers
+    /// [`ScheduledEventGetUsers`]: randy_validate::request::ValidationErrorType::ScheduledEventGetUsers
     pub fn limit(mut self, limit: u16) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_scheduled_event_get_users(limit)?;

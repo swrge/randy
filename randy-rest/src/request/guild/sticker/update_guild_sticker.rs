@@ -14,7 +14,7 @@ use randy_model::{
         Id,
     },
 };
-use twilight_validate::{
+use randy_validate::{
     request::{audit_reason as validate_audit_reason, ValidationError},
     sticker::{
         description as validate_description, name as validate_name, tags as validate_tags,
@@ -87,7 +87,7 @@ impl<'a> UpdateGuildSticker<'a> {
     ///
     /// Returns an error of type [`DescriptionInvalid`] if the length is invalid.
     ///
-    /// [`DescriptionInvalid`]: twilight_validate::sticker::StickerValidationErrorType::DescriptionInvalid
+    /// [`DescriptionInvalid`]: randy_validate::sticker::StickerValidationErrorType::DescriptionInvalid
     pub fn description(mut self, description: &'a str) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_description(description)?;
@@ -105,7 +105,7 @@ impl<'a> UpdateGuildSticker<'a> {
     ///
     /// Returns an error of type [`NameInvalid`] if the length is invalid.
     ///
-    /// [`NameInvalid`]: twilight_validate::sticker::StickerValidationErrorType::NameInvalid
+    /// [`NameInvalid`]: randy_validate::sticker::StickerValidationErrorType::NameInvalid
     pub fn name(mut self, name: &'a str) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_name(name)?;
@@ -123,7 +123,7 @@ impl<'a> UpdateGuildSticker<'a> {
     ///
     /// Returns an error of type [`TagsInvalid`] if the length is invalid.
     ///
-    /// [`TagsInvalid`]: twilight_validate::sticker::StickerValidationErrorType::TagsInvalid
+    /// [`TagsInvalid`]: randy_validate::sticker::StickerValidationErrorType::TagsInvalid
     pub fn tags(mut self, tags: &'a str) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_tags(tags)?;

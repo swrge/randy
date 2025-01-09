@@ -24,7 +24,7 @@ use randy_model::{
     },
     util::Timestamp,
 };
-use twilight_validate::request::{
+use randy_validate::request::{
     audit_reason as validate_audit_reason, scheduled_event_name as validate_scheduled_event_name,
     ValidationError,
 };
@@ -154,7 +154,7 @@ impl<'a> CreateGuildScheduledEvent<'a> {
     ///
     /// Returns an error of type [`ScheduledEventName`] if the name is invalid.
     ///
-    /// [`ScheduledEventName`]: twilight_validate::request::ValidationErrorType::ScheduledEventName
+    /// [`ScheduledEventName`]: randy_validate::request::ValidationErrorType::ScheduledEventName
     pub fn external(
         mut self,
         name: &'a str,
@@ -187,7 +187,7 @@ impl<'a> CreateGuildScheduledEvent<'a> {
     ///
     /// Returns an error of type [`ScheduledEventName`] if the name is invalid.
     ///
-    /// [`ScheduledEventName`]: twilight_validate::request::ValidationErrorType::ScheduledEventName
+    /// [`ScheduledEventName`]: randy_validate::request::ValidationErrorType::ScheduledEventName
     pub fn stage_instance(
         mut self,
         channel_id: Id<ChannelMarker>,
@@ -212,7 +212,7 @@ impl<'a> CreateGuildScheduledEvent<'a> {
     ///
     /// Returns an error of type [`ScheduledEventName`] if the name is invalid.
     ///
-    /// [`ScheduledEventName`]: twilight_validate::request::ValidationErrorType::ScheduledEventName
+    /// [`ScheduledEventName`]: randy_validate::request::ValidationErrorType::ScheduledEventName
     pub fn voice(
         mut self,
         channel_id: Id<ChannelMarker>,

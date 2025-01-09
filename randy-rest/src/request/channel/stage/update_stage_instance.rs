@@ -11,7 +11,7 @@ use randy_model::{
     channel::{stage_instance::PrivacyLevel, StageInstance},
     id::{marker::ChannelMarker, Id},
 };
-use twilight_validate::request::{stage_topic as validate_stage_topic, ValidationError};
+use randy_validate::request::{stage_topic as validate_stage_topic, ValidationError};
 
 #[derive(Serialize)]
 struct UpdateStageInstanceFields<'a> {
@@ -58,7 +58,7 @@ impl<'a> UpdateStageInstance<'a> {
     ///
     /// Returns an error of type [`StageTopic`] if the length is invalid.
     ///
-    /// [`StageTopic`]: twilight_validate::request::ValidationErrorType::StageTopic
+    /// [`StageTopic`]: randy_validate::request::ValidationErrorType::StageTopic
     pub fn topic(mut self, topic: &'a str) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_stage_topic(topic)?;

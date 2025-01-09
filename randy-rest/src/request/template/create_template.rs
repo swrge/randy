@@ -11,7 +11,7 @@ use randy_model::{
     guild::template::Template,
     id::{marker::GuildMarker, Id},
 };
-use twilight_validate::request::{
+use randy_validate::request::{
     template_description as validate_template_description, template_name as validate_template_name,
     ValidationError,
 };
@@ -32,7 +32,7 @@ struct CreateTemplateFields<'a> {
 /// Returns an error of type [`TemplateName`] if the name length is too short or
 /// too long.
 ///
-/// [`TemplateName`]: twilight_validate::request::ValidationErrorType::TemplateName
+/// [`TemplateName`]: randy_validate::request::ValidationErrorType::TemplateName
 #[must_use = "requests must be configured and executed"]
 pub struct CreateTemplate<'a> {
     fields: Result<CreateTemplateFields<'a>, ValidationError>,
@@ -68,7 +68,7 @@ impl<'a> CreateTemplate<'a> {
     /// Returns an error of type [`TemplateDescription`] if the name length is
     /// too short or too long.
     ///
-    /// [`TemplateDescription`]: twilight_validate::request::ValidationErrorType::TemplateDescription
+    /// [`TemplateDescription`]: randy_validate::request::ValidationErrorType::TemplateDescription
     pub fn description(mut self, description: &'a str) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_template_description(description)?;

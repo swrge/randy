@@ -16,7 +16,7 @@ use randy_model::{
         Id,
     },
 };
-use twilight_validate::request::{
+use randy_validate::request::{
     audit_reason as validate_audit_reason,
     auto_moderation_action_metadata_duration_seconds as validate_auto_moderation_action_metadata_duration_seconds,
     auto_moderation_block_action_custom_message_limit as validate_auto_moderation_block_action_custom_message_limit,
@@ -162,7 +162,7 @@ impl<'a> CreateAutoModerationRule<'a> {
     /// Returns a [`ValidationErrorType::AutoModerationBlockActionCustomMessageLimit`] if the custom message length
     /// is invalid.
     ///
-    /// [`ValidationErrorType::AutoModerationBlockActionCustomMessageLimit`]: twilight_validate::request::ValidationErrorType::AutoModerationBlockActionCustomMessageLimit
+    /// [`ValidationErrorType::AutoModerationBlockActionCustomMessageLimit`]: randy_validate::request::ValidationErrorType::AutoModerationBlockActionCustomMessageLimit
     /// [`BlockMessage`]: AutoModerationActionType::BlockMessage
     pub fn action_block_message_with_explanation(mut self, custom_message: &'a str) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
@@ -212,7 +212,7 @@ impl<'a> CreateAutoModerationRule<'a> {
     /// is invalid.
     ///
     /// [`Timeout`]: AutoModerationActionType::Timeout
-    /// [`ValidationErrorType::AutoModerationActionMetadataDurationSeconds`]: twilight_validate::request::ValidationErrorType::AutoModerationActionMetadataDurationSeconds
+    /// [`ValidationErrorType::AutoModerationActionMetadataDurationSeconds`]: randy_validate::request::ValidationErrorType::AutoModerationActionMetadataDurationSeconds
     pub fn action_timeout(mut self, duration_seconds: u32) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_auto_moderation_action_metadata_duration_seconds(duration_seconds)?;
@@ -251,7 +251,7 @@ impl<'a> CreateAutoModerationRule<'a> {
     /// Returns [`ValidationErrorType::AutoModerationExemptChannels`] if the `exempt_roles` field is invalid.
     ///
     /// [Discord Docs/Trigger Metadata]: https://discord.com/developers/docs/resources/auto-moderation#auto-moderation-rule-object-trigger-metadata
-    /// [`ValidationErrorType::AutoModerationExemptChannels`]: twilight_validate::request::ValidationErrorType::AutoModerationExemptChannels
+    /// [`ValidationErrorType::AutoModerationExemptChannels`]: randy_validate::request::ValidationErrorType::AutoModerationExemptChannels
     pub fn exempt_channels(mut self, exempt_channels: &'a [Id<ChannelMarker>]) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_auto_moderation_exempt_channels(exempt_channels)?;
@@ -271,7 +271,7 @@ impl<'a> CreateAutoModerationRule<'a> {
     /// Returns [`ValidationErrorType::AutoModerationExemptRoles`] if the `exempt_roles` field is invalid.
     ///
     /// [Discord Docs/Trigger Metadata]: https://discord.com/developers/docs/resources/auto-moderation#auto-moderation-rule-object-trigger-metadata
-    /// [`ValidationErrorType::AutoModerationExemptRoles`]: twilight_validate::request::ValidationErrorType::AutoModerationExemptRoles
+    /// [`ValidationErrorType::AutoModerationExemptRoles`]: randy_validate::request::ValidationErrorType::AutoModerationExemptRoles
     pub fn exempt_roles(mut self, exempt_roles: &'a [Id<RoleMarker>]) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_auto_moderation_exempt_roles(exempt_roles)?;
@@ -315,12 +315,12 @@ impl<'a> CreateAutoModerationRule<'a> {
     /// [`Keyword`]: AutoModerationTriggerType::Keyword
     /// [Discord Docs/Keyword Matching Strategies]: https://discord.com/developers/docs/resources/auto-moderation#auto-moderation-rule-object-keyword-matching-strategies
     /// [Discord Docs/Trigger Metadata]: https://discord.com/developers/docs/resources/auto-moderation#auto-moderation-rule-object-trigger-metadata
-    /// [`ValidationErrorType::AutoModerationMetadataKeywordFilter`]: twilight_validate::request::ValidationErrorType::AutoModerationMetadataKeywordFilter
-    /// [`ValidationErrorType::AutoModerationMetadataKeywordFilterItem`]: twilight_validate::request::ValidationErrorType::AutoModerationMetadataKeywordFilterItem
-    /// [`ValidationErrorType::AutoModerationMetadataAllowList`]: twilight_validate::request::ValidationErrorType::AutoModerationMetadataAllowList
-    /// [`ValidationErrorType::AutoModerationMetadataAllowListItem`]: twilight_validate::request::ValidationErrorType::AutoModerationMetadataAllowListItem
-    /// [`ValidationErrorType::AutoModerationMetadataRegexPatterns`]: twilight_validate::request::ValidationErrorType::AutoModerationMetadataRegexPatterns
-    /// [`ValidationErrorType::AutoModerationMetadataRegexPatternsItem`]: twilight_validate::request::ValidationErrorType::AutoModerationMetadataRegexPatternsItem
+    /// [`ValidationErrorType::AutoModerationMetadataKeywordFilter`]: randy_validate::request::ValidationErrorType::AutoModerationMetadataKeywordFilter
+    /// [`ValidationErrorType::AutoModerationMetadataKeywordFilterItem`]: randy_validate::request::ValidationErrorType::AutoModerationMetadataKeywordFilterItem
+    /// [`ValidationErrorType::AutoModerationMetadataAllowList`]: randy_validate::request::ValidationErrorType::AutoModerationMetadataAllowList
+    /// [`ValidationErrorType::AutoModerationMetadataAllowListItem`]: randy_validate::request::ValidationErrorType::AutoModerationMetadataAllowListItem
+    /// [`ValidationErrorType::AutoModerationMetadataRegexPatterns`]: randy_validate::request::ValidationErrorType::AutoModerationMetadataRegexPatterns
+    /// [`ValidationErrorType::AutoModerationMetadataRegexPatternsItem`]: randy_validate::request::ValidationErrorType::AutoModerationMetadataRegexPatternsItem
     pub fn with_keyword(
         mut self,
         keyword_filter: &'a [&'a str],
@@ -376,8 +376,8 @@ impl<'a> CreateAutoModerationRule<'a> {
     ///
     /// [`KeywordPreset`]: AutoModerationTriggerType::KeywordPreset
     /// [Discord Docs/Trigger Metadata]: https://discord.com/developers/docs/resources/auto-moderation#auto-moderation-rule-object-trigger-metadata
-    /// [`ValidationErrorType::AutoModerationMetadataPresetAllowList`]: twilight_validate::request::ValidationErrorType::AutoModerationMetadataPresetAllowList
-    /// [`ValidationErrorType::AutoModerationMetadataPresetAllowListItem`]: twilight_validate::request::ValidationErrorType::AutoModerationMetadataPresetAllowListItem
+    /// [`ValidationErrorType::AutoModerationMetadataPresetAllowList`]: randy_validate::request::ValidationErrorType::AutoModerationMetadataPresetAllowList
+    /// [`ValidationErrorType::AutoModerationMetadataPresetAllowListItem`]: randy_validate::request::ValidationErrorType::AutoModerationMetadataPresetAllowListItem
     pub fn with_keyword_preset(
         mut self,
         presets: &'a [AutoModerationKeywordPresetType],
@@ -414,7 +414,7 @@ impl<'a> CreateAutoModerationRule<'a> {
     ///
     /// [`MentionSpam`]: AutoModerationTriggerType::MentionSpam
     /// [Discord Docs/Trigger Metadata]: https://discord.com/developers/docs/resources/auto-moderation#auto-moderation-rule-object-trigger-metadata
-    /// [`ValidationErrorType::AutoModerationMetadataMentionTotalLimit`]: twilight_validate::request::ValidationErrorType::AutoModerationMetadataMentionTotalLimit
+    /// [`ValidationErrorType::AutoModerationMetadataMentionTotalLimit`]: randy_validate::request::ValidationErrorType::AutoModerationMetadataMentionTotalLimit
     pub fn with_mention_spam(
         mut self,
         mention_total_limit: u8,

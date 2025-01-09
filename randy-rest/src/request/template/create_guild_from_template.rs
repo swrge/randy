@@ -8,7 +8,7 @@ use crate::{
 use serde::Serialize;
 use std::future::IntoFuture;
 use randy_model::guild::Guild;
-use twilight_validate::request::{guild_name as validate_guild_name, ValidationError};
+use randy_validate::request::{guild_name as validate_guild_name, ValidationError};
 
 #[derive(Serialize)]
 struct CreateGuildFromTemplateFields<'a> {
@@ -26,7 +26,7 @@ struct CreateGuildFromTemplateFields<'a> {
 /// Returns an error of type [`GuildName`] if the name length is too short or
 /// too long.
 ///
-/// [`GuildName`]: twilight_validate::request::ValidationErrorType::GuildName
+/// [`GuildName`]: randy_validate::request::ValidationErrorType::GuildName
 #[must_use = "requests must be configured and executed"]
 pub struct CreateGuildFromTemplate<'a> {
     fields: Result<CreateGuildFromTemplateFields<'a>, ValidationError>,

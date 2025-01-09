@@ -624,7 +624,7 @@ impl Client {
     /// the amount is less than 1 or greater than 100.
     ///
     /// [`GetChannelMessagesConfigured`]: crate::request::channel::message::GetChannelMessagesConfigured
-    /// [`ValidationErrorType::GetChannelMessages`]: twilight_validate::request::ValidationErrorType::GetChannelMessages
+    /// [`ValidationErrorType::GetChannelMessages`]: randy_validate::request::ValidationErrorType::GetChannelMessages
     /// [`after`]: GetChannelMessages::after
     /// [`around`]: GetChannelMessages::around
     /// [`before`]: GetChannelMessages::before
@@ -990,9 +990,9 @@ impl Client {
     /// Returns an error of type [`TopicInvalid`] when the length of the topic
     /// is more than 1024 UTF-16 characters.
     ///
-    /// [`NameInvalid`]: twilight_validate::channel::ChannelValidationErrorType::NameInvalid
-    /// [`RateLimitPerUserInvalid`]: twilight_validate::channel::ChannelValidationErrorType::RateLimitPerUserInvalid
-    /// [`TopicInvalid`]: twilight_validate::channel::ChannelValidationErrorType::TopicInvalid
+    /// [`NameInvalid`]: randy_validate::channel::ChannelValidationErrorType::NameInvalid
+    /// [`RateLimitPerUserInvalid`]: randy_validate::channel::ChannelValidationErrorType::RateLimitPerUserInvalid
+    /// [`TopicInvalid`]: randy_validate::channel::ChannelValidationErrorType::TopicInvalid
     pub fn create_guild_channel<'a>(
         &'a self,
         guild_id: Id<GuildMarker>,
@@ -1118,7 +1118,7 @@ impl Client {
     /// Returns an error of type [`ValidationErrorType::GetGuildMembers`] if the
     /// limit is invalid.
     ///
-    /// [`ValidationErrorType::GetGuildMembers`]: twilight_validate::request::ValidationErrorType::GetGuildMembers
+    /// [`ValidationErrorType::GetGuildMembers`]: randy_validate::request::ValidationErrorType::GetGuildMembers
     pub const fn guild_members(&self, guild_id: Id<GuildMarker>) -> GetGuildMembers<'_> {
         GetGuildMembers::new(self, guild_id)
     }
@@ -1153,7 +1153,7 @@ impl Client {
     /// the limit is invalid.
     ///
     /// [`GUILD_MEMBERS`]: randy_model::gateway::Intents::GUILD_MEMBERS
-    /// [`ValidationErrorType::SearchGuildMembers`]: twilight_validate::request::ValidationErrorType::SearchGuildMembers
+    /// [`ValidationErrorType::SearchGuildMembers`]: randy_validate::request::ValidationErrorType::SearchGuildMembers
     pub const fn search_guild_members<'a>(
         &'a self,
         guild_id: Id<GuildMarker>,
@@ -1181,7 +1181,7 @@ impl Client {
     /// Returns an error of type [`ValidationErrorType::Nickname`] if the
     /// nickname is too short or too long.
     ///
-    /// [`ValidationErrorType::Nickname`]: twilight_validate::request::ValidationErrorType::Nickname
+    /// [`ValidationErrorType::Nickname`]: randy_validate::request::ValidationErrorType::Nickname
     /// [Discord Docs/Add Guild Member]: https://discord.com/developers/docs/resources/guild#add-guild-member
     pub const fn add_guild_member<'a>(
         &'a self,
@@ -1236,7 +1236,7 @@ impl Client {
     /// Returns an error of type [`ValidationErrorType::Nickname`] if the
     /// nickname length is too short or too long.
     ///
-    /// [`ValidationErrorType::Nickname`]: twilight_validate::request::ValidationErrorType::Nickname
+    /// [`ValidationErrorType::Nickname`]: randy_validate::request::ValidationErrorType::Nickname
     /// [Discord Docs/Modify Guild Member]: https://discord.com/developers/docs/resources/guild#modify-guild-member
     pub const fn update_guild_member(
         &self,
@@ -1489,7 +1489,7 @@ impl Client {
     /// messages to delete in bulk is invalid.
     ///
     /// [Discord Docs/Bulk Delete Messages]: https://discord.com/developers/docs/resources/channel#bulk-delete-messages
-    /// [`ChannelValidationErrorType::BulkDeleteMessagesInvalid`]: twilight_validate::channel::ChannelValidationErrorType::BulkDeleteMessagesInvalid
+    /// [`ChannelValidationErrorType::BulkDeleteMessagesInvalid`]: randy_validate::channel::ChannelValidationErrorType::BulkDeleteMessagesInvalid
     pub fn delete_messages<'a>(
         &'a self,
         channel_id: Id<ChannelMarker>,
@@ -1754,7 +1754,7 @@ impl Client {
     /// Returns an error of type [`ValidationError::StageTopic`] when the topic
     /// is not between 1 and 120 characters in length.
     ///
-    /// [`ValidationError::StageTopic`]: twilight_validate::request::ValidationErrorType::StageTopic
+    /// [`ValidationError::StageTopic`]: randy_validate::request::ValidationErrorType::StageTopic
     pub fn create_stage_instance<'a>(
         &'a self,
         channel_id: Id<ChannelMarker>,
@@ -1797,7 +1797,7 @@ impl Client {
     /// Returns an error of type [`ValidationErrorType::TemplateName`] if the
     /// name is invalid.
     ///
-    /// [`ValidationErrorType::TemplateName`]: twilight_validate::request::ValidationErrorType::TemplateName
+    /// [`ValidationErrorType::TemplateName`]: randy_validate::request::ValidationErrorType::TemplateName
     pub fn create_guild_from_template<'a>(
         &'a self,
         template_code: &'a str,
@@ -1816,7 +1816,7 @@ impl Client {
     /// Returns an error of type [`ValidationErrorType::TemplateName`] if the
     /// name is invalid.
     ///
-    /// [`ValidationErrorType::TemplateName`]: twilight_validate::request::ValidationErrorType::TemplateName
+    /// [`ValidationErrorType::TemplateName`]: randy_validate::request::ValidationErrorType::TemplateName
     pub fn create_template<'a>(
         &'a self,
         guild_id: Id<GuildMarker>,
@@ -1920,9 +1920,9 @@ impl Client {
     ///
     /// Returns an error of type [`TypeInvalid`] if the channel is not a thread.
     ///
-    /// [`NameInvalid`]: twilight_validate::channel::ChannelValidationErrorType::NameInvalid
+    /// [`NameInvalid`]: randy_validate::channel::ChannelValidationErrorType::NameInvalid
     /// [`PrivateThread`]: randy_model::channel::ChannelType::PrivateThread
-    /// [`TypeInvalid`]: twilight_validate::channel::ChannelValidationErrorType::TypeInvalid
+    /// [`TypeInvalid`]: randy_validate::channel::ChannelValidationErrorType::TypeInvalid
     pub fn create_thread<'a>(
         &'a self,
         channel_id: Id<ChannelMarker>,
@@ -1956,9 +1956,9 @@ impl Client {
     /// [`AnnouncementThread`]: randy_model::channel::ChannelType::AnnouncementThread
     /// [`GuildAnnouncement`]: randy_model::channel::ChannelType::GuildAnnouncement
     /// [`GuildText`]: randy_model::channel::ChannelType::GuildText
-    /// [`NameInvalid`]: twilight_validate::channel::ChannelValidationErrorType::NameInvalid
+    /// [`NameInvalid`]: randy_validate::channel::ChannelValidationErrorType::NameInvalid
     /// [`PublicThread`]: randy_model::channel::ChannelType::PublicThread
-    /// [`TypeInvalid`]: twilight_validate::channel::ChannelValidationErrorType::TypeInvalid
+    /// [`TypeInvalid`]: randy_validate::channel::ChannelValidationErrorType::TypeInvalid
     pub fn create_thread_from_message<'a>(
         &'a self,
         channel_id: Id<ChannelMarker>,
@@ -2136,7 +2136,7 @@ impl Client {
     /// Returns an error of type [`WebhookUsername`] if the webhook's name is
     /// invalid.
     ///
-    /// [`WebhookUsername`]: twilight_validate::request::ValidationErrorType::WebhookUsername
+    /// [`WebhookUsername`]: randy_validate::request::ValidationErrorType::WebhookUsername
     pub fn create_webhook<'a>(
         &'a self,
         channel_id: Id<ChannelMarker>,
@@ -2558,9 +2558,9 @@ impl Client {
     ///
     /// Returns an error of type [`TagsInvalid`] if the length is invalid.
     ///
-    /// [`DescriptionInvalid`]: twilight_validate::sticker::StickerValidationErrorType::DescriptionInvalid
-    /// [`NameInvalid`]: twilight_validate::sticker::StickerValidationErrorType::NameInvalid
-    /// [`TagsInvalid`]: twilight_validate::sticker::StickerValidationErrorType::TagsInvalid
+    /// [`DescriptionInvalid`]: randy_validate::sticker::StickerValidationErrorType::DescriptionInvalid
+    /// [`NameInvalid`]: randy_validate::sticker::StickerValidationErrorType::NameInvalid
+    /// [`TagsInvalid`]: randy_validate::sticker::StickerValidationErrorType::TagsInvalid
     pub fn create_guild_sticker<'a>(
         &'a self,
         guild_id: Id<GuildMarker>,

@@ -15,7 +15,7 @@ use randy_model::{
     },
     user::User,
 };
-use twilight_validate::request::{
+use randy_validate::request::{
     get_reactions_limit as validate_get_reactions_limit, ValidationError,
 };
 
@@ -77,7 +77,7 @@ impl<'a> GetReactions<'a> {
     /// Returns an error of type [`GetReactions`] if the amount is greater than
     /// 100.
     ///
-    /// [`GetReactions`]: twilight_validate::request::ValidationErrorType::GetReactions
+    /// [`GetReactions`]: randy_validate::request::ValidationErrorType::GetReactions
     pub fn limit(mut self, limit: u16) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_get_reactions_limit(limit)?;

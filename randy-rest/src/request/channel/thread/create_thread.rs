@@ -11,7 +11,7 @@ use randy_model::{
     channel::{thread::AutoArchiveDuration, Channel, ChannelType},
     id::{marker::ChannelMarker, Id},
 };
-use twilight_validate::channel::{
+use randy_validate::channel::{
     is_thread as validate_is_thread, name as validate_name, ChannelValidationError,
 };
 

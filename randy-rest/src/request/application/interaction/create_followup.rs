@@ -15,7 +15,7 @@ use randy_model::{
     http::attachment::Attachment,
     id::{marker::ApplicationMarker, Id},
 };
-use twilight_validate::message::{
+use randy_validate::message::{
     attachment as validate_attachment, components as validate_components,
     content as validate_content, embeds as validate_embeds, MessageValidationError,
 };
@@ -127,8 +127,8 @@ impl<'a> CreateFollowup<'a> {
     /// Returns an error of type [`AttachmentFilename`] if any filename is
     /// invalid.
     ///
-    /// [`AttachmentDescriptionTooLarge`]: twilight_validate::message::MessageValidationErrorType::AttachmentDescriptionTooLarge
-    /// [`AttachmentFilename`]: twilight_validate::message::MessageValidationErrorType::AttachmentFilename
+    /// [`AttachmentDescriptionTooLarge`]: randy_validate::message::MessageValidationErrorType::AttachmentDescriptionTooLarge
+    /// [`AttachmentFilename`]: randy_validate::message::MessageValidationErrorType::AttachmentFilename
     pub fn attachments(mut self, attachments: &'a [Attachment]) -> Self {
         if self.fields.is_ok() {
             if let Err(source) = attachments.iter().try_for_each(validate_attachment) {
@@ -150,7 +150,7 @@ impl<'a> CreateFollowup<'a> {
     /// # Errors
     ///
     /// Refer to the errors section of
-    /// [`twilight_validate::component::component`] for a list of errors that
+    /// [`randy_validate::component::component`] for a list of errors that
     /// may be returned as a result of validating each provided component.
     pub fn components(mut self, components: &'a [Component]) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
@@ -172,7 +172,7 @@ impl<'a> CreateFollowup<'a> {
     /// Returns an error of type [`ContentInvalid`] if the content length is too
     /// long.
     ///
-    /// [`ContentInvalid`]: twilight_validate::message::MessageValidationErrorType::ContentInvalid
+    /// [`ContentInvalid`]: randy_validate::message::MessageValidationErrorType::ContentInvalid
     pub fn content(mut self, content: &'a str) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_content(content)?;
@@ -198,12 +198,12 @@ impl<'a> CreateFollowup<'a> {
     /// Returns an error of type [`TooManyEmbeds`] if there are too many embeds.
     ///
     /// Otherwise, refer to the errors section of
-    /// [`twilight_validate::embed::embed`] for a list of errors that may occur.
+    /// [`randy_validate::embed::embed`] for a list of errors that may occur.
     ///
     /// [Discord Docs/Embed Limits]: https://discord.com/developers/docs/resources/channel#embed-limits
-    /// [`EMBED_COUNT_LIMIT`]: twilight_validate::message::EMBED_COUNT_LIMIT
-    /// [`EMBED_TOTAL_LENGTH`]: twilight_validate::embed::EMBED_TOTAL_LENGTH
-    /// [`TooManyEmbeds`]: twilight_validate::message::MessageValidationErrorType::TooManyEmbeds
+    /// [`EMBED_COUNT_LIMIT`]: randy_validate::message::EMBED_COUNT_LIMIT
+    /// [`EMBED_TOTAL_LENGTH`]: randy_validate::embed::EMBED_TOTAL_LENGTH
+    /// [`TooManyEmbeds`]: randy_validate::message::MessageValidationErrorType::TooManyEmbeds
     pub fn embeds(mut self, embeds: &'a [Embed]) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_embeds(embeds)?;

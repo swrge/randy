@@ -9,7 +9,7 @@ pub trait AuditLogReason<'a>: private::Sealed {
     ///
     /// Returns an error of type [`AuditReason`] if the length is invalid.
     ///
-    /// [`AuditReason`]: twilight_validate::request::ValidationErrorType::AuditReason
+    /// [`AuditReason`]: randy_validate::request::ValidationErrorType::AuditReason
     #[must_use]
     fn reason(self, reason: &'a str) -> Self
     where

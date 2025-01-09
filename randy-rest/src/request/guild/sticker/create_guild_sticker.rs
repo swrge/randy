@@ -10,7 +10,7 @@ use randy_model::{
     channel::message::Sticker,
     id::{marker::GuildMarker, Id},
 };
-use twilight_validate::{
+use randy_validate::{
     request::{audit_reason as validate_audit_reason, ValidationError},
     sticker::{
         description as validate_description, name as validate_name, tags as validate_tags,

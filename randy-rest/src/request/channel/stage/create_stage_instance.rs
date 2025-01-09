@@ -14,7 +14,7 @@ use randy_model::{
         Id,
     },
 };
-use twilight_validate::request::{stage_topic as validate_stage_topic, ValidationError};
+use randy_validate::request::{stage_topic as validate_stage_topic, ValidationError};
 
 #[derive(Serialize)]
 struct CreateStageInstanceFields<'a> {

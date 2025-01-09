@@ -14,7 +14,7 @@ use randy_model::{
         Id,
     },
 };
-use twilight_validate::request::{
+use randy_validate::request::{
     audit_reason as validate_audit_reason, webhook_username as validate_webhook_username,
     ValidationError,
 };
@@ -84,7 +84,7 @@ impl<'a> UpdateWebhook<'a> {
     /// Returns an error of type [`WebhookUsername`] if the webhook's name is
     /// invalid.
     ///
-    /// [`WebhookUsername`]: twilight_validate::request::ValidationErrorType::WebhookUsername
+    /// [`WebhookUsername`]: randy_validate::request::ValidationErrorType::WebhookUsername
     pub fn name(mut self, name: &'a str) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_webhook_username(name)?;

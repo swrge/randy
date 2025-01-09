@@ -10,7 +10,7 @@ use randy_model::id::{
     marker::{ChannelMarker, MessageMarker},
     Id,
 };
-use twilight_validate::request::{audit_reason as validate_audit_reason, ValidationError};
+use randy_validate::request::{audit_reason as validate_audit_reason, ValidationError};
 
 /// Create a new pin in a channel.
 #[must_use = "requests must be configured and executed"]

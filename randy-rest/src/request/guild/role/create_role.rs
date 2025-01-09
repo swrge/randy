@@ -11,7 +11,7 @@ use randy_model::{
     guild::{Permissions, Role},
     id::{marker::GuildMarker, Id},
 };
-use twilight_validate::request::{audit_reason as validate_audit_reason, ValidationError};
+use randy_validate::request::{audit_reason as validate_audit_reason, ValidationError};
 
 #[derive(Serialize)]
 struct CreateRoleFields<'a> {
@@ -83,7 +83,7 @@ impl<'a> CreateRole<'a> {
     /// doesn't count towards the final computed color in the user list. Refer
     /// to [`COLOR_MAXIMUM`] for the maximum acceptable value.
     ///
-    /// [`COLOR_MAXIMUM`]: twilight_validate::embed::COLOR_MAXIMUM
+    /// [`COLOR_MAXIMUM`]: randy_validate::embed::COLOR_MAXIMUM
     pub const fn color(mut self, color: u32) -> Self {
         self.fields.color = Some(color);
 

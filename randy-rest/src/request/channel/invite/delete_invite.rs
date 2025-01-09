@@ -6,7 +6,7 @@ use crate::{
     routing::Route,
 };
 use std::future::IntoFuture;
-use twilight_validate::request::{audit_reason as validate_audit_reason, ValidationError};
+use randy_validate::request::{audit_reason as validate_audit_reason, ValidationError};
 
 /// Delete an invite by its code.
 ///

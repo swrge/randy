@@ -13,7 +13,7 @@ use randy_model::{
         Id,
     },
 };
-use twilight_validate::channel::{thread_member_limit, ChannelValidationError};
+use randy_validate::channel::{thread_member_limit, ChannelValidationError};
 
 struct GetThreadMembersFields {
     after: Option<Id<UserMarker>>,
@@ -62,7 +62,7 @@ impl<'a> GetThreadMembers<'a> {
     /// Returns a [`ChannelValidationErrorType::ThreadMemberLimitInvalid`] error type if the
     /// limit is not between 1 and 100.
     ///
-    /// [`ChannelValidationErrorType::ThreadMemberLimitInvalid`]: twilight_validate::channel::ChannelValidationErrorType::ThreadMemberLimitInvalid
+    /// [`ChannelValidationErrorType::ThreadMemberLimitInvalid`]: randy_validate::channel::ChannelValidationErrorType::ThreadMemberLimitInvalid
     pub fn limit(mut self, limit: u32) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             thread_member_limit(limit)?;

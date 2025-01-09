@@ -17,7 +17,7 @@ use randy_model::{
         Id,
     },
 };
-use twilight_validate::request::{
+use randy_validate::request::{
     audit_reason as validate_audit_reason, guild_name as validate_guild_name, ValidationError,
 };
 
@@ -223,7 +223,7 @@ impl<'a> UpdateGuild<'a> {
     /// Returns an error of type [`GuildName`] if the name length is too short
     /// or too long.
     ///
-    /// [`GuildName`]: twilight_validate::request::ValidationErrorType::GuildName
+    /// [`GuildName`]: randy_validate::request::ValidationErrorType::GuildName
     pub fn name(mut self, name: &'a str) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_guild_name(name)?;

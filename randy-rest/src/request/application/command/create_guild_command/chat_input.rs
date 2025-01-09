@@ -15,7 +15,7 @@ use randy_model::{
         Id,
     },
 };
-use twilight_validate::command::{
+use randy_validate::command::{
     chat_input_name as validate_chat_input_name, description as validate_description,
     options as validate_options, CommandValidationError,
 };
@@ -89,7 +89,7 @@ impl<'a> CreateGuildChatInputCommand<'a> {
     /// was added after an optional option. The problem option's index is
     /// provided.
     ///
-    /// [`OptionsRequiredFirst`]: twilight_validate::command::CommandValidationErrorType::OptionsRequiredFirst
+    /// [`OptionsRequiredFirst`]: randy_validate::command::CommandValidationErrorType::OptionsRequiredFirst
     pub fn command_options(mut self, options: &'a [CommandOption]) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_options(options)?;
@@ -122,7 +122,7 @@ impl<'a> CreateGuildChatInputCommand<'a> {
     /// Returns an error of type [`DescriptionInvalid`] if the description is
     /// invalid.
     ///
-    /// [`DescriptionInvalid`]: twilight_validate::command::CommandValidationErrorType::DescriptionInvalid
+    /// [`DescriptionInvalid`]: randy_validate::command::CommandValidationErrorType::DescriptionInvalid
     pub fn description_localizations(mut self, localizations: &'a HashMap<String, String>) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             for description in localizations.values() {
@@ -149,8 +149,8 @@ impl<'a> CreateGuildChatInputCommand<'a> {
     /// non-alphanumeric character or an uppercase character for which a
     /// lowercase variant exists.
     ///
-    /// [`NameLengthInvalid`]: twilight_validate::command::CommandValidationErrorType::NameLengthInvalid
-    /// [`NameCharacterInvalid`]: twilight_validate::command::CommandValidationErrorType::NameCharacterInvalid
+    /// [`NameLengthInvalid`]: randy_validate::command::CommandValidationErrorType::NameLengthInvalid
+    /// [`NameCharacterInvalid`]: randy_validate::command::CommandValidationErrorType::NameCharacterInvalid
     pub fn name_localizations(mut self, localizations: &'a HashMap<String, String>) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             for name in localizations.values() {

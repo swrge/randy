@@ -14,7 +14,7 @@ use randy_model::{
         Id,
     },
 };
-use twilight_validate::{
+use randy_validate::{
     channel::{
         name as validate_name, rate_limit_per_user as validate_rate_limit_per_user,
         ChannelValidationError,
@@ -137,7 +137,7 @@ impl<'a> UpdateThread<'a> {
     ///
     /// Returns an error of type [`NameInvalid`] if the name is invalid.
     ///
-    /// [`NameInvalid`]: twilight_validate::channel::ChannelValidationErrorType::NameInvalid
+    /// [`NameInvalid`]: randy_validate::channel::ChannelValidationErrorType::NameInvalid
     pub fn name(mut self, name: &'a str) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_name(name)?;
@@ -160,7 +160,7 @@ impl<'a> UpdateThread<'a> {
     /// Returns an error of type [`RateLimitPerUserInvalid`] if the name is
     /// invalid.
     ///
-    /// [`RateLimitPerUserInvalid`]: twilight_validate::channel::ChannelValidationErrorType::RateLimitPerUserInvalid
+    /// [`RateLimitPerUserInvalid`]: randy_validate::channel::ChannelValidationErrorType::RateLimitPerUserInvalid
     /// [Discord Docs/Channel Object]: https://discordapp.com/developers/docs/resources/channel#channel-object-channel-structure
     pub fn rate_limit_per_user(mut self, rate_limit_per_user: u16) -> Self {
         self.fields = self.fields.and_then(|mut fields| {

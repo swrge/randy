@@ -14,7 +14,7 @@ use randy_model::{
         Id,
     },
 };
-use twilight_validate::command::{
+use randy_validate::command::{
     guild_permissions as validate_guild_permissions, CommandValidationError,
 };
 

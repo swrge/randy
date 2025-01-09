@@ -8,7 +8,7 @@ use crate::{
 use serde::Serialize;
 use std::future::IntoFuture;
 use randy_model::user::User;
-use twilight_validate::request::{
+use randy_validate::request::{
     audit_reason as validate_audit_reason, username as validate_username, ValidationError,
 };
 
@@ -85,7 +85,7 @@ impl<'a> UpdateCurrentUser<'a> {
     /// Returns an error of type [`Username`] if the username length is too
     /// short or too long.
     ///
-    /// [`Username`]: twilight_validate::request::ValidationErrorType::Username
+    /// [`Username`]: randy_validate::request::ValidationErrorType::Username
     pub fn username(mut self, username: &'a str) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_username(username)?;

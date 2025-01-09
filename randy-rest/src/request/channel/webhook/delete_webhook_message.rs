@@ -10,7 +10,7 @@ use randy_model::id::{
     marker::{ChannelMarker, MessageMarker, WebhookMarker},
     Id,
 };
-use twilight_validate::request::{audit_reason as validate_audit_reason, ValidationError};
+use randy_validate::request::{audit_reason as validate_audit_reason, ValidationError};
 
 /// Delete a message created by a webhook.
 ///

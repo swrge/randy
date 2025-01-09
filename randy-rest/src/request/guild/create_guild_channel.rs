@@ -19,7 +19,7 @@ use randy_model::{
         Id,
     },
 };
-use twilight_validate::{
+use randy_validate::{
     channel::{
         bitrate as validate_bitrate, name as validate_name,
         rate_limit_per_user as validate_rate_limit_per_user, topic as validate_topic,
@@ -136,7 +136,7 @@ impl<'a> CreateGuildChannel<'a> {
     ///
     /// Returns an error of type [`BitrateInvalid`] if the bitrate is invalid.
     ///
-    /// [`BitrateInvalid`]: twilight_validate::channel::ChannelValidationErrorType::BitrateInvalid
+    /// [`BitrateInvalid`]: randy_validate::channel::ChannelValidationErrorType::BitrateInvalid
     pub fn bitrate(mut self, bitrate: u32) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_bitrate(bitrate)?;
@@ -278,7 +278,7 @@ impl<'a> CreateGuildChannel<'a> {
     /// Returns an error of type [`RateLimitPerUserInvalid`] if the name is
     /// invalid.
     ///
-    /// [`RateLimitPerUserInvalid`]: twilight_validate::channel::ChannelValidationErrorType::RateLimitPerUserInvalid
+    /// [`RateLimitPerUserInvalid`]: randy_validate::channel::ChannelValidationErrorType::RateLimitPerUserInvalid
     /// [Discord Docs/Channel Object]: https://discordapp.com/developers/docs/resources/channel#channel-object-channel-structure
     pub fn rate_limit_per_user(mut self, rate_limit_per_user: u16) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
@@ -311,7 +311,7 @@ impl<'a> CreateGuildChannel<'a> {
     /// Returns an error of type [`TopicInvalid`] if the name is
     /// invalid.
     ///
-    /// [`TopicInvalid`]: twilight_validate::channel::ChannelValidationErrorType::TopicInvalid
+    /// [`TopicInvalid`]: randy_validate::channel::ChannelValidationErrorType::TopicInvalid
     /// [Discord Docs/Channel Object]: https://discordapp.com/developers/docs/resources/channel#channel-object-channel-structure
     pub fn topic(mut self, topic: &'a str) -> Self {
         self.fields = self.fields.and_then(|mut fields| {

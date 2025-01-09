@@ -11,7 +11,7 @@ use randy_model::{
     channel::Webhook,
     id::{marker::WebhookMarker, Id},
 };
-use twilight_validate::request::{webhook_username as validate_webhook_username, ValidationError};
+use randy_validate::request::{webhook_username as validate_webhook_username, ValidationError};
 
 #[derive(Serialize)]
 struct UpdateWebhookWithTokenFields<'a> {
@@ -69,7 +69,7 @@ impl<'a> UpdateWebhookWithToken<'a> {
     /// Returns an error of type [`WebhookUsername`] if the webhook's name is
     /// invalid.
     ///
-    /// [`WebhookUsername`]: twilight_validate::request::ValidationErrorType::WebhookUsername
+    /// [`WebhookUsername`]: randy_validate::request::ValidationErrorType::WebhookUsername
     pub fn name(mut self, name: &'a str) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_webhook_username(name)?;

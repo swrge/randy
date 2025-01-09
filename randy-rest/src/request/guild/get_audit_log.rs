@@ -13,7 +13,7 @@ use randy_model::{
         Id,
     },
 };
-use twilight_validate::request::{
+use randy_validate::request::{
     get_guild_audit_log_limit as validate_get_guild_audit_log_limit, ValidationError,
 };
 
@@ -109,7 +109,7 @@ impl<'a> GetAuditLog<'a> {
     /// Returns an error of type [`GetGuildAuditLog`] if the `limit` is 0 or
     /// greater than 100.
     ///
-    /// [`GetGuildAuditLog`]: twilight_validate::request::ValidationErrorType::GetGuildAuditLog
+    /// [`GetGuildAuditLog`]: randy_validate::request::ValidationErrorType::GetGuildAuditLog
     pub fn limit(mut self, limit: u16) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_get_guild_audit_log_limit(limit)?;

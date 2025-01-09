@@ -10,7 +10,7 @@ use randy_model::{
     id::{marker::GuildMarker, Id},
     user::CurrentUserGuild,
 };
-use twilight_validate::request::{
+use randy_validate::request::{
     get_current_user_guilds_limit as validate_get_current_user_guilds_limit, ValidationError,
 };
 
@@ -91,7 +91,7 @@ impl<'a> GetCurrentUserGuilds<'a> {
     /// Returns an error of type [`GetCurrentUserGuilds`] if the name length is
     /// too short or too long.
     ///
-    /// [`GetCurrentUserGuilds`]: twilight_validate::request::ValidationErrorType::GetCurrentUserGuilds
+    /// [`GetCurrentUserGuilds`]: randy_validate::request::ValidationErrorType::GetCurrentUserGuilds
     /// [Discord Docs/Get Current User Guilds]: https://discordapp.com/developers/docs/resources/user#get-current-user-guilds-query-string-params
     pub fn limit(mut self, limit: u16) -> Self {
         self.fields = self.fields.and_then(|mut fields| {

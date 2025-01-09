@@ -339,7 +339,7 @@ impl<'a> InteractionClient<'a> {
     /// Returns an error of type [`PermissionsCountInvalid`] if the permissions
     /// are invalid.
     ///
-    /// [`PermissionsCountInvalid`]: twilight_validate::command::CommandValidationErrorType::PermissionsCountInvalid
+    /// [`PermissionsCountInvalid`]: randy_validate::command::CommandValidationErrorType::PermissionsCountInvalid
     pub fn update_command_permissions(
         &'a self,
         guild_id: Id<GuildMarker>,

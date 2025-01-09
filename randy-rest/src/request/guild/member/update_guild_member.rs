@@ -15,7 +15,7 @@ use randy_model::{
     },
     util::Timestamp,
 };
-use twilight_validate::request::{
+use randy_validate::request::{
     audit_reason as validate_audit_reason,
     communication_disabled_until as validate_communication_disabled_until,
     nickname as validate_nickname, ValidationError,
@@ -97,7 +97,7 @@ impl<'a> UpdateGuildMember<'a> {
     /// timestamp is more than 28 days from the current time.
     ///
     /// [Guild Timeout]: https://support.discord.com/hc/en-us/articles/4413305239191-Time-Out-FAQ
-    /// [`CommunicationDisabledUntil`]: twilight_validate::request::ValidationErrorType::CommunicationDisabledUntil
+    /// [`CommunicationDisabledUntil`]: randy_validate::request::ValidationErrorType::CommunicationDisabledUntil
     /// [`MODERATE_MEMBERS`]: randy_model::guild::Permissions::MODERATE_MEMBERS
     pub fn communication_disabled_until(mut self, timestamp: Option<Timestamp>) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
@@ -140,7 +140,7 @@ impl<'a> UpdateGuildMember<'a> {
     /// Returns an error of type [`Nickname`] if the nickname length is too
     /// short or too long.
     ///
-    /// [`Nickname`]: twilight_validate::request::ValidationErrorType::Nickname
+    /// [`Nickname`]: randy_validate::request::ValidationErrorType::Nickname
     pub fn nick(mut self, nick: Option<&'a str>) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             if let Some(nick) = nick {

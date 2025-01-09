@@ -14,7 +14,7 @@ use randy_model::{
         Id,
     },
 };
-use twilight_validate::request::{nickname as validate_nickname, ValidationError};
+use randy_validate::request::{nickname as validate_nickname, ValidationError};
 
 #[derive(Serialize)]
 struct AddGuildMemberFields<'a> {
@@ -93,7 +93,7 @@ impl<'a> AddGuildMember<'a> {
     /// Returns an error of type [`Nickname`] if the nickname length is too
     /// short or too long.
     ///
-    /// [`Nickname`]: twilight_validate::request::ValidationErrorType::Nickname
+    /// [`Nickname`]: randy_validate::request::ValidationErrorType::Nickname
     pub fn nick(mut self, nick: &'a str) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_nickname(nick)?;

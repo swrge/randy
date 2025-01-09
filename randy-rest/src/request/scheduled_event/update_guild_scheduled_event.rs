@@ -16,7 +16,7 @@ use randy_model::{
     },
     util::Timestamp,
 };
-use twilight_validate::request::{
+use randy_validate::request::{
     audit_reason as validate_audit_reason,
     scheduled_event_description as validate_scheduled_event_description,
     scheduled_event_name as validate_scheduled_event_name, ValidationError,
@@ -118,7 +118,7 @@ impl<'a> UpdateGuildScheduledEvent<'a> {
     /// Returns an error of type [`ScheduledEventDescription`] if the
     /// description is invalid.
     ///
-    /// [`ScheduledEventDescription`]: twilight_validate::request::ValidationErrorType::ScheduledEventDescription
+    /// [`ScheduledEventDescription`]: randy_validate::request::ValidationErrorType::ScheduledEventDescription
     pub fn description(mut self, description: Option<&'a str>) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             if let Some(description) = description {
@@ -193,7 +193,7 @@ impl<'a> UpdateGuildScheduledEvent<'a> {
     ///
     /// Returns an error of type [`ScheduledEventName`] if the name is invalid.
     ///
-    /// [`ScheduledEventName`]: twilight_validate::request::ValidationErrorType::ScheduledEventName
+    /// [`ScheduledEventName`]: randy_validate::request::ValidationErrorType::ScheduledEventName
     pub fn name(mut self, name: &'a str) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_scheduled_event_name(name)?;

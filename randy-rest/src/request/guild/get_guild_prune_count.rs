@@ -13,7 +13,7 @@ use randy_model::{
         Id,
     },
 };
-use twilight_validate::request::{guild_prune_days as validate_guild_prune_days, ValidationError};
+use randy_validate::request::{guild_prune_days as validate_guild_prune_days, ValidationError};
 
 struct GetGuildPruneCountFields<'a> {
     days: Option<u16>,
@@ -50,7 +50,7 @@ impl<'a> GetGuildPruneCount<'a> {
     /// Returns an error of type [`GuildPruneDays`] if the number of days is 0
     /// or more than 30.
     ///
-    /// [`GuildPruneDays`]: twilight_validate::request::ValidationErrorType::GuildPruneDays
+    /// [`GuildPruneDays`]: randy_validate::request::ValidationErrorType::GuildPruneDays
     pub fn days(mut self, days: u16) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_guild_prune_days(days)?;

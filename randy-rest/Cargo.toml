@@ -32,7 +32,7 @@ tokio = { default-features = false, features = ["sync", "time"], version = "1.0"
 tracing = { default-features = false, features = ["std", "attributes"], version = "0.1" }
 twilight-http-ratelimiting = { default-features = false, git = "https://github.com/swrge/randy-ratelimiting", package = "randy-ratelimiting", version = "0.1.0" }
 randy-model = { default-features = false, git = "https://github.com/swrge/randy-model", package = "randy-model", version = "0.1.0" }
-twilight-validate = { default-features = false, git = "https://github.com/swrge/randy-validate", package = "randy-validate", version = "0.1.0" }
+randy-validate = { default-features = false, git = "https://github.com/swrge/randy-validate", package = "randy-validate", version = "0.1.0" }
 
 # Optional dependencies.
 brotli-decompressor = { default-features = false, features = ["std"], optional = true, version = "4" }

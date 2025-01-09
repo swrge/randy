@@ -10,7 +10,7 @@ use randy_model::{
     guild::Member,
     id::{marker::GuildMarker, Id},
 };
-use twilight_validate::request::{
+use randy_validate::request::{
     search_guild_members_limit as validate_search_guild_members_limit, ValidationError,
 };
 
@@ -48,7 +48,7 @@ struct SearchGuildMembersFields<'a> {
 /// Returns an error of type [`SearchGuildMembers`] if the limit is 0 or greater
 /// than 1000.
 ///
-/// [`SearchGuildMembers`]: twilight_validate::request::ValidationErrorType::SearchGuildMembers
+/// [`SearchGuildMembers`]: randy_validate::request::ValidationErrorType::SearchGuildMembers
 #[must_use = "requests must be configured and executed"]
 pub struct SearchGuildMembers<'a> {
     fields: Result<SearchGuildMembersFields<'a>, ValidationError>,
@@ -74,7 +74,7 @@ impl<'a> SearchGuildMembers<'a> {
     /// Returns an error of type [`SearchGuildMembers`] if the limit is 0 or
     /// greater than 1000.
     ///
-    /// [`SearchGuildMembers`]: twilight_validate::request::ValidationErrorType::SearchGuildMembers
+    /// [`SearchGuildMembers`]: randy_validate::request::ValidationErrorType::SearchGuildMembers
     pub fn limit(mut self, limit: u16) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_search_guild_members_limit(limit)?;

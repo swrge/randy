@@ -14,7 +14,7 @@ use randy_model::{
         Id,
     },
 };
-use twilight_validate::request::{
+use randy_validate::request::{
     audit_reason as validate_audit_reason, invite_max_age as validate_invite_max_age,
     invite_max_uses as validate_invite_max_uses, ValidationError,
 };
@@ -116,7 +116,7 @@ impl<'a> CreateInvite<'a> {
     ///
     /// Returns an error of type [`InviteMaxAge`] if the age is invalid.
     ///
-    /// [`InviteMaxAge`]: twilight_validate::request::ValidationErrorType::InviteMaxAge
+    /// [`InviteMaxAge`]: randy_validate::request::ValidationErrorType::InviteMaxAge
     pub fn max_age(mut self, max_age: u32) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_invite_max_age(max_age)?;
@@ -159,7 +159,7 @@ impl<'a> CreateInvite<'a> {
     ///
     /// Returns an error of type [`InviteMaxUses`] if the uses is invalid.
     ///
-    /// [`InviteMaxUses`]: twilight_validate::request::ValidationErrorType::InviteMaxUses
+    /// [`InviteMaxUses`]: randy_validate::request::ValidationErrorType::InviteMaxUses
     pub fn max_uses(mut self, max_uses: u16) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_invite_max_uses(max_uses)?;

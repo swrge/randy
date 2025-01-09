@@ -15,7 +15,7 @@ use crate::{
     Client, Error, Response,
 };
 
-use twilight_validate::request::{
+use randy_validate::request::{
     get_entitlements_limit as validate_get_entitlements_limit, ValidationError,
 };
 
@@ -91,7 +91,7 @@ impl<'a> GetEntitlements<'a> {
     /// Returns a [`GetEntitlementsError`] error type if the amount
     /// is less than 1 or greater than 100.
     ///
-    /// [`GetEntitlementsError`]: twilight_validate::request::ValidationErrorType::GetEntitlements
+    /// [`GetEntitlementsError`]: randy_validate::request::ValidationErrorType::GetEntitlements
     pub fn limit(mut self, limit: u8) -> Result<Self, ValidationError> {
         validate_get_entitlements_limit(limit)?;
 

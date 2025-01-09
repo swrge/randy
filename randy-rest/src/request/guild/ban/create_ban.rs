@@ -11,7 +11,7 @@ use randy_model::id::{
     marker::{GuildMarker, UserMarker},
     Id,
 };
-use twilight_validate::request::{
+use randy_validate::request::{
     audit_reason as validate_audit_reason,
     create_guild_ban_delete_message_seconds as validate_create_guild_ban_delete_message_seconds,
     ValidationError,
@@ -83,7 +83,7 @@ impl<'a> CreateBan<'a> {
     /// Returns an error of type [`CreateGuildBanDeleteMessageSeconds`] if the
     /// number of seconds is greater than `604_800` (this is equivalent to `7` days).
     ///
-    /// [`CreateGuildBanDeleteMessageSeconds`]: twilight_validate::request::ValidationErrorType::CreateGuildBanDeleteMessageSeconds
+    /// [`CreateGuildBanDeleteMessageSeconds`]: randy_validate::request::ValidationErrorType::CreateGuildBanDeleteMessageSeconds
     pub fn delete_message_seconds(mut self, seconds: u32) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_create_guild_ban_delete_message_seconds(seconds)?;

@@ -13,7 +13,7 @@ use randy_model::{
         Id,
     },
 };
-use twilight_validate::request::{
+use randy_validate::request::{
     get_guild_bans_limit as validate_get_guild_bans_limit, ValidationError,
 };
 
@@ -108,7 +108,7 @@ impl<'a> GetBans<'a> {
     ///
     /// Returns an error of type [`GetGuildBans`] if the limit is invalid.
     ///
-    /// [`GetGuildBans`]: twilight_validate::request::ValidationErrorType::GetGuildBans
+    /// [`GetGuildBans`]: randy_validate::request::ValidationErrorType::GetGuildBans
     pub fn limit(mut self, limit: u16) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_get_guild_bans_limit(limit)?;

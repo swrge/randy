@@ -11,7 +11,7 @@ use randy_model::{
     guild::MfaLevel,
     id::{marker::GuildMarker, Id},
 };
-use twilight_validate::request::{audit_reason as validate_audit_reason, ValidationError};
+use randy_validate::request::{audit_reason as validate_audit_reason, ValidationError};
 
 #[derive(Serialize)]
 struct UpdateGuildMfaFields {

@@ -13,7 +13,7 @@ use randy_model::{
         Id,
     },
 };
-use twilight_validate::request::{
+use randy_validate::request::{
     get_guild_members_limit as validate_get_guild_members_limit, ValidationError,
 };
 
@@ -85,7 +85,7 @@ impl<'a> GetGuildMembers<'a> {
     /// Returns an error of type [`GetGuildMembers`] if the limit is 0 or
     /// greater than 1000.
     ///
-    /// [`GetGuildMembers`]: twilight_validate::request::ValidationErrorType::GetGuildMembers
+    /// [`GetGuildMembers`]: randy_validate::request::ValidationErrorType::GetGuildMembers
     pub fn limit(mut self, limit: u16) -> Self {
         self.fields = self.fields.and_then(|mut fields| {
             validate_get_guild_members_limit(limit)?;

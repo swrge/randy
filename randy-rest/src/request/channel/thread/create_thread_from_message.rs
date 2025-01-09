@@ -14,7 +14,7 @@ use randy_model::{
         Id,
     },
 };
-use twilight_validate::channel::{name as validate_name, ChannelValidationError};
+use randy_validate::channel::{name as validate_name, ChannelValidationError};
 
 #[derive(Serialize)]
 struct CreateThreadFromMessageFields<'a> {

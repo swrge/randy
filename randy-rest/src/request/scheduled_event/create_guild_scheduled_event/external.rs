@@ -11,7 +11,7 @@ use randy_model::{
     guild::scheduled_event::{EntityType, GuildScheduledEvent},
     util::Timestamp,
 };
-use twilight_validate::request::{
+use randy_validate::request::{
     audit_reason as validate_audit_reason,
     scheduled_event_description as validate_scheduled_event_description,
 };
@@ -52,7 +52,7 @@ impl<'a> CreateGuildExternalScheduledEvent<'a> {
     /// Returns an error of type [`ScheduledEventDescription`] if the
     /// description is invalid.
     ///
-    /// [`ScheduledEventDescription`]: twilight_validate::request::ValidationErrorType::ScheduledEventDescription
+    /// [`ScheduledEventDescription`]: randy_validate::request::ValidationErrorType::ScheduledEventDescription
     pub fn description(mut self, description: &'a str) -> Self {
         self.0.fields = self.0.fields.and_then(|mut fields| {
             validate_scheduled_event_description(description)?;

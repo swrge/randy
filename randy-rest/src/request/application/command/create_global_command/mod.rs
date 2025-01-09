@@ -43,9 +43,9 @@ impl<'a> CreateGlobalCommand<'a> {
     /// Returns an error of type [`DescriptionInvalid`] if the
     /// command description is not between 1 and 100 characters.
     ///
-    /// [`DescriptionInvalid`]: twilight_validate::command::CommandValidationErrorType::DescriptionInvalid
-    /// [`NameCharacterInvalid`]: twilight_validate::command::CommandValidationErrorType::NameCharacterInvalid
-    /// [`NameLengthInvalid`]: twilight_validate::command::CommandValidationErrorType::NameLengthInvalid
+    /// [`DescriptionInvalid`]: randy_validate::command::CommandValidationErrorType::DescriptionInvalid
+    /// [`NameCharacterInvalid`]: randy_validate::command::CommandValidationErrorType::NameCharacterInvalid
+    /// [`NameLengthInvalid`]: randy_validate::command::CommandValidationErrorType::NameLengthInvalid
     /// [Discord Docs/Create Global Application Command]: https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
     pub fn chat_input(
         self,
@@ -66,7 +66,7 @@ impl<'a> CreateGlobalCommand<'a> {
     /// Returns an error of type [`NameLengthInvalid`] if the command name is
     /// not between 1 and 32 characters.
     ///
-    /// [`NameLengthInvalid`]: twilight_validate::command::CommandValidationErrorType::NameLengthInvalid
+    /// [`NameLengthInvalid`]: randy_validate::command::CommandValidationErrorType::NameLengthInvalid
     /// [Discord Docs/Create Global Application Command]: https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
     pub fn message(self, name: &'a str) -> CreateGlobalMessageCommand<'a> {
         CreateGlobalMessageCommand::new(self.http, self.application_id, name)
@@ -83,7 +83,7 @@ impl<'a> CreateGlobalCommand<'a> {
     /// Returns an error of type [`NameLengthInvalid`] if the command name is
     /// not between 1 and 32 characters.
     ///
-    /// [`NameLengthInvalid`]: twilight_validate::command::CommandValidationErrorType::NameLengthInvalid
+    /// [`NameLengthInvalid`]: randy_validate::command::CommandValidationErrorType::NameLengthInvalid
     /// [Discord Docs/Create Global Application Command]: https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
     pub fn user(self, name: &'a str) -> CreateGlobalUserCommand<'a> {
         CreateGlobalUserCommand::new(self.http, self.application_id, name)

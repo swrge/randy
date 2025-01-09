@@ -10,7 +10,7 @@ use randy_model::id::{
     marker::{EmojiMarker, GuildMarker},
     Id,
 };
-use twilight_validate::request::{audit_reason as validate_audit_reason, ValidationError};
+use randy_validate::request::{audit_reason as validate_audit_reason, ValidationError};
 
 /// Delete an emoji in a guild, by id.
 #[must_use = "requests must be configured and executed"]

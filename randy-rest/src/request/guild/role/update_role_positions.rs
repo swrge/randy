@@ -10,7 +10,7 @@ use randy_model::{
     guild::{Role, RolePosition},
     id::{marker::GuildMarker, Id},
 };
-use twilight_validate::request::{audit_reason as validate_audit_reason, ValidationError};
+use randy_validate::request::{audit_reason as validate_audit_reason, ValidationError};
 
 /// Modify the position of the roles.
 ///
