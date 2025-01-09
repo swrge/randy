@@ -1565,7 +1565,7 @@ dependencies = [
  "randy-model 0.1.0 (git+https://github.com/swrge/randy-model)",
  "randy-ratelimiting",
  "randy-tools 0.1.0 (git+https://github.com/swrge/randy-tools)",
- "randy-validate",
+ "randy-validate 0.1.0 (git+https://github.com/swrge/randy-validate)",
  "rustls",
  "serde",
  "serde_json",
@@ -1589,7 +1589,7 @@ dependencies = [
  "percent-encoding",
  "randy-model 0.1.0 (git+https://github.com/swrge/randy-model)",
  "randy-ratelimiting",
- "randy-validate",
+ "randy-validate 0.1.0 (git+https://github.com/swrge/randy-validate)",
  "serde",
  "serde_json",
  "tokio",
@@ -1618,7 +1618,7 @@ version = "0.1.0"
 dependencies = [
  "chrono",
  "randy-model 0.1.0 (git+https://github.com/swrge/randy-model)",
- "randy-validate",
+ "randy-validate 0.1.0 (git+https://github.com/swrge/randy-validate)",
  "static_assertions",
  "time",
 ]
@@ -1629,7 +1629,15 @@ version = "0.1.0"
 source = "git+https://github.com/swrge/randy-tools#c4963b15b98b2cb9878ec975b41fe2e87251c6b7"
 dependencies = [
  "randy-model 0.1.0 (git+https://github.com/swrge/randy-model)",
- "randy-validate",
+ "randy-validate 0.1.0 (git+https://github.com/swrge/randy-validate)",
+]
+
+[[package]]
+name = "randy-validate"
+version = "0.1.0"
+dependencies = [
+ "randy-model 0.1.0 (git+https://github.com/swrge/randy-model)",
+ "static_assertions",
 ]
 
 [[package]]
