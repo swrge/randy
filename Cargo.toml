@@ -3,3 +3,10 @@ resolver = "2"
 members = [
     "randy-storage","randy-rest", "randy-model", "randy-gateway", "randy-tools", "randy-validate", "randy-ratelimiting"
 ]
+
+[workspace.package]
+name = "randy"
+authors = ["swrge"]
+edition = "2021"
+rust-version = "1.84.0"
+license = "ISC"

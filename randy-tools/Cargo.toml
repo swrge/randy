@@ -2,19 +2,15 @@
 #resolver = "2"
 
 [package]
-authors = ["swrge"]
-description = "Miscellaneous utilities for Twilight."
-edition = "2021"
-homepage = "https://twilight.rs"
-include = ["/src"]
-keywords = ["discord", "discord-api", "twilight"]
-license = "MIT"
 name = "randy-tools"
-publish = true
+description = "Miscellaneous utilities for randy."
 repository = "https://github.com/swrge/randy-tools"
-rust-version = "1.84.0"
-
 version = "0.1.0"
+include = ["/src"]
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
 
 [dependencies]
 randy-model = { default-features = false, optional = true, git = "https://github.com/swrge/randy-model", version = "0.1.0", package = "randy-model" }

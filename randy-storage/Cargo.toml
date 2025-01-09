@@ -2,18 +2,15 @@
 #resolver = "2"
 
 [package]
-authors = ["swrge"]
-categories = ["caching"]
-description = "In-process-memory based cache for the Twilight ecosystem."
-edition = "2021"
-homepage = "https://twilight.rs/chapter_1_crates/section_4_cache_inmemory.html"
-include = ["/src"]
-keywords = ["discord", "discord-api", "twilight"]
-license = "MIT"
 name = "randy-storage"
+description = "Optimized storage and cache for randy."
 repository = "https://github.com/swrge/randy-storage"
-rust-version = "1.84.0"
 version = "0.1.0"
+include = ["/src"]
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
 
 [dependencies]
 bitflags = { default-features = false, version = "2" }

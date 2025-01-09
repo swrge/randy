@@ -2,17 +2,15 @@
 #resolver = "2"
 
 [package]
-authors = ["swrge"]
-edition = "2021"
-include = ["/src"]
-license = "MIT"
-rust-version = "1.84.0"
-description = "Discord API models for the Twilight ecosystem."
-homepage = "https://twilight.rs/chapter_1_crates/section_1-model.html"
-keywords = ["discord", "discord-api", "twilight"]
 name = "randy-model"
+description = "Discord API models for randy."
 repository = "https://github.com/swrge/randy-model"
 version = "0.1.0"
+include = ["/src"]
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
 
 [dependencies]
 bitflags = { default-features = false, version = "2" }

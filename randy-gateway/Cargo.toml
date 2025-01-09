@@ -2,18 +2,15 @@
 #resolver = "2"
 
 [package]
-authors = ["swrge"]
-edition = "2021"
-include = ["/src"]
-license = "MIT"
-rust-version = "1.84.0"
-categories = ["api-bindings", "asynchronous", "web-programming::websocket"]
-description = "Discord Gateway implementation for the Twilight ecosystem."
-homepage = "https://twilight.rs/chapter_1_crates/section_3_gateway.html"
-keywords = ["discord", "discord-api", "twilight"]
 name = "randy-gateway"
+description = "Gateway implementation for randy."
 repository = "https://github.com/swrge/randy-gateway"
 version = "0.1.0"
+include = ["/src"]
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
 
 [dependencies]
 bitflags = { default-features = false, version = "2" }
