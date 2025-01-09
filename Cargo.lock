@@ -1542,6 +1542,17 @@ dependencies = [
 [[package]]
 name = "randy-ratelimiting"
 version = "0.1.0"
+dependencies = [
+ "criterion",
+ "http",
+ "static_assertions",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "randy-ratelimiting"
+version = "0.1.0"
 source = "git+https://github.com/swrge/randy-ratelimiting#3d55bd23f3a35407c2dc447d42a20bbb729014e4"
 dependencies = [
  "tokio",
@@ -1563,7 +1574,7 @@ dependencies = [
  "hyper-util",
  "percent-encoding",
  "randy-model 0.1.0 (git+https://github.com/swrge/randy-model)",
- "randy-ratelimiting",
+ "randy-ratelimiting 0.1.0 (git+https://github.com/swrge/randy-ratelimiting)",
  "randy-tools 0.1.0 (git+https://github.com/swrge/randy-tools)",
  "randy-validate 0.1.0 (git+https://github.com/swrge/randy-validate)",
  "rustls",
@@ -1588,7 +1599,7 @@ dependencies = [
  "hyper-util",
  "percent-encoding",
  "randy-model 0.1.0 (git+https://github.com/swrge/randy-model)",
- "randy-ratelimiting",
+ "randy-ratelimiting 0.1.0 (git+https://github.com/swrge/randy-ratelimiting)",
  "randy-validate 0.1.0 (git+https://github.com/swrge/randy-validate)",
  "serde",
  "serde_json",
