@@ -5,10 +5,10 @@ use crate::{
     response::{Response, ResponseFuture},
     routing::Route,
 };
-use std::future::IntoFuture;
 use randy_model::oauth::CurrentAuthorizationInformation;
+use std::future::IntoFuture;
 
-/// Retrieve information about the current OAuth2 authorization.
+/// Retrieve information about the current `OAuth2` authorization.
 ///
 /// Returns the application's, authorization's, and if applicable the user's
 /// details.

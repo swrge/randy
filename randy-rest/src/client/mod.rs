@@ -104,17 +104,6 @@ use http::header::{
 use http_body_util::Full;
 use hyper::body::Bytes;
 use hyper_util::client::legacy::Client as HyperClient;
-use std::{
-    fmt::{Debug, Formatter, Result as FmtResult},
-    ops::Deref,
-    sync::{
-        atomic::{AtomicBool, Ordering},
-        Arc,
-    },
-    time::Duration,
-};
-use tokio::time;
-use twilight_http_ratelimiting::Ratelimiter;
 use randy_model::{
     channel::{message::AllowedMentions, ChannelType},
     guild::{
@@ -131,6 +120,17 @@ use randy_model::{
         Id,
     },
 };
+use std::{
+    fmt::{Debug, Formatter, Result as FmtResult},
+    ops::Deref,
+    sync::{
+        atomic::{AtomicBool, Ordering},
+        Arc,
+    },
+    time::Duration,
+};
+use tokio::time;
+use twilight_http_ratelimiting::Ratelimiter;
 
 const TWILIGHT_USER_AGENT: &str = concat!(
     "DiscordBot (",
@@ -179,7 +179,7 @@ impl Deref for Token {
 /// HTTP interaction requests may be accessed via the [`Client::interaction`]
 /// method.
 ///
-/// # OAuth2
+/// # `OAuth2`
 ///
 /// To use Bearer tokens prefix the token with `"Bearer "`, including the space
 /// at the end like so:
@@ -698,7 +698,7 @@ impl Client {
         GetCurrentUserGuildMember::new(self, guild_id)
     }
 
-    /// Get information about the current OAuth2 authorization.
+    /// Get information about the current `OAuth2` authorization.
     pub const fn current_authorization(&self) -> GetCurrentAuthorizationInformation<'_> {
         GetCurrentAuthorizationInformation::new(self)
     }

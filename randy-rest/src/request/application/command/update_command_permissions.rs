@@ -5,8 +5,6 @@ use crate::{
     response::{marker::ListBody, Response, ResponseFuture},
     routing::Route,
 };
-use serde::Serialize;
-use std::future::IntoFuture;
 use randy_model::{
     application::command::permissions::CommandPermission,
     id::{
@@ -17,6 +15,8 @@ use randy_model::{
 use randy_validate::command::{
     guild_permissions as validate_guild_permissions, CommandValidationError,
 };
+use serde::Serialize;
+use std::future::IntoFuture;
 
 #[derive(Serialize)]
 struct UpdateCommandPermissionsFields<'a> {
@@ -28,7 +28,7 @@ struct UpdateCommandPermissionsFields<'a> {
 /// Note that this overwrites the command permissions, so the full set of
 /// permissions has to be sent every time.
 ///
-/// This request requires that the client was configured with an OAuth2 Bearer
+/// This request requires that the client was configured with an `OAuth2` Bearer
 /// token.
 #[must_use = "requests must be configured and executed"]
 pub struct UpdateCommandPermissions<'a> {

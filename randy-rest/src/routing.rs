@@ -5,11 +5,11 @@ use crate::{
     query_formatter::{QueryArray, QueryStringFormatter},
     request::{channel::reaction::RequestReactionType, Method},
 };
-use std::fmt::{Display, Formatter, Result as FmtResult};
 use randy_model::id::{
     marker::{RoleMarker, SkuMarker},
     Id,
 };
+use std::fmt::{Display, Formatter, Result as FmtResult};
 
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 #[non_exhaustive]
@@ -491,7 +491,7 @@ pub enum Route<'a> {
         /// The ID of the guild.
         guild_id: u64,
     },
-    /// Route information to get the current OAuth2 authorization information.
+    /// Route information to get the current `OAuth2` authorization information.
     GetCurrentAuthorizationInformation,
     /// Route information to get the current user.
     GetCurrentUser,
