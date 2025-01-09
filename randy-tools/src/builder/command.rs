@@ -57,7 +57,7 @@ use randy_model::{
     id::{marker::GuildMarker, Id},
     oauth::ApplicationIntegrationType,
 };
-use twilight_validate::command::{command as validate_command, CommandValidationError};
+use randy_validate::command::{command as validate_command, CommandValidationError};
 
 /// Builder to create a [`Command`].
 #[derive(Clone, Debug)]
@@ -99,7 +99,7 @@ impl CommandBuilder {
     ///
     /// # Errors
     ///
-    /// Refer to the errors section of [`twilight_validate::command::command`]
+    /// Refer to the errors section of [`randy_validate::command::command`]
     /// for possible errors.
     pub fn validate(self) -> Result<Self, CommandValidationError> {
         validate_command(&self.0)?;

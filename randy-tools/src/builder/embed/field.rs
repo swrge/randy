@@ -23,8 +23,8 @@ impl EmbedFieldBuilder {
     /// Refer to [`FIELD_VALUE_LENGTH`] for the maximum number of UTF-16 code
     /// points that can be in a field value.
     ///
-    /// [`FIELD_NAME_LENGTH`]: twilight_validate::embed::FIELD_NAME_LENGTH
-    /// [`FIELD_VALUE_LENGTH`]: twilight_validate::embed::FIELD_VALUE_LENGTH
+    /// [`FIELD_NAME_LENGTH`]: randy_validate::embed::FIELD_NAME_LENGTH
+    /// [`FIELD_VALUE_LENGTH`]: randy_validate::embed::FIELD_VALUE_LENGTH
     pub fn new(name: impl Into<String>, value: impl Into<String>) -> Self {
         Self(EmbedField {
             inline: false,

@@ -18,7 +18,7 @@ impl EmbedFooterBuilder {
     /// Refer to [`FOOTER_TEXT_LENGTH`] for the maximum number of UTF-16 code
     /// points that can be in a footer's text.
     ///
-    /// [`FOOTER_TEXT_LENGTH`]: twilight_validate::embed::FOOTER_TEXT_LENGTH
+    /// [`FOOTER_TEXT_LENGTH`]: randy_validate::embed::FOOTER_TEXT_LENGTH
     pub fn new(text: impl Into<String>) -> Self {
         Self(EmbedFooter {
             icon_url: None,

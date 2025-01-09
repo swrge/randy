@@ -17,7 +17,7 @@ use randy_model::{
     },
     util::Timestamp,
 };
-use twilight_validate::embed::{embed as validate_embed, EmbedValidationError};
+use randy_validate::embed::{embed as validate_embed, EmbedValidationError};
 
 /// Create an [`Embed`] with a builder.
 ///
@@ -89,7 +89,7 @@ impl EmbedBuilder {
     ///
     /// # Errors
     ///
-    /// Refer to the documentation of [`twilight_validate::embed::embed`] for
+    /// Refer to the documentation of [`randy_validate::embed::embed`] for
     /// possible errors.
     pub fn validate(self) -> Result<Self, EmbedValidationError> {
         #[allow(clippy::question_mark)]
@@ -144,7 +144,7 @@ impl EmbedBuilder {
     /// # Ok(()) }
     /// ```
     ///
-    /// [`COLOR_MAXIMUM`]: twilight_validate::embed::COLOR_MAXIMUM
+    /// [`COLOR_MAXIMUM`]: randy_validate::embed::COLOR_MAXIMUM
     pub const fn color(mut self, color: u32) -> Self {
         self.0.color = Some(color);
 
@@ -169,7 +169,7 @@ impl EmbedBuilder {
     /// # Ok(()) }
     /// ```
     ///
-    /// [`DESCRIPTION_LENGTH`]: twilight_validate::embed::DESCRIPTION_LENGTH
+    /// [`DESCRIPTION_LENGTH`]: randy_validate::embed::DESCRIPTION_LENGTH
     pub fn description(mut self, description: impl Into<String>) -> Self {
         self.0.description = Some(description.into());
 
@@ -307,7 +307,7 @@ impl EmbedBuilder {
     /// # Ok(()) }
     /// ```
     ///
-    /// [`TITLE_LENGTH`]: twilight_validate::embed::TITLE_LENGTH
+    /// [`TITLE_LENGTH`]: randy_validate::embed::TITLE_LENGTH
     pub fn title(mut self, title: impl Into<String>) -> Self {
         self.0.title = Some(title.into());
 
