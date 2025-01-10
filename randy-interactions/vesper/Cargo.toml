@@ -1,0 +1,42 @@
+[package]
+name = "vesper"
+version = "0.13.0"
+authors = ["Alvaro <62391364+AlvaroMS25@users.noreply.github.com>"]
+edition = "2018"
+description = "A slash-command framework meant to be used with twilight"
+readme = "README.md"
+repository = "https://github.com/AlvaroMS25/vesper"
+license = "MIT"
+keywords = ["async", "twilight", "discord", "slash-command"]
+categories = ["asynchronous"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[dependencies]
+async-trait = "0.1"
+vesper-macros = { path = "../vesper-macros", version = "0.13" }
+parking_lot = "0.12"
+tracing = "0.1"
+twilight-http = { version =  "0.16.0-rc.1", default-features = false }
+twilight-model = "0.16.0-rc.1"
+twilight-validate = "0.16.0-rc.1"
+thiserror = "1"
+
+# feature: bulk
+twilight-util = { version = "0.16.0-rc.1", features = ["builder"], optional = true }
+
+[dependencies.tokio]
+version = "1"
+default-features = false
+features = ["sync"]
+
+[features]
+bulk = ["dep:twilight-util"]
+
+[dev-dependencies]
+futures = "0.3"
+tokio = { version = "1", features = ["full"] }

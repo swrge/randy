@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "examples",
+    "vesper",
+    "vesper-macros"
+]
+resolver = "2"
