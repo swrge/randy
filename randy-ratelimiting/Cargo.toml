@@ -7,10 +7,11 @@ description = "Discord REST API ratelimiter implementations for randy."
 repository = "https://github.com/swrge/randy-ratelimiting"
 version = "0.1.0"
 include = ["/src"]
-authors.workspace = true
-edition.workspace = true
-license.workspace = true
-rust-version.workspace = true
+authors = ["swrge", "Twilight Contributors"]
+edition = "2021"
+rust-version = "1.84.0"
+license = "ISC"
+
 
 [dependencies]
 tokio = { version = "1", default-features = false, features = ["rt", "sync", "time"] }

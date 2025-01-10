@@ -11,10 +11,10 @@ members = [
     "randy-ratelimiting"
 ]
 
-[workspace.package]
-name = "randy"
-description = "randombot's second coming"
-authors = ["swrge", "Twilight Contributors"]
-edition = "2021"
-rust-version = "1.84.0"
-license = "ISC"
+#[workspace.package]
+#name = "randy"
+#description = "randombot's second coming"
+#authors = ["swrge", "Twilight Contributors"]
+#edition = '2021'
+#rust-version = "1.84.0"
+#license = "ISC"

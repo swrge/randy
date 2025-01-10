@@ -7,10 +7,11 @@ description = "Discord REST API client for randy."
 repository = "https://github.com/swrge/randy-rest"
 version = "0.1.0"
 include = ["/src"]
-authors.workspace = true
-edition.workspace = true
-license.workspace = true
-rust-version.workspace = true
+authors = ["swrge", "Twilight Contributors"]
+edition = "2021"
+rust-version = "1.84.0"
+license = "ISC"
+
 
 [dependencies]
 fastrand = { default-features = false, features = ["std"], version = "2" }
