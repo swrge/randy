@@ -1,2 +1,4 @@
 target/
 Cargo.lock
+randy-interactions
+update-all.sh

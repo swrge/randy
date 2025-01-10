@@ -171,9 +171,9 @@ dependencies = [
 
 [[package]]
 name = "bitflags"
-version = "2.6.0"
+version = "2.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b048fb63fd8b5923fc5aa7b340d8e156aec7ec02f0c78fa8a6ddc2613f6f71de"
+checksum = "1be3f42a67d6d345ecd59f675f3f012d6974981560836e938c22b424b85ce1be"
 
 [[package]]
 name = "brotli-decompressor"
@@ -290,18 +290,18 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.5.24"
+version = "4.5.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9560b07a799281c7e0958b9296854d6fafd4c5f31444a7e5bb1ad6dde5ccf1bd"
+checksum = "a8eb5e908ef3a6efbe1ed62520fb7287959888c88485abe072543190ecc66783"
 dependencies = [
  "clap_builder",
 ]
 
 [[package]]
 name = "clap_builder"
-version = "4.5.24"
+version = "4.5.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "874e0dd3eb68bf99058751ac9712f622e61e6f393a94f7128fa26e3f02f5c7cd"
+checksum = "96b01801b5fc6a0a232407abc821660c9c6d25a1cafc0d4f85f29fb8d9afc121"
 dependencies = [
  "anstyle",
  "clap_lex",
@@ -1497,7 +1497,7 @@ dependencies = [
 [[package]]
 name = "randy-gateway"
 version = "0.1.0"
-source = "git+https://github.com/swrge/randy-gateway#2d636e36d3011d4df98881ab6bbb3ca0dd54952d"
+source = "git+https://github.com/swrge/randy-gateway#544ab6fc49ff8e85b1bbb34cc6b667d6eb3ebdd1"
 dependencies = [
  "bitflags",
  "fastrand",
@@ -1530,7 +1530,7 @@ dependencies = [
 [[package]]
 name = "randy-model"
 version = "0.1.0"
-source = "git+https://github.com/swrge/randy-model#089d28653cfbea6afc080a41ce7c3486b83e67c1"
+source = "git+https://github.com/swrge/randy-model#44e90b02867ee62efde702cbb66be3841a1a22bc"
 dependencies = [
  "bitflags",
  "serde",
@@ -1553,7 +1553,7 @@ dependencies = [
 [[package]]
 name = "randy-ratelimiting"
 version = "0.1.0"
-source = "git+https://github.com/swrge/randy-ratelimiting#3d55bd23f3a35407c2dc447d42a20bbb729014e4"
+source = "git+https://github.com/swrge/randy-ratelimiting#64b85739d2c0936180d464514aed9aa465b8c34e"
 dependencies = [
  "tokio",
  "tracing",
@@ -1590,7 +1590,7 @@ dependencies = [
 [[package]]
 name = "randy-rest"
 version = "0.1.0"
-source = "git+https://github.com/swrge/randy-rest#b705b3367c397b44bb9afae9ec58d2b7411fce7f"
+source = "git+https://github.com/swrge/randy-rest#515fa291f618b4974a88d811cf564295f9ac984f"
 dependencies = [
  "fastrand",
  "http",
@@ -1637,7 +1637,7 @@ dependencies = [
 [[package]]
 name = "randy-tools"
 version = "0.1.0"
-source = "git+https://github.com/swrge/randy-tools#c4963b15b98b2cb9878ec975b41fe2e87251c6b7"
+source = "git+https://github.com/swrge/randy-tools#f93e84a9f0f15fd01b1f752d271bf09fa8cba296"
 dependencies = [
  "randy-model 0.1.0 (git+https://github.com/swrge/randy-model)",
  "randy-validate 0.1.0 (git+https://github.com/swrge/randy-validate)",
@@ -1654,7 +1654,7 @@ dependencies = [
 [[package]]
 name = "randy-validate"
 version = "0.1.0"
-source = "git+https://github.com/swrge/randy-validate#990734a3aff93c7f946882cd51bcd0a591e76c27"
+source = "git+https://github.com/swrge/randy-validate#bf46e681817c5722e76501decf3e5e99eb829cb0"
 dependencies = [
  "randy-model 0.1.0 (git+https://github.com/swrge/randy-model)",
 ]
@@ -2050,9 +2050,9 @@ checksum = "13c2bddecc57b384dee18652358fb23172facb8a2c51ccc10d74c157bdea3292"
 
 [[package]]
 name = "syn"
-version = "2.0.95"
+version = "2.0.96"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "46f71c0377baf4ef1cc3e3402ded576dccc315800fbc62dfc7fe04b009773b4a"
+checksum = "d5d0adab1ae378d7f53bdebc67a39f1f151407ef230f0ce2883572f5d8985c80"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2182,9 +2182,9 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
 name = "tokio"
-version = "1.42.0"
+version = "1.43.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5cec9b21b0450273377fc97bd4c33a8acffc8c996c987a7c5b319a0083707551"
+checksum = "3d61fa4ffa3de412bfea335c6ecff681de2b609ba3c77ef3e00e521813a9ed9e"
 dependencies = [
  "backtrace",
  "bytes",
@@ -2198,9 +2198,9 @@ dependencies = [
 
 [[package]]
 name = "tokio-macros"
-version = "2.4.0"
+version = "2.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "693d596312e88961bc67d7f1f97af8a70227d9f90c31bba5806eec004978d752"
+checksum = "6e06d43f1345a3bcd39f6a56dbb7dcab2ba47e68e8ac134855e7e2bdbaf8cab8"
 dependencies = [
  "proc-macro2",
  "quote",
