@@ -51,6 +51,9 @@ use serde::{
     de::{Deserialize, Deserializer, Error as DeError, Unexpected, Visitor},
     ser::{Serialize, Serializer},
 };
+
+use rkyv::{Archive, Deserialize as RkyvDeser, Serialize as RkyvSer};
+
 use std::{
     any,
     cmp::Ordering,
@@ -76,6 +79,7 @@ use std::{
 /// [marker documentation]: marker
 /// [user]: marker::UserMarker
 #[repr(transparent)]
+#[derive(Archive, RkyvDeser, RkyvSer)]
 pub struct Id<T> {
     phantom: PhantomData<fn(T) -> T>,
     value: NonZeroU64,
