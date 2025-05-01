@@ -2,13 +2,15 @@
 resolver = "2"
 members = [
     # core-deps
-    "randy-storage",
-    "randy-rest",
+    #"randy-storage",
+    #"randy-rest",
     "randy-model",
     "randy-gateway",
     "randy-tools",
-    "randy-validate",
-    "randy-ratelimiting"
+    #"randy-validate",
+    #"randy-ratelimiting",
+    "bot-gateway",
+    "redlight",
 ]
 
 #[workspace.package]
