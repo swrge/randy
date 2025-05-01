@@ -19,7 +19,3 @@ anyhow = "1.0"
 futures-util = "0.3.31"
 futures = "0.3.31"
 reqwest = { version = "0.12", features = ["json"] }
-```
-
-```rust
-bot-gateway/src/main.rs

@@ -5,7 +5,8 @@ import (
 	"os"
 
 	"github.com/GoogleCloudPlatform/functions-framework-go/funcframework"
-	_ "github.com/swrge/bot-worker"
+	_ "github.com/swrge/bot-worker"         // Imports function package
+	_ "github.com/swrge/bot-worker/features" // Imports features package
 )
 
 func main() {
