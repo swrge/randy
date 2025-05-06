@@ -1,6 +1,6 @@
 module github.com/swrge/bot-worker
 
-go 1.23.6
+go 1.23
 
 require (
 	github.com/GoogleCloudPlatform/functions-framework-go v1.9.2

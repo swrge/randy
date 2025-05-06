@@ -1,6 +1,6 @@
 module github.com/swrge/bot-requester
 
-go 1.23.6
+go 1.23
 
 require (
 	github.com/andybalholm/brotli v1.1.1 // indirect
