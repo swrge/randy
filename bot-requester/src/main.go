@@ -15,6 +15,13 @@ import (
 
 func createHandlerFunc(bot *disgo.Client, config RouteConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		// Check if the Authorization header matches the bot's token
+		if authHeader := r.Header.Get("Authorization"); authHeader != bot.Authentication.Token {
+			log.Printf("Unauthorized request: Authorization header doesn't match bot token: %s", authHeader)
+			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			return
+		}
+
 		vars := mux.Vars(r)
 
 		// Capture query parameters
@@ -114,17 +121,18 @@ func main() {
 	}
 
 	// Initialize the Disgo client
-	config := new(disgo.Config)
-	config.Request = disgo.DefaultRequest()
 	bot := &disgo.Client{
 		Authentication: disgo.BotToken(TOKEN),
-		Config:         config,
+		Config: &disgo.Config{
+			Gateway: disgo.Gateway{}, // we dont use the gateway
+			Request: disgo.DefaultRequest(),
+		},
 	}
 
-	// Set up the router (todo: handle different api versions than v10 and default api route)
+	// Set up the router (note only supports v10)
 	router := mux.NewRouter()
 	for _, config := range routeConfigs {
-		routePath := DiscordURL + BaseURL + config.PathPattern
+		routePath := BaseURL + config.PathPattern
 		router.HandleFunc(routePath, createHandlerFunc(bot, config)).Methods(config.Method)
 		log.Printf("Registered route: %s %s", config.Method, routePath)
 	}
