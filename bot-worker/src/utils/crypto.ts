@@ -1,4 +1,7 @@
 // https://github.com/discord/discord-interactions-js/blob/main/src/util.ts
+
+import { webcrypto } from 'node:crypto';
+
 ///**
 // * Based on environment, get a reference to the Web Crypto API's SubtleCrypto interface.
 // * @returns An implementation of the Web Crypto API's SubtleCrypto interface.
@@ -82,4 +85,41 @@ export function concatUint8Arrays(arr1: Uint8Array, arr2: Uint8Array): Uint8Arra
   merged.set(arr1);
   merged.set(arr2, arr1.length);
   return merged;
+}
+
+export async function verifyKey(
+  rawBody: Uint8Array | ArrayBuffer | Buffer | string,
+  signature: string,
+  timestamp: string,
+  clientPublicKey: string | webcrypto.CryptoKey
+): Promise<boolean> {
+  try {
+    const timestampData = valueToUint8Array(timestamp);
+    const bodyData = valueToUint8Array(rawBody);
+    const message = concatUint8Arrays(timestampData, bodyData);
+    const publicKey =
+      typeof clientPublicKey === 'string'
+        ? await webcrypto.subtle.importKey(
+            'raw',
+            valueToUint8Array(clientPublicKey, 'hex'),
+            {
+              name: 'ed25519',
+              namedCurve: 'ed25519',
+            },
+            false,
+            ['verify']
+          )
+        : clientPublicKey;
+    const isValid = await webcrypto.subtle.verify(
+      {
+        name: 'ed25519',
+      },
+      publicKey,
+      valueToUint8Array(signature, 'hex'),
+      message
+    );
+    return isValid;
+  } catch (ex) {
+    return false;
+  }
 }

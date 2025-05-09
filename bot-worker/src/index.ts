@@ -5,55 +5,37 @@ import {
   InteractionTypes,
 } from '@discordeno/types';
 
-import { valueToUint8Array, concatUint8Arrays } from './utils/crypto';
-import { webcrypto } from 'node:crypto';
+import { verifyKey } from './utils/crypto';
+//import { PING } from './commands/ping';
 
-// Environment variables interface for type safety
+type CheckedInteraction = Promise<{
+  interaction: DiscordInteraction | null;
+  isValid: boolean;
+}>;
+
 interface Env {
   BOT_TOKEN: string;
   PUBLIC_KEY: string;
   APPLICATION_ID: string;
 }
 
-async function verifyKey(
-  rawBody: Uint8Array | ArrayBuffer | Buffer | string,
-  signature: string,
-  timestamp: string,
-  clientPublicKey: string | webcrypto.CryptoKey
-): Promise<boolean> {
-  try {
-    const timestampData = valueToUint8Array(timestamp);
-    const bodyData = valueToUint8Array(rawBody);
-    const message = concatUint8Arrays(timestampData, bodyData);
-    const publicKey =
-      typeof clientPublicKey === 'string'
-        ? await webcrypto.subtle.importKey(
-            'raw',
-            valueToUint8Array(clientPublicKey, 'hex'),
-            {
-              name: 'ed25519',
-              namedCurve: 'ed25519',
-            },
-            false,
-            ['verify']
-          )
-        : clientPublicKey;
-    const isValid = await webcrypto.subtle.verify(
-      {
-        name: 'ed25519',
+function unknownInteraction(): Response | PromiseLike<Response> {
+  return new Response(
+    JSON.stringify({
+      type: InteractionResponseTypes.ChannelMessageWithSource,
+      data: {
+        content: 'Unknown interaction type',
       },
-      publicKey,
-      valueToUint8Array(signature, 'hex'),
-      message
-    );
-    return isValid;
-  } catch (ex) {
-    return false;
-  }
+    }),
+    {
+      headers: { 'Content-Type': 'application/json' },
+      status: 400,
+    }
+  );
 }
 
 // Verify that the request is coming from Discord
-async function verifyDiscordRequest(request: Request, env: Env): Promise<boolean> {
+async function verifyDiscordRequest(request: Request, env: Env): CheckedInteraction {
   const signature = request.headers.get('x-signature-ed25519');
   const timestamp = request.headers.get('x-signature-timestamp');
   const body = await request.text();
@@ -62,7 +44,7 @@ async function verifyDiscordRequest(request: Request, env: Env): Promise<boolean
     signature && timestamp && (await verifyKey(body, signature, timestamp, env.PUBLIC_KEY));
 
   if (!isValidRequest) {
-    return { isValid: false };
+    return { interaction: null, isValid: false };
   }
 
   return { interaction: JSON.parse(body), isValid: true };
@@ -81,10 +63,9 @@ async function handleSlashCommand(interaction: DiscordInteraction): Promise<Resp
 
   // Check which command was invoked
   switch (data?.name) {
-    case pingCommand.name:
-      return createResponse(handlePingCommand(interaction));
+    //case PING.name:
+    //  return createResponse(handlePingCommand(interaction));
 
-    // Add more commands as needed
     default:
       return createResponse({
         type: InteractionResponseTypes.ChannelMessageWithSource,
@@ -98,30 +79,19 @@ async function handleSlashCommand(interaction: DiscordInteraction): Promise<Resp
 // Handle different types of interactions
 async function handleInteraction(interaction: DiscordInteraction): Promise<Response> {
   switch (interaction.type) {
+    // Discord sends a ping to validate the endpoint
     case InteractionTypes.Ping:
-      // Discord sends a ping to validate the endpoint
       return createResponse({
         type: InteractionResponseTypes.Pong,
       });
 
+    // Handle slash commands
     case InteractionTypes.ApplicationCommand:
-      // Handle slash commands
       return handleSlashCommand(interaction);
 
+    // Handle unknown interaction types
     default:
-      // Handle unknown interaction types
-      return new Response(
-        JSON.stringify({
-          type: InteractionResponseTypes.ChannelMessageWithSource,
-          data: {
-            content: 'Unknown interaction type',
-          },
-        }),
-        {
-          headers: { 'Content-Type': 'application/json' },
-          status: 400,
-        }
-      );
+      return unknownInteraction();
   }
 }
 
