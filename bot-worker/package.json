@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc",
     "format": "prettier --write '**/*.{ts,js,json}'",
+    "register": "node src/register.js",
     "lint": "eslint --ext .ts ./src",
     "dev": "wrangler dev",
     "deploy": "wrangler publish"
