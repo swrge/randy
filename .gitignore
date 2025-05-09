@@ -6,3 +6,4 @@ update-all.sh
 .env*
 vendor copy
 bot-gateway-bin
+old-*

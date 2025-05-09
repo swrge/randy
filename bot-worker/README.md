@@ -1,108 +1,120 @@
-# Bot Worker
+# Discord Bot Microservice on Cloudflare Workers
 
-A Discord bot implementation using Google Cloud Functions to handle Discord interactions and forward requests to the bot-requester service.
+A serverless Discord bot slash command handler built as a microservice using Cloudflare Workers, TypeScript, and Discordeno.
 
-## Project Structure
+## Features
 
-```
-randy/bot-worker/
-├── cmd/            # Entry point for local development
-│   └── main.go     # Local server startup code
-├── features/       # Command implementations and business logic
-│   ├── slash_commands.go    # Routing for slash commands
-│   └── weather_command.go   # Example weather command implementation 
-├── http/           # HTTP client for communication with bot-requester
-│   └── client.go   # HTTP wrapper for Discord API requests
-├── function.go     # Cloud Function entry point and verification
-├── helpers.go      # Utility functions for Discord interactions
-├── go.mod          # Go module definition
-└── go.sum          # Go dependencies checksum
-```
+- Handles Discord slash commands in a serverless environment
+- Built on Cloudflare Workers for high availability and edge computing
+- Written in TypeScript for type safety
+- Uses Discordeno API types for Discord interaction handling
+- Minimal dependencies for fast cold starts
+- Structured for easy command addition and maintenance
 
-## Architecture
+## Prerequisites
 
-This project consists of three main components:
+- [Node.js](https://nodejs.org/) (version 16+)
+- [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/install-and-update/) (Cloudflare Workers CLI)
+- A Discord bot with slash commands enabled
+- A Cloudflare account
 
-1. **Cloud Function Handler** (`function.go`): Handles incoming Discord interactions, verifies signatures, and routes to the appropriate handler.
+## Setup
 
-2. **Feature Handlers** (`features/`): Contains implementations for different commands and interaction types.
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd bot-worker2
+   ```
 
-3. **HTTP Client** (`http/`): Provides a client for communicating with the bot-requester service.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-## Adding New Commands
+3. Configure your Discord bot credentials:
+   ```bash
+   cp wrangler.toml.example wrangler.toml
+   # Edit wrangler.toml with your Discord Application ID and Public Key
+   ```
 
-1. Create a new handler function in an existing file or create a new file in the `features/` directory.
-
-2. Update the `HandleSlash` function in `features/slash_commands.go` to route to your new command:
-
-```go
-func HandleSlash(interaction disgo.Interaction, w http.ResponseWriter) {
-    var command = interaction.ApplicationCommand()
-    switch command.Name {
-    case "ping":
-        handlePing(interaction, w)
-    case "my-new-command":
-        handleMyNewCommand(interaction, w)
-    default:
-        // Default handler code...
-    }
-}
-```
-
-3. Implement your command handler function:
-
-```go
-func handleMyNewCommand(interaction disgo.Interaction, w http.ResponseWriter) {
-    // 1. Extract command options if needed
-    // 2. Send immediate response to Discord
-    // 3. (Optional) Perform additional processing asynchronously
-    // 4. (Optional) Forward requests to the bot-requester service
-}
-```
-
-## Environment Variables
-
-- `BOT_REQUESTER_URL`: URL of the bot-requester service (default: "http://localhost:8088")
-- `PORT`: Port to run the local server on (default: "8080")
-- `LOCAL_ONLY`: Set to "true" to only listen on localhost (for development)
+4. Add your bot token as a secret:
+   ```bash
+   wrangler secret put BOT_TOKEN
+   # Enter your Discord bot token when prompted
+   ```
 
 ## Development
 
-### Prerequisites
+1. Start the local development server:
+   ```bash
+   npm run dev
+   ```
 
-- Go 1.19 or later
-- Access to a Discord bot and its public key
+2. Use tools like [ngrok](https://ngrok.com/) to expose your local server to the internet:
+   ```bash
+   ngrok http 8787
+   ```
 
-### Running Locally
+3. Update your Discord application's interaction endpoint URL to your ngrok URL.
 
-1. Set up environment variables:
+## Command Structure
+
+Commands are stored in the `src/commands` directory. Each command is a module that exports:
+
+- A handler function that processes the interaction
+- Command registration metadata
+
+To add a new command:
+
+1. Create a new file in `src/commands/`
+2. Follow the pattern in `ping.ts`
+3. Import and add your command to the index.ts switch statement
+4. Add your command to the commands array in `register-commands.ts`
+
+## Registering Commands with Discord
+
+To register your commands with Discord:
+
+```bash
+# Create a registration script
+node -e "require('./dist/utils/register-commands.js').registerCommandsFromScript()"
 ```
-export BOT_REQUESTER_URL=http://localhost:8088
-export LOCAL_ONLY=true
-export PORT=8080
+
+For development, register to a specific guild for instant updates:
+
+```bash
+TEST_GUILD_ID=your_guild_id node -e "require('./dist/utils/register-commands.js').registerCommandsFromScript()"
 ```
 
-2. Run the server:
-```
-cd cmd
-go run main.go
-```
+## Deployment
 
-3. Expose your local server (using ngrok or similar) to receive Discord interactions.
+Deploy to Cloudflare Workers:
 
-### Deploying to Google Cloud Functions
-
-1. Build the function:
-```
-gcloud functions deploy DiscordInteraction \
-  --runtime go119 \
-  --trigger-http \
-  --allow-unauthenticated
+```bash
+npm run deploy
 ```
 
-2. Set up Discord to send interactions to your deployed function URL.
+After deployment, update your Discord application's interaction endpoint URL to your worker's URL.
 
-## Security
+## Security Considerations
 
-- The `function.go` file contains signature verification to ensure requests are genuinely from Discord.
-- Replace the placeholder public key in `function.go` with your actual Discord application public key.
+- This project includes a placeholder for Discord interaction verification
+- In production, implement proper request signature verification using Discord's public key
+- All sensitive information should be stored as Cloudflare Worker secrets
+- Review Cloudflare's security best practices
+
+## Architecture
+
+```
+bot-worker2/
+├── src/
+│   ├── commands/        # Command definitions and handlers
+│   ├── utils/           # Utility functions
+│   └── index.ts         # Main worker entry point
+├── wrangler.toml        # Cloudflare Worker configuration
+└── tsconfig.json        # TypeScript configuration
+```
+
+## License
+
+MIT

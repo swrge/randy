@@ -3,5 +3,4 @@ go 1.23
 use (
 	./vendor/disgo
 	./bot-requester
-	./bot-worker
 )
