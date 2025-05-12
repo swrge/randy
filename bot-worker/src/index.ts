@@ -6,7 +6,9 @@ import {
 } from '@discordeno/types';
 
 import { verifyKey } from './utils/crypto';
-//import { PING } from './commands/ping';
+import { Bot, createBot, Interaction } from '@discordeno/bot';
+import { PING } from './commands/ping';
+import * as response from './response';
 
 type CheckedInteraction = Promise<{
   interaction: DiscordInteraction | null;
@@ -15,23 +17,10 @@ type CheckedInteraction = Promise<{
 
 interface Env {
   BOT_TOKEN: string;
+  GATEWAY_URL: string;
+  REQUESTER_URL: string;
   PUBLIC_KEY: string;
   APPLICATION_ID: string;
-}
-
-function unknownInteraction(): Response | PromiseLike<Response> {
-  return new Response(
-    JSON.stringify({
-      type: InteractionResponseTypes.ChannelMessageWithSource,
-      data: {
-        content: 'Unknown interaction type',
-      },
-    }),
-    {
-      headers: { 'Content-Type': 'application/json' },
-      status: 400,
-    }
-  );
 }
 
 // Verify that the request is coming from Discord
@@ -58,13 +47,11 @@ function createResponse(response: InteractionResponse): Response {
 }
 
 // Handle Discord slash commands
-async function handleSlashCommand(interaction: DiscordInteraction): Promise<Response> {
-  const { data } = interaction;
-
+async function handleSlashCommand(i: Interaction): Promise<Response> {
   // Check which command was invoked
-  switch (data?.name) {
-    //case PING.name:
-    //  return createResponse(handlePingCommand(interaction));
+  switch (i.data?.name) {
+    case PING.name:
+      return PING.execute(i);
 
     default:
       return createResponse({
@@ -77,8 +64,8 @@ async function handleSlashCommand(interaction: DiscordInteraction): Promise<Resp
 }
 
 // Handle different types of interactions
-async function handleInteraction(interaction: DiscordInteraction): Promise<Response> {
-  switch (interaction.type) {
+async function handleInteraction(i: Interaction): Promise<Response> {
+  switch (i.type) {
     // Discord sends a ping to validate the endpoint
     case InteractionTypes.Ping:
       return createResponse({
@@ -87,7 +74,7 @@ async function handleInteraction(interaction: DiscordInteraction): Promise<Respo
 
     // Handle slash commands
     case InteractionTypes.ApplicationCommand:
-      return handleSlashCommand(interaction);
+      return handleSlashCommand(i);
 
     // Handle unknown interaction types
     default:
@@ -95,25 +82,32 @@ async function handleInteraction(interaction: DiscordInteraction): Promise<Respo
   }
 }
 
-// Main worker handler
-export default {
-  async fetch(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
-    // Only accept POST requests
-    if (request.method !== 'POST') {
-      return new Response('Method not allowed', { status: 405 });
-    }
+// Main worker
+async function run(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
+  // get wave to verify the worker is working.
+  if (request.method !== 'GET') {
+    return new JsonResponse(`👋 ${env.APPLICATION_ID}`);
+  }
 
-    // Verify the request is from Discord
-    const isValidRequest = await verifyDiscordRequest(request, env);
-    if (!isValidRequest) {
-      return new Response('Unauthorized', { status: 401 });
-    }
+  // Verify the request is from Discord
+  const { interaction, isValid } = await verifyDiscordRequest(request, env);
+  if (!isValid) {
+    return new Response('Unauthorized', { status: 401 });
+  }
 
-    // Clone the request to reuse the body
-    const clonedRequest = request.clone();
-    const body = (await clonedRequest.json()) as DiscordInteraction;
+  // Handle the Discord interaction
+  const bot: Bot = createBot({
+    token: env.BOT_TOKEN,
+    rest: {
+      proxy: {
+        baseUrl: env.REQUESTER_URL,
+      },
+    },
+  });
 
-    // Handle the Discord interaction
-    return handleInteraction(body);
-  },
-};
+  const interaction: Interaction = { bot, ...interaction! };
+
+  return handleInteraction(interaction);
+}
+
+export default { fetch: run };
