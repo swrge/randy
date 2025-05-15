@@ -8,7 +8,7 @@ export const commands = new Map<string, CreateApplicationCommand>(
 
 export interface Command extends CreateSlashApplicationCommand {
   /** Handler that will be executed when this command is triggered */
-  execute(i: Interaction, args: Record<string, unknown>): Promise<unknown>;
+  execute(i: Interaction, args: Record<string, unknown>): Promise<Response>;
 }
 
 export default commands;

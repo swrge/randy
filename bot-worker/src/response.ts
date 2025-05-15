@@ -41,3 +41,7 @@ export async function UnknownInteraction(): Promise<Response> {
 export async function Pong(): Promise<Response> {
   return new JsonResponse({ type: InteractionResponseTypes.Pong });
 }
+
+//export async function Respond(r: InteractionResponse): Promise<Response> {
+//  return new JsonResponse(r, );
+//}

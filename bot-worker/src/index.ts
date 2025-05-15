@@ -51,7 +51,7 @@ async function handleSlashCommand(i: Interaction): Promise<Response> {
   // Check which command was invoked
   switch (i.data?.name) {
     case PING.name:
-      return PING.execute(i);
+      return await PING.execute(i, {});
 
     default:
       return createResponse({
@@ -78,21 +78,24 @@ async function handleInteraction(i: Interaction): Promise<Response> {
 
     // Handle unknown interaction types
     default:
-      return unknownInteraction();
+      return response.UnknownInteraction();
   }
 }
 
 // Main worker
 async function run(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
   // get wave to verify the worker is working.
-  if (request.method !== 'GET') {
-    return new JsonResponse(`👋 ${env.APPLICATION_ID}`);
+  if (request.method === 'GET') {
+    return new Response(`👋 ${env.APPLICATION_ID}`);
   }
 
   // Verify the request is from Discord
   const { interaction, isValid } = await verifyDiscordRequest(request, env);
   if (!isValid) {
     return new Response('Unauthorized', { status: 401 });
+  }
+  if (!interaction) {
+    return new Response('Invalid interaction', { status: 400 });
   }
 
   // Handle the Discord interaction
@@ -105,9 +108,8 @@ async function run(request: Request, env: Env, _ctx: ExecutionContext): Promise<
     },
   });
 
-  const interaction: Interaction = { bot, ...interaction! };
-
-  return handleInteraction(interaction);
+  const i = bot.transformers.interaction(bot, { interaction, shardId: 0 }) as Interaction;
+  return await handleInteraction(i);
 }
 
 export default { fetch: run };

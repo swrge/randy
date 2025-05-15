@@ -15,7 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "@discordeno/bot": "^21.0.0",
-    "@discordeno/types": "^19.0.0-next.dd7dfd4",
+    "@discordeno/types": "^21.0.0",
     "minimist": "^1.2.8"
   },
   "devDependencies": {
