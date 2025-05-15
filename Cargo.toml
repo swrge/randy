@@ -1,17 +1,6 @@
 [workspace]
 resolver = "2"
-members = [
-    # core-deps
-    #"randy-storage",
-    #"randy-rest",
-    "randy-model",
-    "randy-gateway",
-    "randy-tools",
-    #"randy-validate",
-    #"randy-ratelimiting",
-    "bot-gateway",
-    "redlight",
-]
+members = ["bot-gateway", "./vendor/randy-*"]
 
 #[workspace.package]
 #name = "randy"
