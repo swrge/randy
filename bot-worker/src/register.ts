@@ -6,18 +6,17 @@ import parseArgs from 'minimist';
 import { validateSnowflake } from './utils/snowflake';
 // Parse command line arguments
 const argv = parseArgs(process.argv.slice(2), {
-  string: ['token', 'applicationId', 'restUrl', 'authorization', 'envPath'],
+  string: ['token', 'applicationId', 'restUrl', 'envPath'],
   boolean: ['global'],
   alias: {
     t: 'token',
     aid: 'applicationId',
     r: 'restUrl',
-    auth: 'authorization',
     P: 'envPath',
     G: 'global',
   },
   default: {
-    envPath: '.dev.vars',
+    envPath: '.env',
     global: false,
   },
 });
@@ -50,13 +49,12 @@ export const BOT = createBot({
   token: TOKEN,
   rest: {
     proxy: {
-      baseUrl: argv.restUrl || process.env.REST_URL!,
-      authorization: argv.authorization || process.env.AUTHORIZATION,
+      baseUrl: (argv.restUrl as string) || process.env.REST_URL!,
     },
   },
 });
 
-if (argv.global) {
+if ((argv.global as boolean) === true) {
   const data = await BOT.rest.upsertGlobalApplicationCommands([...commands.values()]);
   for (const command of data) {
     console.log(`Globally registered command ${command.name}`);
