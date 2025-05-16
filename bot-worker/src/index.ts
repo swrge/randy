@@ -87,7 +87,6 @@ export async function handleInteraction(request: Request, env: Env): Promise<Res
       },
     },
   });
-
   const i = bot.transformers.interaction(bot, { interaction, shardId: 0 }) as Interaction;
 
   switch (i.type) {
@@ -99,11 +98,11 @@ export async function handleInteraction(request: Request, env: Env): Promise<Res
 
     // Handle slash commands
     case InteractionTypes.ApplicationCommand:
-      return handleSlashCommand(i);
+      return await handleSlashCommand(i);
 
     // Handle unknown interaction types
     default:
-      return response.UnknownInteraction();
+      return await response.UnknownInteraction();
   }
 }
 
