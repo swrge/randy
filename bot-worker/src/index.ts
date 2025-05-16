@@ -109,20 +109,20 @@ export async function handleInteraction(request: Request, env: Env): Promise<Res
 
 // Main worker
 export async function run(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
-  if (request.url.startsWith('/interactions')) {
+  const pathname = new URL(request.url).pathname;
+  if (pathname.startsWith('/interactions')) {
     // interactions events from discord
     return await handleInteraction(request, env);
-  } else if (request.url.startsWith('/bot-events')) {
+  } else if (pathname.startsWith('/bot-events')) {
     // real-time events from bot-gateway
     return await handleBotEvent(request, env);
-  } else {
-    // misc
-    if (request.method === 'GET') {
-      // get wave to verify the worker is working.
-      return new Response(`👋 ${env.APPLICATION_ID}`);
-    }
-    return new Response('Not found', { status: 404 });
   }
+  // misc
+  if (request.method === 'GET') {
+    // get wave to verify the worker is working.
+    return new Response(`👋 ${env.APPLICATION_ID}`);
+  }
+  return new Response('Not found', { status: 404 });
 }
 
 export default { fetch: run };
