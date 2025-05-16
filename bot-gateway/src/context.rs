@@ -178,28 +178,24 @@ impl Context {
     }
 
     async fn on_heartbeat_ack(&self) {
-        // println!("Received heartbeat ACK");
+        println!("Received heartbeat ACK");
         // Usually handled internally by randy_gateway/twilight_gateway
     }
 
     async fn on_reaction_remove(&self, data: Box<ReactionRemove>) {
         println!("Reaction removed");
-        self.shared().send_event_to_worker("REACTION_REMOVE", data);
     }
 
     async fn on_reaction_add(&self, data: Box<ReactionAdd>) {
         println!("Reaction added");
-        self.shared().send_event_to_worker("REACTION_ADD", data);
     }
 
     async fn on_message_update(&self, data: Box<MessageUpdate>) {
         println!("Message updated");
-        self.shared().send_event_to_worker("MESSAGE_UPDATE", data);
     }
 
     async fn on_message_delete(&self, data: MessageDelete) {
         println!("Message deleted");
-        self.shared().send_event_to_worker("MESSAGE_DELETE", data);
     }
 
     async fn on_resumed(&self) {
@@ -217,8 +213,6 @@ impl Context {
     #[rustfmt::skip]
     async fn on_guild_create(&self, data: Box<GuildCreate>) {
         // Send event to worker
-        // Pass owned data by cloning the Box content
-        self.shared().send_event_to_worker("GUILD_CREATE", data.clone());
 
         match data.as_ref() {
             GuildCreate::Unavailable(guild) => {
@@ -247,27 +241,18 @@ impl Context {
 
     async fn on_member_add(&self, data: Box<MemberAdd>) {
         println!("Member added!");
-        // Pass owned data
-        self.shared().send_event_to_worker("MEMBER_ADD", data);
     }
 
     async fn on_member_update(&self, data: Box<MemberUpdate>) {
         println!("Member updated!");
-        // Pass owned data
-        self.shared().send_event_to_worker("MEMBER_UPDATE", data);
     }
 
     async fn on_member_chunk(&self, data: MemberChunk) {
         println!("Member chunk received! Count: {}", data.members.len());
-        // Pass owned data
-        self.shared().send_event_to_worker("MEMBER_CHUNK", data);
     }
 
     async fn on_message_create(&self, data: Box<MessageCreate>) {
         // Send event to worker
-        // Pass owned data by cloning the Box content
-        self.shared()
-            .send_event_to_worker("MESSAGE_CREATE", data.clone());
 
         if let Some(guild_id) = data.guild_id {
             println!(
@@ -284,9 +269,7 @@ impl Context {
     }
 
     async fn on_presence_update(&self, data: Box<PresenceUpdate>) {
-        // println!("Presence updated!"); // Can be noisy
-        // Pass owned data
-        self.shared().send_event_to_worker("PRESENCE_UPDATE", data);
+        println!("Presence updated!"); // Can be noisy
     }
     async fn on_invalid_session(&self, can_reconnect: bool) {
         println!("Invalid session received!");
@@ -311,7 +294,7 @@ impl Context {
         match event {
             Event::GatewayClose(frame) => self.on_close(frame).await,
             Event::Ready(data) => {
-                self.on_ready(data.clone()).await; /* Sent in handler */
+                self.on_ready(data).await; /* Sent in handler */
             }
             Event::Resumed => self.on_resumed().await,
             Event::GuildCreate(data) => {
