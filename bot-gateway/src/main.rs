@@ -33,6 +33,37 @@ use std::{
 use std::{sync::Arc, time::Duration};
 use tokio::{runtime::Handle, time::timeout};
 
+struct Env {
+    BOT_TOKEN: LazyLock<String>,
+    GATEWAY_URL: LazyLock<String>,
+    REQUESTER_URL: LazyLock<String>,
+    PUBLIC_KEY: LazyLock<String>,
+    APPLICATION_ID: LazyLock<String>,
+}
+
+pub static ENV: Env = Env {
+    BOT_TOKEN: LazyLock::new(|| {
+        dotenvy::dotenv().ok(); // Load .env file, ignore errors if missing
+        std::env::var("BOT_TOKEN").expect("missing environment variable")
+    }),
+    GATEWAY_URL: LazyLock::new(|| {
+        dotenvy::dotenv().ok();
+        std::env::var("GATEWAY_URL").expect("missing environment variable")
+    }),
+    REQUESTER_URL: LazyLock::new(|| {
+        dotenvy::dotenv().ok();
+        std::env::var("REQUESTER_URL").expect("missing environment variable")
+    }),
+    PUBLIC_KEY: LazyLock::new(|| {
+        dotenvy::dotenv().ok();
+        std::env::var("PUBLIC_KEY").expect("missing environment variable")
+    }),
+    APPLICATION_ID: LazyLock::new(|| {
+        dotenvy::dotenv().ok();
+        std::env::var("APPLICATION_ID").expect("missing environment variable")
+    }),
+};
+
 pub static SHUTDOWN: AtomicBool = AtomicBool::new(false);
 
 static DEBUG: LazyLock<bool> =

@@ -1,5 +1,5 @@
 use crate::cache::RedisConfig;
-use crate::SHUTDOWN;
+use crate::{ENV, SHUTDOWN};
 use bb8_redis::redis::AsyncCommands;
 use randy_gateway::error::{ReceiveMessageError, ReceiveMessageErrorType};
 use randy_gateway::{CloseFrame, Event, MessageSender, Session, Shard, ShardId, StreamExt};
@@ -10,9 +10,9 @@ use randy_model::gateway::payload::incoming::{
 use randy_model::gateway::payload::outgoing::RequestGuildMembers;
 use randy_model::guild::{Guild, UnavailableGuild};
 use randy_rest::Client;
-use reqwest::Client as ReqwestClient;
 use redlight::cache::RedisCache;
 use redlight::config::CacheConfig;
+use reqwest::Client as ReqwestClient;
 use serde::Serialize;
 use std::collections::HashMap;
 use std::hash::RandomState;
@@ -36,7 +36,6 @@ pub struct SharedContext {
     pub client: Arc<Client>,
     pub cache: Arc<RedisCache<RedisConfig>>,
     pub http_client: ReqwestClient,
-    pub worker_url: String,
 }
 
 pub struct Context {
@@ -49,7 +48,6 @@ impl Context {
         shard: Box<Shard>,
         client: Arc<Client>,
         cache: Arc<RedisCache<RedisConfig>>,
-        worker_url: String,
     ) -> Self {
         let http_client = ReqwestClient::new();
         Self {
@@ -59,7 +57,6 @@ impl Context {
                 client,
                 cache,
                 http_client,
-                worker_url,
             },
         }
     }
@@ -168,7 +165,10 @@ impl Context {
     }
 
     async fn on_hello(&self, data: Hello) {
-        println!("Received HELLO: heartbeat_interval={}", data.heartbeat_interval);
+        println!(
+            "Received HELLO: heartbeat_interval={}",
+            data.heartbeat_interval
+        );
         // Usually handled internally by randy_gateway/twilight_gateway
     }
 
@@ -266,7 +266,8 @@ impl Context {
     async fn on_message_create(&self, data: Box<MessageCreate>) {
         // Send event to worker
         // Pass owned data by cloning the Box content
-        self.shared().send_event_to_worker("MESSAGE_CREATE", data.clone());
+        self.shared()
+            .send_event_to_worker("MESSAGE_CREATE", data.clone());
 
         if let Some(guild_id) = data.guild_id {
             println!(
@@ -300,36 +301,60 @@ impl Context {
         println!("Gateway requested shard to reconnect");
     }
 
-    async fn on_dispatch(&self, event: Event) {
+    async fn on_dispatch(&mut self, event: Event) {
         // Update sender in shared context before dispatching
         // This ensures the sender is available for commands within handlers
         if self.shared.sender.is_none() {
-             self.shared.sender = Some(self.shard.sender());
+            self.shared.sender = Some(self.shard.sender());
         }
 
         match event {
             Event::GatewayClose(frame) => self.on_close(frame).await,
-            Event::Ready(data) => { self.on_ready(data.clone()).await; /* Sent in handler */ },
+            Event::Ready(data) => {
+                self.on_ready(data.clone()).await; /* Sent in handler */
+            }
             Event::Resumed => self.on_resumed().await,
-            Event::GuildCreate(data) => { self.on_guild_create(data).await; /* Sent in handler */ },
-            Event::MemberAdd(data) => { self.on_member_add(data).await; /* Sent in handler */ },
-            Event::MemberUpdate(data) => { self.on_member_update(data).await; /* Sent in handler */ },
-            Event::MemberChunk(data) => { self.on_member_chunk(data).await; /* Sent in handler */ },
-            Event::MessageCreate(data) => { self.on_message_create(data).await; /* Sent in handler */ },
-            Event::PresenceUpdate(data) => { self.on_presence_update(data).await; /* Sent in handler */ },
-            Event::GatewayHello(data) => { self.on_hello(data).await; /* Decide if worker needs this */ },
+            Event::GuildCreate(data) => {
+                self.on_guild_create(data).await; /* Sent in handler */
+            }
+            Event::MemberAdd(data) => {
+                self.on_member_add(data).await; /* Sent in handler */
+            }
+            Event::MemberUpdate(data) => {
+                self.on_member_update(data).await; /* Sent in handler */
+            }
+            Event::MemberChunk(data) => {
+                self.on_member_chunk(data).await; /* Sent in handler */
+            }
+            Event::MessageCreate(data) => {
+                self.on_message_create(data).await; /* Sent in handler */
+            }
+            Event::PresenceUpdate(data) => {
+                self.on_presence_update(data).await; /* Sent in handler */
+            }
+            Event::GatewayHello(data) => {
+                self.on_hello(data).await; /* Decide if worker needs this */
+            }
             Event::GatewayHeartbeat(data) => self.on_heartbeat(data).await,
             Event::GatewayHeartbeatAck => self.on_heartbeat_ack().await,
             Event::GatewayReconnect => self.on_reconnect().await,
-            Event::MessageDelete(data) => { self.on_message_delete(data).await; /* Sent in handler */ },
-            Event::MessageUpdate(data) => { self.on_message_update(data).await; /* Sent in handler */ },
-            Event::ReactionAdd(data) => { self.on_reaction_add(data).await; /* Sent in handler */ },
-            Event::ReactionRemove(data) => { self.on_reaction_remove(data).await; /* Sent in handler */ },
+            Event::MessageDelete(data) => {
+                self.on_message_delete(data).await; /* Sent in handler */
+            }
+            Event::MessageUpdate(data) => {
+                self.on_message_update(data).await; /* Sent in handler */
+            }
+            Event::ReactionAdd(data) => {
+                self.on_reaction_add(data).await; /* Sent in handler */
+            }
+            Event::ReactionRemove(data) => {
+                self.on_reaction_remove(data).await; /* Sent in handler */
+            }
             Event::GatewayInvalidateSession(can_reconnect) => {
                 self.on_invalid_session(can_reconnect).await
             }
             _ => {
-                 // println!("Unhandled event type for worker forwarding: {:?}", event.kind());
+                // println!("Unhandled event type for worker forwarding: {:?}", event.kind());
             }
         }
     }
@@ -353,8 +378,8 @@ impl Context {
             }
             // Check shutdown flag again in case it was set by signal handler during dispatch
             if SHUTDOWN.load(Ordering::Relaxed) {
-                 println!("GATEWAY: Shutdown detected, exiting event loop.");
-                 break;
+                println!("GATEWAY: Shutdown detected, exiting event loop.");
+                break;
             }
         }
         // Ensure sender is cleared before returning context potentially for freezing
@@ -372,13 +397,13 @@ impl SharedContext {
         data: T,
     ) {
         let client = self.http_client.clone();
-        let url = self.worker_url.clone(); // Clone URL for the task
+        let url = crate::ENV.REQUESTER_URL.as_str(); // Clone URL for the task
 
         // Spawn a new task to send the request without blocking the gateway loop
         tokio::spawn(async move {
             let payload = GatewayEventPayload { event_name, data };
 
-            match client.post(&url).json(&payload).send().await {
+            match client.post(url).json(&payload).send().await {
                 Ok(response) => {
                     if !response.status().is_success() {
                         eprintln!(
@@ -387,12 +412,12 @@ impl SharedContext {
                             response.status()
                         );
                         // Optionally log response body for debugging
-                         if let Ok(body) = response.text().await {
-                             eprintln!("Worker response body: {}", body);
-                         }
+                        if let Ok(body) = response.text().await {
+                            eprintln!("Worker response body: {}", body);
+                        }
                     } else {
-                         // Commenting out success log to reduce noise
-                         // println!("Successfully sent event '{}' to worker", event_name);
+                        // Commenting out success log to reduce noise
+                        // println!("Successfully sent event '{}' to worker", event_name);
                     }
                 }
                 Err(e) => {
