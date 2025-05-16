@@ -4,36 +4,20 @@ mod context;
 //mod session;
 mod signals;
 
-use bb8_redis::{
-    bb8,
-    redis::{cmd, AsyncCommands},
-    RedisConnectionManager,
-};
+use bb8_redis::redis::AsyncCommands;
 use cache::RedisConfig;
 use context::Context;
-use futures::executor::block_on;
-use futures_util::stream::StreamExt;
-use randy_gateway::{
-    Config, ConfigBuilder, Event, EventTypeFlags, Intents, Message, Session, Shard, ShardId,
-    StreamExt as _,
-};
-use randy_model::gateway::payload::incoming::{GuildCreate, Ready};
-use randy_model::gateway::CloseFrame;
-use randy_model::guild::{Guild, UnavailableGuild};
+use randy_gateway::{Config, ConfigBuilder, EventTypeFlags, Intents, Shard, ShardId};
 use randy_rest::Client;
 use redlight::*;
-use serde_json::to_string;
+use std::collections::HashMap;
+use std::pin::Pin;
+use std::sync::Arc;
 use std::sync::LazyLock;
-use std::{collections::HashMap, pin::pin};
 use std::{env, sync::atomic::AtomicBool};
-use std::{
-    panic::{set_hook, take_hook},
-    pin::Pin,
-};
-use std::{sync::Arc, time::Duration};
-use tokio::{runtime::Handle, time::timeout};
 
-struct Env {
+#[allow(non_snake_case, dead_code)]
+pub struct Env {
     BOT_TOKEN: LazyLock<String>,
     GATEWAY_URL: LazyLock<String>,
     REQUESTER_URL: LazyLock<String>,
@@ -43,7 +27,7 @@ struct Env {
 
 pub static ENV: Env = Env {
     BOT_TOKEN: LazyLock::new(|| {
-        dotenvy::dotenv().ok(); // Load .env file, ignore errors if missing
+        dotenvy::dotenv().ok();
         std::env::var("BOT_TOKEN").expect("missing environment variable")
     }),
     GATEWAY_URL: LazyLock::new(|| {
@@ -91,8 +75,7 @@ static FLAGS: LazyLock<EventTypeFlags> = LazyLock::new(|| {
 #[rustfmt::skip]
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let var_name = println!("Starting bot...");
-    let var_name = var_name;
+    println!("Starting bot...");
     dotenvy::dotenv().expect("Failed to load environment variables");
 
     let token = env::var("DISCORD_TOKEN")
