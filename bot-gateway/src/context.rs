@@ -169,17 +169,14 @@ impl Context {
             "Received HELLO: heartbeat_interval={}",
             data.heartbeat_interval
         );
-        // Usually handled internally by randy_gateway/twilight_gateway
     }
 
     async fn on_heartbeat(&self, data: u64) {
         println!("Gateway requested heartbeat (seq: {})", data);
-        // Usually handled internally by randy_gateway/twilight_gateway
     }
 
     async fn on_heartbeat_ack(&self) {
         println!("Received heartbeat ACK");
-        // Usually handled internally by randy_gateway/twilight_gateway
     }
 
     async fn on_reaction_remove(&self, data: Box<ReactionRemove>) {
