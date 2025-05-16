@@ -17,7 +17,6 @@ type CheckedInteraction = Promise<{
 
 export interface Env {
   BOT_TOKEN: string;
-  GATEWAY_URL: string;
   REQUESTER_URL: string;
   PUBLIC_KEY: string;
   APPLICATION_ID: string;

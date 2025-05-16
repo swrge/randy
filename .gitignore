@@ -3,7 +3,7 @@ Cargo.lock
 randy-interactions
 update-all.sh
 .aider*
-.env*
+.env
 vendor copy
 bot-gateway-bin
 old-*

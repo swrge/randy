@@ -105,8 +105,8 @@ func main() {
 	}
 
 	var TOKEN string
-	if TOKEN := os.Getenv("DISCORD_TOKEN"); TOKEN == "" {
-		log.Fatal("DISCORD_BOT_TOKEN environment variable is required")
+	if TOKEN := os.Getenv("BOT_TOKEN"); TOKEN == "" {
+		log.Fatal("BOT_TOKEN environment variable is required")
 	} else {
 		log.Printf("Using BOT_TOKEN specified in .env")
 	}
