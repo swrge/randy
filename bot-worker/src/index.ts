@@ -6,7 +6,7 @@ import {
 } from '@discordeno/types';
 
 import { verifyKey } from './utils/crypto';
-import { Bot, createBot, Interaction } from '@discordeno/bot';
+import { Interaction, createBot, Bot } from '@discordeno/bot';
 import { PING } from './commands/ping';
 import * as response from './response';
 
@@ -15,7 +15,7 @@ type CheckedInteraction = Promise<{
   isValid: boolean;
 }>;
 
-interface Env {
+export interface Env {
   BOT_TOKEN: string;
   GATEWAY_URL: string;
   REQUESTER_URL: string;
@@ -24,7 +24,7 @@ interface Env {
 }
 
 // Verify that the request is coming from Discord
-async function verifyDiscordRequest(request: Request, env: Env): CheckedInteraction {
+export async function verifyDiscordRequest(request: Request, env: Env): CheckedInteraction {
   const signature = request.headers.get('x-signature-ed25519');
   const timestamp = request.headers.get('x-signature-timestamp');
   const body = await request.text();
@@ -63,32 +63,12 @@ async function handleSlashCommand(i: Interaction): Promise<Response> {
   }
 }
 
-// Handle different types of interactions
-async function handleInteraction(i: Interaction): Promise<Response> {
-  switch (i.type) {
-    // Discord sends a ping to validate the endpoint
-    case InteractionTypes.Ping:
-      return createResponse({
-        type: InteractionResponseTypes.Pong,
-      });
-
-    // Handle slash commands
-    case InteractionTypes.ApplicationCommand:
-      return handleSlashCommand(i);
-
-    // Handle unknown interaction types
-    default:
-      return response.UnknownInteraction();
-  }
+export async function handleBotEvent(_request: Request, _env: Env): Promise<Response> {
+  // todo: Handle events sent from bot-gateway
+  throw new Error('Function not implemented.');
 }
 
-// Main worker
-async function run(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
-  // get wave to verify the worker is working.
-  if (request.method === 'GET') {
-    return new Response(`👋 ${env.APPLICATION_ID}`);
-  }
-
+export async function handleInteraction(request: Request, env: Env): Promise<Response> {
   // Verify the request is from Discord
   const { interaction, isValid } = await verifyDiscordRequest(request, env);
   if (!isValid) {
@@ -109,7 +89,40 @@ async function run(request: Request, env: Env, _ctx: ExecutionContext): Promise<
   });
 
   const i = bot.transformers.interaction(bot, { interaction, shardId: 0 }) as Interaction;
-  return await handleInteraction(i);
+
+  switch (i.type) {
+    // Discord sends a ping to validate the endpoint
+    case InteractionTypes.Ping:
+      return createResponse({
+        type: InteractionResponseTypes.Pong,
+      });
+
+    // Handle slash commands
+    case InteractionTypes.ApplicationCommand:
+      return handleSlashCommand(i);
+
+    // Handle unknown interaction types
+    default:
+      return response.UnknownInteraction();
+  }
+}
+
+// Main worker
+export async function run(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
+  if (request.url.startsWith('/interactions')) {
+    // interactions events from discord
+    return await handleInteraction(request, env);
+  } else if (request.url.startsWith('/bot-events')) {
+    // real-time events from bot-gateway
+    return await handleBotEvent(request, env);
+  } else {
+    // misc
+    if (request.method === 'GET') {
+      // get wave to verify the worker is working.
+      return new Response(`👋 ${env.APPLICATION_ID}`);
+    }
+    return new Response('Not found', { status: 404 });
+  }
 }
 
 export default { fetch: run };

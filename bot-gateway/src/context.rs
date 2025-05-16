@@ -35,7 +35,6 @@ pub struct SharedContext {
     pub sender: Option<MessageSender>,
     pub client: Arc<Client>,
     pub cache: Arc<RedisCache<RedisConfig>>,
-    pub http_client: ReqwestClient,
 }
 
 pub struct Context {
@@ -49,14 +48,12 @@ impl Context {
         client: Arc<Client>,
         cache: Arc<RedisCache<RedisConfig>>,
     ) -> Self {
-        let http_client = ReqwestClient::new();
         Self {
             shard: Pin::from(shard),
             shared: SharedContext {
                 sender: None,
                 client,
                 cache,
-                http_client,
             },
         }
     }
@@ -369,41 +366,4 @@ impl Context {
 }
 
 // Implementation for SharedContext
-impl SharedContext {
-    /// Sends an event payload to the bot-worker asynchronously.
-    fn send_event_to_worker<T: Serialize + Send + Sync + 'static>(
-        &self,
-        event_name: &'static str,
-        data: T,
-    ) {
-        let client = self.http_client.clone();
-        let url = crate::ENV.REQUESTER_URL.as_str(); // Clone URL for the task
-
-        // Spawn a new task to send the request without blocking the gateway loop
-        tokio::spawn(async move {
-            let payload = GatewayEventPayload { event_name, data };
-
-            match client.post(url).json(&payload).send().await {
-                Ok(response) => {
-                    if !response.status().is_success() {
-                        eprintln!(
-                            "Error sending event '{}' to worker: Status {}",
-                            event_name,
-                            response.status()
-                        );
-                        // Optionally log response body for debugging
-                        if let Ok(body) = response.text().await {
-                            eprintln!("Worker response body: {}", body);
-                        }
-                    } else {
-                        // Commenting out success log to reduce noise
-                        // println!("Successfully sent event '{}' to worker", event_name);
-                    }
-                }
-                Err(e) => {
-                    eprintln!("Failed to send event '{}' to worker: {}", event_name, e);
-                }
-            }
-        });
-    }
-}
+impl SharedContext {}
