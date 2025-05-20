@@ -1,4 +1,4 @@
-# Discord Proxy Notes
+# bot-requester
 
 ## What this thing does
 
@@ -41,16 +41,10 @@ This will use the proxy, skip the ratelimiter (since the proxy does ratelimiting
 - Go
 - switchupcb/disgo discord api wrapper (handles all the rate limit logic)
 - gorilla/mux for routing
+- Google Cloud Run
 
 ## Setup
-1. Make sure you have Go 1.16+
-2. Install the deps:
-   ```
-   go get github.com/switchupcb/disgo
-   go get github.com/gorilla/mux
-   ```
-3. Export the bot token: `export DISCORD_BOT_TOKEN=your-token-here`
-
+TODO
 
 ## Example endpoint
 
@@ -80,12 +74,4 @@ To use it, send a POST with JSON body:
 	...
    }
 ```
-2. Update this doc when you add something significant
 
-## TODO
-- Add authentication for our services
-- Add logging for debugging
-- Set up HTTPS (maybe)
-
-## Known issues
-- None yet
