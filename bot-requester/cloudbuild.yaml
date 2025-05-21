@@ -43,7 +43,7 @@ steps:
         gcloud run deploy ${_SERVICE_NAME}-$BUILD_ID \
           --image $_GCR_HOSTNAME/$PROJECT_ID/$_REPOSITORY/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA \
           --region ${_DEPLOY_REGION} \
-          --no-allow-unauthenticated
+          --allow-unauthenticated
 
   - id: "Retrieve Service URL"
     name: "gcr.io/cloud-builders/gcloud:latest"
@@ -72,10 +72,10 @@ steps:
         gcloud run services delete ${_SERVICE_NAME}-$BUILD_ID --region ${_DEPLOY_REGION} --quiet
 
 substitutions:
-  _GCR_HOSTNAME: us-central1-docker.pkg.dev
-  _SERVICE_NAME: microservice-template
-  _DEPLOY_REGION: us-central1
-  _REPOSITORY: samples
+  _GCR_HOSTNAME: us-east1-docker.pkg.dev
+  _SERVICE_NAME: bot-requester
+  _DEPLOY_REGION: us-east1
+  _REPOSITORY: randy-images
 
 options:
   volumes:

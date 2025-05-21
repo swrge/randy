@@ -13,7 +13,7 @@
             default = pkgs.mkShellNoCC {
               packages = with pkgs.buildPackages; [
                 # misc
-                git openssh direnv go
+                git openssh direnv go python3
                 # networking
                 curl
                 # infra
