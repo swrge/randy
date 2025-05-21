@@ -13,11 +13,11 @@
             default = pkgs.mkShellNoCC {
               packages = with pkgs.buildPackages; [
                 # misc
-                git openssh jq direnv
+                git openssh direnv
                 # networking
-                curl nettools dnsutils
+                curl
                 # infra
-                terraform ansible_2_17
+                terraform ansible_2_18
                 # cloud
                 google-cloud-sdk
               ];
