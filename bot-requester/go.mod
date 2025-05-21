@@ -1,8 +1,8 @@
 module example.com/micro
 
-go 1.23.0
+go 1.20.0
 
-toolchain go1.24.1
+toolchain go1.20.0
 
 replace github.com/switchupcb/disgo v1.10.21 => github.com/swrge/disgo v0.0.0-20250521174324-4e90c35728e3
 

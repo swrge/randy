@@ -45,5 +45,6 @@ COPY --from=builder /app/server /app/server
 
 ENV PORT 8080
 EXPOSE 8080
+
 # Run the web service on container startup.
 CMD ["/app/server"]

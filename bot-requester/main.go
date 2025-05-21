@@ -43,9 +43,9 @@ type App struct {
 func main() {
 	ctx := context.Background()
 	// Initialize the Disgo client
-	TOKEN := os.Getenv("BOT_TOKEN")
+	TOKEN := os.Getenv("DISCORD_BOT_TOKEN")
 	if TOKEN == "" {
-		log.Fatal("BOT_TOKEN environment variable is required")
+		log.Fatal("DISCORD_BOT_TOKEN environment variable is required")
 	}
 	bot := &disgo.Client{
 		Authentication: disgo.BotToken(TOKEN),
@@ -60,12 +60,11 @@ func main() {
 		port = "8080" // Default port if not set in environment
 	}
 	projectID := "bot-requester"
-	log.Printf("listening on port %s", port)
 	app, err := newApp(ctx, port, projectID, bot)
+	log.Printf("listening on port %s", port)
 	if err != nil {
 		log.Fatalf("unable to initialize application: %v", err)
 	}
-
 	log.Println("starting HTTP server")
 	go func() {
 		if err := app.ListenAndServe(); err != nil && err != http.ErrServerClosed {
@@ -127,10 +126,9 @@ func newApp(ctx context.Context, port, projectID string, bot *disgo.Client) (*Ap
 		log.Printf("Registered route: %s %s", config.Method, routePath)
 	}
 	// Add an explicit health check endpoint for Cloud Run
-	r.HandleFunc("/ready", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/probe", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintf(w, "Bot requester service is running!\n")
-		log.Printf("Health check request from %s", r.RemoteAddr)
 	}).Methods("GET")
 	// Add the regular handler for the root path
 	r.HandleFunc(BaseURL, app.Handler).Methods("GET")
