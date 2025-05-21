@@ -24,7 +24,7 @@ import (
 
 	"cloud.google.com/go/logging"
 	"github.com/gorilla/mux"
-	"github.com/switchupcb/disgo"
+	"github.com/swrge/disgo"
 )
 
 func (a *App) Handler(w http.ResponseWriter, r *http.Request) {
@@ -97,7 +97,7 @@ func generateHandler(bot *disgo.Client, config RouteConfig) http.HandlerFunc {
 
 		// Send request to Discord API
 		var respBody []byte
-		err = disgo.SendRequest(
+		err = disgo.SendRequestByte(
 			bot,
 			xid,
 			routeID,

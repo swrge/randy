@@ -27,7 +27,7 @@ import (
 	"cloud.google.com/go/logging"
 	"example.com/micro/metadata"
 	"github.com/gorilla/mux"
-	"github.com/switchupcb/disgo"
+	"github.com/swrge/disgo"
 	"google.golang.org/api/option"
 	"google.golang.org/grpc"
 
