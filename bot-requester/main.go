@@ -55,12 +55,9 @@ func main() {
 		},
 	}
 
-	port := os.Getenv("PROXY_PORT")
-	if port == "" {
-		port = "8080"
-	}
+	port := "8080"
+	projectID := "bot-requester"
 	log.Printf("listening on port %s", port)
-	projectID := os.Getenv("GOOGLE_CLOUD_PROJECT")
 	app, err := newApp(ctx, port, projectID, bot)
 	if err != nil {
 		log.Fatalf("unable to initialize application: %v", err)
@@ -102,7 +99,7 @@ func newApp(ctx context.Context, port, projectID string, bot *disgo.Client) (*Ap
 	if projectID == "" {
 		projID, err := metadata.ProjectID()
 		if err != nil {
-			return nil, fmt.Errorf("unable to detect Project ID from GOOGLE_CLOUD_PROJECT or metadata server: %w", err)
+			return nil, fmt.Errorf("unable to detect Project ID from PROJECT_ID or metadata server: %w", err)
 		}
 		projectID = projID
 	}
