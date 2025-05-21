@@ -55,7 +55,10 @@ func main() {
 		},
 	}
 
-	port := "8080"
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Default port if not set in environment
+	}
 	projectID := "bot-requester"
 	log.Printf("listening on port %s", port)
 	app, err := newApp(ctx, port, projectID, bot)
@@ -123,7 +126,14 @@ func newApp(ctx context.Context, port, projectID string, bot *disgo.Client) (*Ap
 		r.HandleFunc(routePath, generateHandler(bot, config)).Methods(config.Method)
 		log.Printf("Registered route: %s %s", config.Method, routePath)
 	}
-	r.HandleFunc("/", app.Handler).Methods("GET")
+	// Add an explicit health check endpoint for Cloud Run
+	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintf(w, "Bot requester service is running!\n")
+		log.Printf("Health check request from %s", r.RemoteAddr)
+	}).Methods("GET")
+	// Add the regular handler for the root path
+	r.HandleFunc(BaseURL, app.Handler).Methods("GET")
 	app.Server.Handler = r
 
 	return app, nil

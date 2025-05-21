@@ -106,7 +106,7 @@ func generateHandler(bot *disgo.Client, config RouteConfig) http.HandlerFunc {
 			discordURL,
 			contentType,
 			reqBody,
-			respBody,
+			&respBody, // Pass a pointer to allow SendRequest to modify the slice
 		)
 
 		if err != nil {
