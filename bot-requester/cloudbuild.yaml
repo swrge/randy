@@ -44,6 +44,7 @@ steps:
           --image $_GCR_HOSTNAME/$PROJECT_ID/$_REPOSITORY/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA \
           --region ${_DEPLOY_REGION} \
           --set-secrets=BOT_TOKEN=BOT_TOKEN:latest \
+          --startup-probe httpGet.path=/ready,httpGet.port=8080,initialDelaySeconds=15,failureThreshold=5,timeoutSeconds=10
           --allow-unauthenticated
 
   - id: "Retrieve Service URL"

@@ -127,7 +127,7 @@ func newApp(ctx context.Context, port, projectID string, bot *disgo.Client) (*Ap
 		log.Printf("Registered route: %s %s", config.Method, routePath)
 	}
 	// Add an explicit health check endpoint for Cloud Run
-	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/ready", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintf(w, "Bot requester service is running!\n")
 		log.Printf("Health check request from %s", r.RemoteAddr)
