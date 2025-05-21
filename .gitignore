@@ -4,6 +4,7 @@ randy-interactions
 update-all.sh
 .aider*
 .env
+.direnv
 vendor copy
 bot-gateway-bin
 old-*
