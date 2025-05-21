@@ -110,7 +110,7 @@ github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO
 github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
 github.com/stretchr/testify v1.9.0 h1:HtqpIVDClZ4nwg75+f6Lvsy/wHu+3BoSGCbBAcpTsTg=
 github.com/stretchr/testify v1.9.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
-github.com/switchupcb/disgo v1.10.21 h1:gvaWLBKMhLVCVa/H8thM++Avf3y32ABTNdmenbXTRjU=
+github.com/switchupcb/disgo v1.10.21 h1:J9oPOvbvR246Fvn+2Jk3TL/JGkl0TLVRTIZt0xr/g5Y=
 github.com/switchupcb/disgo v1.10.21/go.mod h1:DOIpvW2s8I73N7NWEtcU4PGoULiqcemsbUfDqpuyVSo=
 github.com/switchupcb/websocket v1.8.8 h1:0x7RIs90NJ8YggqcLdKeb/LTofJ1BY79n784pkLyk5o=
 github.com/switchupcb/websocket v1.8.8/go.mod h1:HdhyzCLfOFPrBv+QNcnDSbv8L8rfJ7ZCulrBKZJHip0=
