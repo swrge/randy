@@ -5,10 +5,10 @@ import {
   InteractionTypes,
 } from '@discordeno/types';
 
-import { verifyKey } from './utils/crypto';
+import { verifyKey } from './utils/crypto.js';
 import { Interaction, createBot, Bot } from '@discordeno/bot';
-import { PING } from './commands/ping';
-import * as response from './response';
+import { PING } from './commands/ping.js';
+import * as response from './response.js';
 
 type CheckedInteraction = Promise<{
   interaction: DiscordInteraction | null;

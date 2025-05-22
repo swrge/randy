@@ -1,7 +1,7 @@
 //import { CreateApplicationCommand } from '@discordeno/types';
 import { Interaction, InteractionResponse, InteractionResponseTypes } from '@discordeno/bot';
-import { Command } from './index';
-import { JsonResponse } from '../response';
+import { Command } from './index.js';
+import { JsonResponse } from '../response.js';
 
 export const PING: Command = {
   name: 'ping',

@@ -1,5 +1,5 @@
 use crate::cache::RedisConfig;
-use crate::{ENV, SHUTDOWN};
+use crate::SHUTDOWN;
 use bb8_redis::redis::AsyncCommands;
 use randy_gateway::error::{ReceiveMessageError, ReceiveMessageErrorType};
 use randy_gateway::{CloseFrame, Event, MessageSender, Session, Shard, ShardId, StreamExt};
@@ -8,20 +8,18 @@ use randy_model::gateway::payload::incoming::{
     MessageUpdate, PresenceUpdate, ReactionAdd, ReactionRemove, Ready,
 };
 use randy_model::gateway::payload::outgoing::RequestGuildMembers;
-use randy_model::guild::{Guild, UnavailableGuild};
 use randy_rest::Client;
 use redlight::cache::RedisCache;
 use redlight::config::CacheConfig;
-use reqwest::Client as ReqwestClient;
 use serde::Serialize;
 use std::collections::HashMap;
-use std::hash::RandomState;
 use std::pin::Pin;
 use std::sync::atomic::Ordering;
 use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 pub type ShardInfo = (Option<Session>, Option<String>);
+
 type GatewayEvent = Result<Event, ReceiveMessageError>;
 
 #[derive(Serialize)]

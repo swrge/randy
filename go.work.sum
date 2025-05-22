@@ -1,2 +1,9 @@
 cloud.google.com/go v0.116.0 h1:B3fRrSDkLRt5qSHWe40ERJvhvnQwdZiHu0bJOpldweE=
-github.com/google/go-cmp v0.5.8/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
+cloud.google.com/go/compute v1.28.0 h1:OPtBxMcheSS+DWfci803qvPly3d4w7Eu5ztKBcFfzwk=
+cloud.google.com/go/compute v1.37.0 h1:XxtZlXYkZXub3LNaLu90TTemcFqIU1yZ4E4q9VlR39A=
+github.com/joho/godotenv v1.5.1 h1:7eLL/+HRGLY0ldzfGMeQkb7vMd0as4CfYvUVzLqw0N0=
+github.com/joho/godotenv v1.5.1/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
+github.com/switchupcb/dasgo v0.10.1/go.mod h1:qv63r+osJ9BrnFqJ+Jy9MU2ZO4YzG0Vr/d9XnNg+xhk=
+github.com/switchupcb/disgo v1.10.21 h1:J9oPOvbvR246Fvn+2Jk3TL/JGkl0TLVRTIZt0xr/g5Y=
+github.com/switchupcb/disgo v1.10.21/go.mod h1:DOIpvW2s8I73N7NWEtcU4PGoULiqcemsbUfDqpuyVSo=
+golang.org/x/sys v0.29.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=

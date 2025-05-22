@@ -1,3 +1,17 @@
+// Copyright 2021 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package main
 
 import (
@@ -5,20 +19,34 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"os"
 
-	"github.com/gorilla/mux"
-	"github.com/joho/godotenv"
 	"github.com/rs/xid"
-	"github.com/switchupcb/disgo"
+
+	"cloud.google.com/go/logging"
+	"github.com/gorilla/mux"
+	"github.com/swrge/disgo"
 )
 
-func createHandlerFunc(bot *disgo.Client, config RouteConfig) http.HandlerFunc {
+func (a *App) Handler(w http.ResponseWriter, r *http.Request) {
+	a.log.Log(logging.Entry{
+		Severity: logging.Info,
+		HTTPRequest: &logging.HTTPRequest{
+			Request: r,
+		},
+		Labels:  map[string]string{"arbitraryField": "custom entry"},
+		Payload: "Structured logging example.",
+	})
+	fmt.Fprintf(w, "Hello World!\n")
+}
+
+func generateHandler(bot *disgo.Client, config RouteConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Check if the Authorization header matches the bot's token
-		if authHeader := r.Header.Get("Authorization"); authHeader != bot.Authentication.Token {
-			log.Printf("Unauthorized request: Authorization header doesn't match bot token: %s", authHeader)
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		authHeader := r.Header.Get("Authorization")
+		if authHeader != bot.Authentication.Token {
+			log.Printf("Unauthorized request: Authorization header doesn't match bot token: %q", authHeader)
+			log.Printf("expected: %q", bot.Authentication.Token)
+			http.Error(w, "Invalid Token", http.StatusUnauthorized)
 			return
 		}
 
@@ -71,7 +99,7 @@ func createHandlerFunc(bot *disgo.Client, config RouteConfig) http.HandlerFunc {
 
 		// Send request to Discord API
 		var respBody []byte
-		err = disgo.SendRequest(
+		err = disgo.SendRequestByte(
 			bot,
 			xid,
 			routeID,
@@ -80,7 +108,7 @@ func createHandlerFunc(bot *disgo.Client, config RouteConfig) http.HandlerFunc {
 			discordURL,
 			contentType,
 			reqBody,
-			respBody,
+			&respBody, // Pass a pointer to allow SendRequest to modify the slice
 		)
 
 		if err != nil {
@@ -89,56 +117,11 @@ func createHandlerFunc(bot *disgo.Client, config RouteConfig) http.HandlerFunc {
 			return
 		}
 
-		// Return the response to the client
+		// Return the response to the microservice
 		w.Header().Set("Content-Type", string(contentType))
 		w.WriteHeader(http.StatusOK)
 		if _, err := w.Write(respBody); err != nil {
 			log.Printf("Failed to write response: %v", err)
 		}
-	}
-}
-
-func main() {
-	// Load .env file
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("Warning: No .env file found or error loading it")
-	}
-
-	var TOKEN string
-	if TOKEN := os.Getenv("BOT_TOKEN"); TOKEN == "" {
-		log.Fatal("BOT_TOKEN environment variable is required")
-	} else {
-		log.Printf("Using BOT_TOKEN specified in .env")
-	}
-
-	// Set default port if not specified
-	proxyPort := os.Getenv("PROXY_PORT")
-	if proxyPort != "" {
-		log.Printf("Using PROXY_PORT specified in .env: %s", proxyPort)
-	} else {
-		proxyPort = "8088" // Default port
-		log.Printf("No PROXY_PORT specified in .env, using default port %s", proxyPort)
-	}
-
-	// Initialize the Disgo client
-	bot := &disgo.Client{
-		Authentication: disgo.BotToken(TOKEN),
-		Config: &disgo.Config{
-			Gateway: disgo.Gateway{}, // we dont use the gateway
-			Request: disgo.DefaultRequest(),
-		},
-	}
-
-	// Set up the router (note only supports v10)
-	router := mux.NewRouter()
-	for _, config := range routeConfigs {
-		routePath := BaseURL + config.PathPattern
-		router.HandleFunc(routePath, createHandlerFunc(bot, config)).Methods(config.Method)
-		log.Printf("Registered route: %s %s", config.Method, routePath)
-	}
-	// Start the server
-	log.Printf("Reverse proxy starting on %s", proxyPort)
-	if err := http.ListenAndServe(fmt.Sprintf(":%s", proxyPort), router); err != nil {
-		log.Fatalf("Failed to start server: %v", err)
 	}
 }

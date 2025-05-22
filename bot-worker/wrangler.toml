@@ -1,28 +1,18 @@
-name = "bot-worker2"
+name = "bot-worker"
 main = "src/index.ts"
 compatibility_date = "2023-10-16"
 compatibility_flags = ["nodejs_compat"]
 
-# Configuration for different environments
 [env.production]
 workers_dev = false
-# Add your production domain route here if needed
-# route = { pattern = "yourdomain.com/discord-bot/*", zone_name = "yourdomain.com" }
 
 [env.development]
 workers_dev = true
 
-# Define KV Namespaces if needed
-# [[kv_namespaces]]
-# binding = "BOT_STORAGE"
-# id = "YOUR_KV_NAMESPACE_ID_HERE"
-# preview_id = "YOUR_PREVIEW_KV_NAMESPACE_ID_HERE"
-
-# Environment variables
 [vars]
-# Public variables can be defined here
-PUBLIC_KEY = ""
-APPLICATION_ID = ""
+PUBLIC_KEY = "3623ce7e20f325f139721246d3291b6d957ecfd18949742eff378179b18a6bbe"
+APPLICATION_ID = "1068127668052168704"
 
 # Note: For secrets like BOT_TOKEN, use the Wrangler CLI:
+# Public variables can be defined here
 # wrangler secret put BOT_TOKEN
