@@ -133,6 +133,13 @@ func newApp(ctx context.Context, port, projectID string, bot *disgo.Client) (*Ap
 	}).Methods("GET")
 	// Add the regular handler for the root path
 	r.HandleFunc(BaseURL, app.Handler).Methods("GET")
+	// Reroute /api/v10 back to /api
+	r.PathPrefix("/api/v10/").HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		// Forward to the corresponding /api/ endpoint
+		newPath := strings.Replace(req.URL.Path, "/api/v10/", BaseURL, 1)
+		req.URL.Path = newPath
+		r.ServeHTTP(w, req)
+	})
 	app.Server.Handler = r
 
 	return app, nil

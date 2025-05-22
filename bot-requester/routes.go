@@ -4,7 +4,7 @@ import "fmt"
 
 const (
 	DiscordURL                                             = "https://discord.com"
-	BaseURL                                                = "/api/v10/"
+	BaseURL                                                = "/api/"
 	DiscordBaseURL                                         = DiscordURL + BaseURL
 	EndpointGetGlobalApplicationCommands                   = "applications/{application_id}/commands"
 	EndpointCreateGlobalApplicationCommand                 = "applications/{application_id}/commands"
