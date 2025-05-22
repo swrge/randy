@@ -17,20 +17,16 @@ steps:
       ]
   - id: "Deploy to Cloud Run"
     name: "gcr.io/cloud-builders/gcloud"
-    args:
-      - "run"
-      - "deploy"
-      - "${_SERVICE_NAME}-$BUILD_ID"
-      - "--image"
-      - "$_GCR_HOSTNAME/$PROJECT_ID/$_REPOSITORY/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA"
-      - "--region"
-      - "${_DEPLOY_REGION}"
-      - "--update-secrets"
-      - "DISCORD_BOT_TOKEN=BOT_TOKEN:latest"
-      - "--startup-probe"
-      - "httpGet.path=/probe,httpGet.port=8080,initialDelaySeconds=60,failureThreshold=20,timeoutSeconds=30,periodSeconds=10"
-      - "--allow-unauthenticated"
-
+    args: [
+        "run deploy bot-requester
+        --image $_GCR_HOSTNAME/$PROJECT_ID/$_REPOSITORY/$REPO_NAME/$_SERVICE_NAME:latest
+        --region us-east1
+        --set-env-vars DISCORD_BOT_TOKEN=$$BOT_TOKEN
+        --allow-unauthenticated
+        ",
+      ]
+    secretEnv: ["BOT_TOKEN"]
+    timeout: 3600s
 availableSecrets:
   secretManager:
     - versionName: projects/750978330037/secrets/BOT_TOKEN/versions/latest

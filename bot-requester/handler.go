@@ -42,9 +42,11 @@ func (a *App) Handler(w http.ResponseWriter, r *http.Request) {
 func generateHandler(bot *disgo.Client, config RouteConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Check if the Authorization header matches the bot's token
-		if authHeader := r.Header.Get("Authorization"); authHeader != bot.Authentication.Token {
-			log.Printf("Unauthorized request: Authorization header doesn't match bot token: %s", authHeader)
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		authHeader := r.Header.Get("Authorization")
+		if authHeader != bot.Authentication.Token {
+			log.Printf("Unauthorized request: Authorization header doesn't match bot token: %q", authHeader)
+			log.Printf("expected: %q", bot.Authentication.Token)
+			http.Error(w, "Invalid Token", http.StatusUnauthorized)
 			return
 		}
 

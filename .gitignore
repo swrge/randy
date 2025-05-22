@@ -8,3 +8,4 @@ update-all.sh
 vendor copy
 bot-gateway-bin
 old-*
+service.yaml

@@ -22,6 +22,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"time"
 
 	"cloud.google.com/go/logging"
@@ -43,7 +44,7 @@ type App struct {
 func main() {
 	ctx := context.Background()
 	// Initialize the Disgo client
-	TOKEN := os.Getenv("DISCORD_BOT_TOKEN")
+	TOKEN := strings.TrimSpace(os.Getenv("DISCORD_BOT_TOKEN"))
 	if TOKEN == "" {
 		log.Fatal("DISCORD_BOT_TOKEN environment variable is required")
 	}
