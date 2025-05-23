@@ -43,6 +43,9 @@ func generateHandler(bot *disgo.Client, config RouteConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Check if the Authorization header matches the bot's token
 		authHeader := r.Header.Get("Authorization")
+		if authHeader[:4] == "Bot " {
+			authHeader = authHeader[4:]
+		}
 		if authHeader != bot.Authentication.Token {
 			log.Printf("Unauthorized request: Authorization header doesn't match bot token: %q", authHeader)
 			log.Printf("expected: %q", bot.Authentication.Token)
