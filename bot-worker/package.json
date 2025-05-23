@@ -11,6 +11,7 @@
     "register:js": "node build/register.js",
     "lint": "eslint --ext .ts ./src",
     "dev": "wrangler dev",
+    "ngrok": "ngrok http 8787",
     "deploy": "wrangler publish"
   },
   "author": "",

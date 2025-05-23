@@ -1,12 +1,6 @@
-import {
-  DiscordInteraction,
-  InteractionResponse,
-  InteractionResponseTypes,
-  InteractionTypes,
-} from '@discordeno/types';
+import { DiscordInteraction, InteractionResponseTypes, InteractionTypes } from '@discordeno/types';
 
 import { verifyKey } from './utils/crypto.js';
-import { Interaction, createBot, Bot } from '@discordeno/bot';
 import { PING } from './commands/ping.js';
 import * as response from './response.js';
 
@@ -38,68 +32,51 @@ export async function verifyDiscordRequest(request: Request, env: Env): CheckedI
   return { interaction: JSON.parse(body), isValid: true };
 }
 
-// Helper function to create a response from an interaction response
-function createResponse(response: InteractionResponse): Response {
-  return new Response(JSON.stringify(response), {
-    headers: { 'Content-Type': 'application/json' },
-  });
+// Helper function to create a response from an interaction type and data
+function createResponse(type: InteractionResponseTypes, data?: any): Response {
+  return new Response(
+    JSON.stringify({
+      type,
+      data,
+    }),
+    {
+      headers: { 'Content-Type': 'application/json' },
+    }
+  );
 }
 
 // Handle Discord slash commands
-async function handleSlashCommand(i: Interaction): Promise<Response> {
-  // Check which command was invoked
-  switch (i.data?.name) {
+async function handleSlashCommand(interaction: DiscordInteraction): Promise<Response> {
+  switch (interaction.data?.name) {
     case PING.name:
-      return await PING.execute(i, {});
+      return await PING.execute(interaction, {});
 
     default:
-      return createResponse({
-        type: InteractionResponseTypes.ChannelMessageWithSource,
-        data: {
-          content: 'Unknown command',
-        },
+      return createResponse(InteractionResponseTypes.ChannelMessageWithSource, {
+        content: 'Unknown command',
       });
   }
 }
 
 export async function handleBotEvent(_request: Request, _env: Env): Promise<Response> {
-  // todo: Handle events sent from bot-gateway
   throw new Error('Function not implemented.');
 }
 
 export async function handleInteraction(request: Request, env: Env): Promise<Response> {
-  // Verify the request is from Discord
   const { interaction, isValid } = await verifyDiscordRequest(request, env);
-  if (!isValid) {
+  if (!isValid || !interaction) {
     return new Response('Unauthorized', { status: 401 });
   }
-  if (!interaction) {
-    return new Response('Invalid interaction', { status: 400 });
-  }
 
-  // Handle the Discord interaction
-  const bot: Bot = createBot({
-    token: env.BOT_TOKEN,
-    rest: {
-      proxy: {
-        baseUrl: env.REQUESTER_URL,
-      },
-    },
-  });
-  const i = bot.transformers.interaction(bot, { interaction, shardId: 0 }) as Interaction;
+  console.log('Interaction received');
 
-  switch (i.type) {
-    // Discord sends a ping to validate the endpoint
+  switch (interaction.type) {
     case InteractionTypes.Ping:
-      return createResponse({
-        type: InteractionResponseTypes.Pong,
-      });
+      return createResponse(InteractionResponseTypes.Pong);
 
-    // Handle slash commands
     case InteractionTypes.ApplicationCommand:
-      return await handleSlashCommand(i);
+      return await handleSlashCommand(interaction);
 
-    // Handle unknown interaction types
     default:
       return await response.UnknownInteraction();
   }
@@ -109,15 +86,11 @@ export async function handleInteraction(request: Request, env: Env): Promise<Res
 export async function run(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
   const pathname = new URL(request.url).pathname;
   if (pathname.startsWith('/interactions')) {
-    // interactions events from discord
     return await handleInteraction(request, env);
   } else if (pathname.startsWith('/bot-events')) {
-    // real-time events from bot-gateway
     return await handleBotEvent(request, env);
   }
-  // misc
   if (request.method === 'GET') {
-    // get wave to verify the worker is working.
     return new Response(`👋 ${env.APPLICATION_ID}`);
   }
   return new Response('Not found', { status: 404 });
