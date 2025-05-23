@@ -1,0 +1,41 @@
+name: Deploy bot-worker to Cloudflare Workers
+
+# Trigger the workflow on push events, but only for changes in bot-worker
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "bot-worker/**" # Matches changes in bot-worker and its subdirectories
+
+jobs:
+  release:
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # Step 3: Install dependencies in bot-worker directory
+      - name: Install dependencies
+        run: npm install
+        working-directory: bot-worker # Run this command in the bot-worker directory
+
+      # Step 4: Build the bot-worker
+      - name: Build bot-worker
+        run: npm run build
+        working-directory: bot-worker
+
+      # Step 5: Deploy to Cloudflare Workers
+      - name: Deploy to Cloudflare
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }} # API token from GitHub secrets
+          accountId: ${{ secrets.CF_ACCOUNT_ID }} # Account ID from GitHub secrets
+          workingDirectory: bot-worker # Set the working directory to bot-worker

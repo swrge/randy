@@ -27,7 +27,7 @@ export const DISCORD_EPOCH = 1420070400000;
 export function convertSnowflakeToDate(snowflake: string, epoch = DISCORD_EPOCH) {
   // Convert snowflake to BigInt to extract timestamp bits
   // https://discord.com/developers/docs/reference#snowflakes
-  const milliseconds = BigInt(snowflake) >> 22n;
+  const milliseconds = BigInt(snowflake) >> BigInt(22);
   return new Date(Number(milliseconds) + epoch);
 }
 
@@ -37,7 +37,7 @@ export function validateSnowflake(snowflake: string, epoch = DISCORD_EPOCH): str
     throw new Error("That doesn't look like a snowflake. Snowflakes contain only numbers.");
   }
 
-  if (BigInt(snowflake) < 4194304n) {
+  if (BigInt(snowflake) < BigInt(4194304)) {
     throw new Error("That doesn't look like a snowflake. Snowflakes are much larger numbers.");
   }
 

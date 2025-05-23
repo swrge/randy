@@ -1,7 +1,7 @@
 //import { CreateApplicationCommand } from '@discordeno/types';
-import { Interaction, InteractionResponse, InteractionResponseTypes } from '@discordeno/bot';
-import { Command } from './index';
-import { JsonResponse } from '../response';
+import { DiscordInteraction, InteractionResponse, InteractionResponseTypes } from '@discordeno/bot';
+import { Command } from './index.js';
+import { JsonResponse } from '../response.js';
 
 export const PING: Command = {
   name: 'ping',
@@ -9,7 +9,10 @@ export const PING: Command = {
   execute: handlePing,
 };
 
-async function handlePing(_i: Interaction, _args: Record<string, unknown>): Promise<Response> {
+async function handlePing(
+  _i: DiscordInteraction,
+  _args: Record<string, unknown>
+): Promise<Response> {
   const response: InteractionResponse = {
     type: InteractionResponseTypes.ChannelMessageWithSource,
     data: {

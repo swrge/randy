@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "description": "Serverless Discord bot slash command handler using Cloudflare Workers",
   "main": "dist/index.js",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "format": "prettier --write '**/*.{ts,js,json}'",
-    "register": "node src/register.js",
+    "register": "node --loader=ts-node/esm src/register.ts",
+    "register:js": "node build/register.js",
     "lint": "eslint --ext .ts ./src",
     "dev": "wrangler dev",
+    "ngrok": "ngrok http 8787",
     "deploy": "wrangler publish"
   },
   "author": "",
@@ -28,6 +31,7 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.2.5",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "wrangler": "^3.33.0"
   }
