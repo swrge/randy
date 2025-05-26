@@ -1,0 +1,58 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "bot-requester/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Authenticate with Google Cloud using the service account key
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+      # Set up the gcloud CLI
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v1
+
+      # Configure Docker to authenticate with Artifact Registry
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker us-east1-docker.pkg.dev --quiet
+
+      # Set the image name with the commit SHA as the tag
+      - name: Set image name
+        run: echo "IMAGE_NAME=us-east1-docker.pkg.dev/bot-requester/cloud-run-source-deploy/randy/bot-requester:${{ github.sha }}" >> $GITHUB_ENV
+
+      # Build the Docker image
+      - name: Build Docker image
+        working-directory: bot-requester
+        run: docker build -t ${{ env.IMAGE_NAME }} .
+
+      # Push the Docker image to Artifact Registry
+      - name: Push Docker image
+        working-directory: bot-requester
+        run: docker push ${{ env.IMAGE_NAME }}
+
+      # Deploy the image to Cloud Run
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy bot-requester \
+            --image ${{ env.IMAGE_NAME }} \
+            --region us-east1 \
+            --cpu 1 \
+            --memory 512Mi \
+            --max-instances 10 \
+            --concurrency 80 \
+            --service-account ${{ secrets.SERVICE_ACCOUNT }} \
+            --update-secrets=DISCORD_BOT_TOKEN=BOT_TOKEN:latest \
+            --allow-unauthenticated
