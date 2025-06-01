@@ -11,24 +11,24 @@ use crate::{
     CacheResult, CachedArchive, RedisCache,
 };
 
-pub(crate) struct Pipe<'c, C> {
+pub struct Pipe<'c, C> {
     conn: ConnectionState<'c, C>,
     pipe: Pipeline,
 }
 
 impl<'c, C> Pipe<'c, C> {
-    pub(crate) fn new(cache: &'c RedisCache<C>) -> Self {
+    pub fn new(cache: &'c RedisCache<C>) -> Self {
         Self {
             conn: ConnectionState::new(cache),
             pipe: Pipeline::new(),
         }
     }
 
-    pub(crate) fn len(&self) -> usize {
+    pub fn len(&self) -> usize {
         self.pipe.cmd_iter().count()
     }
 
-    pub(crate) async fn query<T: FromRedisValue>(&mut self) -> CacheResult<T> {
+    pub async fn query<T: FromRedisValue>(&mut self) -> CacheResult<T> {
         trace!(piped = self.len());
 
         let conn = self.conn.get().await?;
@@ -38,19 +38,15 @@ impl<'c, C> Pipe<'c, C> {
         Ok(res)
     }
 
-    pub(crate) fn del(&mut self, key: impl ToRedisArgs) {
+    pub fn del(&mut self, key: impl ToRedisArgs) {
         self.pipe.del(key).ignore();
     }
 
-    pub(crate) fn is_empty(&self) -> bool {
+    pub fn is_empty(&self) -> bool {
         self.pipe.cmd_iter().next().is_none()
     }
 
-    pub(crate) fn mset<V: ToRedisArgs>(
-        &mut self,
-        items: &[(RedisKey, V)],
-        expire: Option<Duration>,
-    ) {
+    pub fn mset<V: ToRedisArgs>(&mut self, items: &[(RedisKey, V)], expire: Option<Duration>) {
         self.pipe.mset(items).ignore();
 
         if let Some(duration) = expire {
@@ -61,15 +57,15 @@ impl<'c, C> Pipe<'c, C> {
         }
     }
 
-    pub(crate) fn sadd(&mut self, key: RedisKey, member: impl ToRedisArgs) {
+    pub fn sadd(&mut self, key: RedisKey, member: impl ToRedisArgs) {
         self.pipe.sadd(key, member).ignore();
     }
 
-    pub(crate) fn scard(&mut self, key: RedisKey) {
+    pub fn scard(&mut self, key: RedisKey) {
         self.pipe.scard(key);
     }
 
-    pub(crate) fn set(&mut self, key: RedisKey, bytes: &[u8], expire: Option<Duration>) {
+    pub fn set(&mut self, key: RedisKey, bytes: &[u8], expire: Option<Duration>) {
         if let Some(duration) = expire {
             #[allow(clippy::cast_possible_truncation)]
             self.pipe.set_ex(key, bytes, duration.as_secs() as usize);
@@ -80,31 +76,26 @@ impl<'c, C> Pipe<'c, C> {
         self.pipe.ignore();
     }
 
-    pub(crate) fn smembers(&mut self, key: RedisKey) {
+    pub fn smembers(&mut self, key: RedisKey) {
         self.pipe.smembers(key);
     }
 
-    pub(crate) fn srem(&mut self, key: RedisKey, member: impl ToRedisArgs) {
+    pub fn srem(&mut self, key: RedisKey, member: impl ToRedisArgs) {
         self.pipe.srem(key, member).ignore();
     }
 
-    pub(crate) fn zadd(
-        &mut self,
-        key: RedisKey,
-        member: impl ToRedisArgs,
-        score: impl ToRedisArgs,
-    ) {
+    pub fn zadd(&mut self, key: RedisKey, member: impl ToRedisArgs, score: impl ToRedisArgs) {
         self.pipe.zadd(key, member, score).ignore();
     }
 
-    pub(crate) fn zrem(&mut self, key: RedisKey, members: impl ToRedisArgs) {
+    pub fn zrem(&mut self, key: RedisKey, members: impl ToRedisArgs) {
         self.pipe.zrem(key, members).ignore();
     }
 }
 
 impl<C: CacheConfig> Pipe<'_, C> {
     #[instrument(level = "trace", skip_all)]
-    pub(crate) async fn get<T>(&mut self, key: RedisKey) -> CacheResult<Option<CachedArchive<T>>>
+    pub async fn get<T>(&mut self, key: RedisKey) -> CacheResult<Option<CachedArchive<T>>>
     where
         T: CheckedArchived,
     {

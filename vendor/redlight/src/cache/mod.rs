@@ -2,7 +2,7 @@ mod expire;
 mod get;
 mod impls;
 mod meta;
-mod pipe;
+pub mod pipe;
 
 #[cfg(feature = "cold_resume")]
 mod cold_resume;
@@ -12,8 +12,8 @@ mod metrics;
 
 use std::marker::PhantomData;
 
-use tracing::instrument;
 use randy_model::gateway::{event::Event, payload::incoming::GuildCreate};
+use tracing::instrument;
 
 use crate::{
     cache::pipe::Pipe,

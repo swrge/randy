@@ -71,7 +71,7 @@ pub struct SerializeError {
 }
 
 impl SerializeError {
-    pub(crate) const fn new(error: BoxedError, kind: SerializeErrorKind) -> Self {
+    pub const fn new(error: BoxedError, kind: SerializeErrorKind) -> Self {
         Self { error, kind }
     }
 }
