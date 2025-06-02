@@ -1,12 +1,12 @@
 use std::{env, error::Error};
 
-use redlight::{config::CacheConfig, RedisCache};
 use randy_gateway::Event;
 use randy_model::{
     channel::{stage_instance::PrivacyLevel, StageInstance},
     gateway::payload::incoming::StageInstanceCreate,
     id::Id,
 };
+use redlight::{config::CacheConfig, RedisCache};
 
 use self::{config::Config, recorder::PrintRecorder};
 
@@ -125,13 +125,14 @@ mod recorder {
 mod config {
     use std::time::Duration;
 
+    use randy_model::channel::StageInstance;
     use redlight::config::{CacheConfig, Cacheable, ICachedStageInstance, Ignore};
     use rkyv::{rancor::Source, Archive, Serialize};
-    use randy_model::channel::StageInstance;
 
     pub struct Config;
 
     impl CacheConfig for Config {
+        #[cfg(feature = "metrics")]
         const METRICS_INTERVAL_DURATION: Duration = Duration::from_secs(15);
 
         type Channel<'a> = Ignore;
