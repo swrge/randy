@@ -4,8 +4,13 @@ use randy_model::id::{
 };
 
 use crate::{
+    cache::{
+        ChannelMessagesKey, ChannelsKey, EmojisKey, GuildChannelsKey, GuildEmojisKey,
+        GuildIntegrationsKey, GuildMembersKey, GuildPresencesKey, GuildRolesKey,
+        GuildStageInstancesKey, GuildStickersKey, GuildVoiceStatesKey, GuildsKey, MessagesKey,
+        RolesKey, StageInstancesKey, StickersKey, UnavailableGuildsKey, UserGuildsKey, UsersKey,
+    },
     error::CacheError,
-    key::RedisKey,
     redis::{Cmd, ConnectionState},
     CacheResult, RedisCache,
 };
@@ -23,7 +28,7 @@ macro_rules! impl_stats_fn {
         pub async fn $fn(&mut self) -> CacheResult<usize> {
             let conn = self.conn.get().await?;
 
-            Cmd::scard(RedisKey::$variant)
+            Cmd::scard($variant)
                 .query_async(conn)
                 .await
                 .map_err(CacheError::Redis)
@@ -34,7 +39,7 @@ macro_rules! impl_stats_fn {
         pub async fn $fn(&mut self, guild_id: Id<GuildMarker>) -> CacheResult<usize> {
             let conn = self.conn.get().await?;
 
-            Cmd::scard(RedisKey::$variant { id: guild_id })
+            Cmd::scard($variant { id: guild_id })
                 .query_async(conn)
                 .await
                 .map_err(CacheError::Redis)
@@ -54,109 +59,117 @@ impl<C> RedisCacheStats<'_, C> {
     impl_stats_fn!(
         "Total amount of currently cached channels.",
         channels,
-        Channels
+        ChannelsKey
     );
 
-    impl_stats_fn!("Total amount of currently cached emojis.", emojis, Emojis);
+    impl_stats_fn!(
+        "Total amount of currently cached emojis.",
+        emojis,
+        EmojisKey
+    );
 
-    impl_stats_fn!("Total amount of currently cached guilds.", guilds, Guilds);
+    impl_stats_fn!(
+        "Total amount of currently cached guilds.",
+        guilds,
+        GuildsKey
+    );
 
     impl_stats_fn!(
         "Total amount of currently cached messages.",
         messages,
-        Messages
+        MessagesKey
     );
 
-    impl_stats_fn!("Total amount of currently cached roles.", roles, Roles);
+    impl_stats_fn!("Total amount of currently cached roles.", roles, RolesKey);
 
     impl_stats_fn!(
         "Total amount of currently cached stage instances.",
         stage_instances,
-        StageInstances
+        StageInstancesKey
     );
 
     impl_stats_fn!(
         "Total amount of currently cached stickers.",
         stickers,
-        Stickers
+        StickersKey
     );
 
     impl_stats_fn!(
         "Total amount of currently unavailable guilds.",
         unavailable_guilds,
-        UnavailableGuilds
+        UnavailableGuildsKey
     );
 
-    impl_stats_fn!("Total amount of currently cached users.", users, Users);
+    impl_stats_fn!("Total amount of currently cached users.", users, UsersKey);
 
     impl_stats_fn!(
         Guild:
        "Amount of currently cached channels for a guild.",
         guild_channels,
-        GuildChannels
+        GuildChannelsKey
     );
 
     impl_stats_fn!(
         Guild:
        "Amount of currently cached emojis for a guild.",
         guild_emojis,
-        GuildEmojis
+        GuildEmojisKey
     );
 
     impl_stats_fn!(
         Guild:
        "Amount of currently cached integrations for a guild.",
         guild_integrations,
-        GuildIntegrations
+        GuildIntegrationsKey
     );
 
     impl_stats_fn!(
         Guild:
        "Amount of currently cached members for a guild.",
         guild_members,
-        GuildMembers
+        GuildMembersKey
     );
 
     impl_stats_fn!(
         Guild:
        "Amount of currently cached presences for a guild.",
         guild_presences,
-        GuildPresences
+        GuildPresencesKey
     );
 
     impl_stats_fn!(
         Guild:
        "Amount of currently cached roles for a guild.",
         guild_roles,
-        GuildRoles
+        GuildRolesKey
     );
 
     impl_stats_fn!(
         Guild:
        "Amount of currently cached stage instances for a guild.",
         guild_stage_instances,
-        GuildStageInstances
+        GuildStageInstancesKey
     );
 
     impl_stats_fn!(
         Guild:
        "Amount of currently cached stickers for a guild.",
         guild_stickers,
-        GuildStickers
+        GuildStickersKey
     );
 
     impl_stats_fn!(
         Guild:
        "Amount of currently cached voice states for a guild.",
         guild_voice_states,
-        GuildVoiceStates
+        GuildVoiceStatesKey
     );
 
     /// Amount of currently cached messages for a channel.
     pub async fn channel_messages(&mut self, channel_id: Id<ChannelMarker>) -> CacheResult<usize> {
         let conn = self.conn.get().await?;
 
-        let key = RedisKey::ChannelMessages {
+        let key = ChannelMessagesKey {
             channel: channel_id,
         };
 
@@ -170,7 +183,7 @@ impl<C> RedisCacheStats<'_, C> {
     pub async fn common_guilds(&mut self, user_id: Id<UserMarker>) -> CacheResult<usize> {
         let conn = self.conn.get().await?;
 
-        Cmd::scard(RedisKey::UserGuilds { id: user_id })
+        Cmd::scard(UserGuildsKey { id: user_id })
             .query_async(conn)
             .await
             .map_err(CacheError::Redis)

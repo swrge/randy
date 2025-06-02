@@ -29,6 +29,28 @@ use crate::{
     CacheResult,
 };
 
+pub use impls::{
+    channel::{ChannelKey, ChannelMessagesKey, ChannelMetaKey, ChannelsKey},
+    current_user::CurrentUserKey,
+    emoji::{EmojiKey, EmojiMetaKey, EmojisKey},
+    guild::{
+        GuildChannelsKey, GuildEmojisKey, GuildIntegrationsKey, GuildKey, GuildMembersKey,
+        GuildPresencesKey, GuildRolesKey, GuildScheduledEventsKey, GuildStageInstancesKey,
+        GuildStickersKey, GuildVoiceStatesKey, GuildsKey,
+    },
+    integration::IntegrationKey,
+    member::MemberKey,
+    message::{MessageKey, MessageMetaKey, MessagesKey},
+    presence::PresenceKey,
+    role::{RoleKey, RoleMetaKey, RolesKey},
+    scheduled_event::{ScheduledEventKey, ScheduledEventMetaKey, ScheduledEventsKey},
+    stage_instance::{StageInstanceKey, StageInstanceMetaKey, StageInstancesKey},
+    sticker::{StickerKey, StickerMetaKey, StickersKey},
+    unavailable_guilds::UnavailableGuildsKey,
+    user::{UserGuildsKey, UserKey, UsersKey},
+    voice_state::VoiceStateKey,
+};
+
 /// Redis-based cache for data of randy's gateway [`Event`]s.
 pub struct RedisCache<C> {
     pool: Pool,
