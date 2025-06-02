@@ -1,5 +1,3 @@
-use rkyv::{api::high::to_bytes_in, rancor::Source, ser::writer::Buffer, Archived};
-use tracing::{instrument, trace};
 use randy_model::{
     channel::message::Sticker,
     id::{
@@ -7,6 +5,8 @@ use randy_model::{
         Id,
     },
 };
+use rkyv::{api::high::to_bytes_in, rancor::Source, ser::writer::Buffer, Archived};
+use tracing::{instrument, trace};
 
 use crate::{
     cache::{
@@ -15,12 +15,70 @@ use crate::{
     },
     config::{CacheConfig, Cacheable, ICachedSticker, SerializeMany},
     error::{MetaError, MetaErrorKind, SerializeError, SerializeErrorKind},
-    key::RedisKey,
-    redis::Pipeline,
+    key::{name_id, RedisKey},
+    redis::{Pipeline, RedisWrite, ToRedisArgs},
     rkyv_util::id::IdRkyv,
     util::BytesWrap,
     CacheResult, RedisCache,
 };
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct StickerKey {
+    pub id: Id<StickerMarker>,
+}
+
+impl RedisKey for StickerKey {
+    const PREFIX: &'static [u8] = b"STICKER";
+}
+
+impl ToRedisArgs for StickerKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(name_id(Self::PREFIX, self.id).as_ref());
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct StickerMetaKey {
+    pub id: Id<StickerMarker>,
+}
+
+impl RedisKey for StickerMetaKey {
+    const PREFIX: &'static [u8] = b"STICKER_META";
+}
+
+impl ToRedisArgs for StickerMetaKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(name_id(Self::PREFIX, self.id).as_ref());
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct StickersKey;
+
+impl RedisKey for StickersKey {
+    const PREFIX: &'static [u8] = b"STICKERS";
+}
+
+impl ToRedisArgs for StickersKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(Self::PREFIX);
+    }
+}
+
+impl From<Id<StickerMarker>> for StickerKey {
+    fn from(id: Id<StickerMarker>) -> Self {
+        Self { id }
+    }
+}
 
 impl<C: CacheConfig> RedisCache<C> {
     #[instrument(level = "trace", skip_all)]
@@ -40,7 +98,7 @@ impl<C: CacheConfig> RedisCache<C> {
             .iter()
             .map(|sticker| {
                 let id = sticker.id;
-                let key = RedisKey::Sticker { id };
+                let key = StickerKey { id };
                 let sticker = C::Sticker::from_sticker(sticker);
 
                 let bytes = serializer
@@ -51,7 +109,7 @@ impl<C: CacheConfig> RedisCache<C> {
 
                 Ok(((key, BytesWrap(bytes)), id.get()))
             })
-            .collect::<CacheResult<(Vec<(RedisKey, BytesWrap<_>)>, Vec<u64>)>>()?;
+            .collect::<CacheResult<(Vec<(StickerKey, BytesWrap<_>)>, Vec<u64>)>>()?;
 
         if sticker_entries.is_empty() {
             return Ok(());
@@ -59,19 +117,17 @@ impl<C: CacheConfig> RedisCache<C> {
 
         pipe.mset(&sticker_entries, C::Sticker::expire());
 
-        let key = RedisKey::GuildStickers { id: guild_id };
+        let key = crate::cache::impls::guild::GuildStickersKey { id: guild_id };
         pipe.sadd(key, sticker_ids.as_slice());
 
-        let key = RedisKey::Stickers;
+        let key = StickersKey;
         pipe.sadd(key, sticker_ids);
 
         if C::Sticker::expire().is_some() {
             stickers
                 .iter()
                 .try_for_each(|sticker| {
-                    let key = StickerMetaKey {
-                        sticker: sticker.id,
-                    };
+                    let key = StickerMetaKey { id: sticker.id };
 
                     StickerMeta { guild: guild_id }.store(pipe, key)
                 })
@@ -80,37 +136,59 @@ impl<C: CacheConfig> RedisCache<C> {
 
         Ok(())
     }
-}
 
-#[derive(Debug)]
-pub(crate) struct StickerMetaKey {
-    sticker: Id<StickerMarker>,
+    pub(crate) fn delete_sticker(
+        &self,
+        pipe: &mut Pipe<'_, C>,
+        guild_id: Id<GuildMarker>,
+        sticker_id: Id<StickerMarker>,
+    ) {
+        if !C::Sticker::WANTED {
+            return;
+        }
+
+        let key = StickerKey { id: sticker_id };
+        pipe.del(key);
+
+        let key = crate::cache::impls::guild::GuildStickersKey { id: guild_id };
+        pipe.srem(key, sticker_id.get());
+
+        let key = StickersKey;
+        pipe.srem(key, sticker_id.get());
+
+        if C::Sticker::expire().is_some() {
+            let key = StickerMetaKey { id: sticker_id };
+            pipe.del(key);
+        }
+    }
 }
 
 impl IMetaKey for StickerMetaKey {
     fn parse<'a>(split: &mut impl Iterator<Item = &'a [u8]>) -> Option<Self> {
-        split.next().and_then(atoi).map(|sticker| Self { sticker })
+        split
+            .next()
+            .and_then(atoi)
+            .map(|sticker| Self { id: sticker })
     }
 
     fn handle_expire(&self, pipe: &mut Pipeline) {
-        let key = RedisKey::Stickers;
-        pipe.srem(key, self.sticker.get()).ignore();
+        let key = StickersKey;
+        pipe.srem(key, self.id.get()).ignore();
     }
 }
 
 impl HasArchived for StickerMetaKey {
     type Meta = StickerMeta;
 
-    fn redis_key(&self) -> RedisKey {
-        RedisKey::StickerMeta { id: self.sticker }
+    fn redis_key(&self) -> impl RedisKey {
+        StickerMetaKey { id: self.id }
     }
 
     fn handle_archived(&self, pipe: &mut Pipeline, archived: &Archived<Self::Meta>) {
-        let key = RedisKey::GuildStickers {
+        let key = crate::cache::impls::guild::GuildStickersKey {
             id: archived.guild.into(),
         };
-
-        pipe.srem(key, self.sticker.get());
+        pipe.srem(key, self.id.get());
     }
 }
 

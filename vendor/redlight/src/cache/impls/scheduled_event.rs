@@ -1,5 +1,3 @@
-use rkyv::{api::high::to_bytes_in, rancor::Source, ser::writer::Buffer, Archived};
-use tracing::{instrument, trace};
 use randy_model::{
     gateway::payload::incoming::{GuildScheduledEventUserAdd, GuildScheduledEventUserRemove},
     guild::scheduled_event::GuildScheduledEvent,
@@ -8,6 +6,8 @@ use randy_model::{
         Id,
     },
 };
+use rkyv::{api::high::to_bytes_in, rancor::Source, ser::writer::Buffer, Archived};
+use tracing::{instrument, trace};
 
 use crate::{
     cache::{
@@ -18,11 +18,70 @@ use crate::{
     error::{
         MetaError, MetaErrorKind, SerializeError, SerializeErrorKind, UpdateError, UpdateErrorKind,
     },
-    redis::Pipeline,
+    key::{name_id, RedisKey},
+    redis::{Pipeline, RedisWrite, ToRedisArgs},
     rkyv_util::id::IdRkyv,
     util::BytesWrap,
-    CacheResult, RedisCache, RedisKey,
+    CacheResult, RedisCache,
 };
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct ScheduledEventKey {
+    pub id: Id<ScheduledEventMarker>,
+}
+
+impl RedisKey for ScheduledEventKey {
+    const PREFIX: &'static [u8] = b"SCHEDULED_EVENT";
+}
+
+impl ToRedisArgs for ScheduledEventKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(name_id(Self::PREFIX, self.id).as_ref());
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct ScheduledEventMetaKey {
+    pub id: Id<ScheduledEventMarker>,
+}
+
+impl RedisKey for ScheduledEventMetaKey {
+    const PREFIX: &'static [u8] = b"SCHEDULED_EVENT_META";
+}
+
+impl ToRedisArgs for ScheduledEventMetaKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(name_id(Self::PREFIX, self.id).as_ref());
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct ScheduledEventsKey;
+
+impl RedisKey for ScheduledEventsKey {
+    const PREFIX: &'static [u8] = b"SCHEDULED_EVENTS";
+}
+
+impl ToRedisArgs for ScheduledEventsKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(Self::PREFIX);
+    }
+}
+
+impl From<Id<ScheduledEventMarker>> for ScheduledEventKey {
+    fn from(id: Id<ScheduledEventMarker>) -> Self {
+        Self { id }
+    }
+}
 
 impl<C: CacheConfig> RedisCache<C> {
     #[instrument(level = "trace", skip_all)]
@@ -42,7 +101,7 @@ impl<C: CacheConfig> RedisCache<C> {
         let event_id = event.id;
         let guild_id = event.guild_id;
 
-        let key = RedisKey::ScheduledEvent { id: event_id };
+        let key = ScheduledEventKey { id: event_id };
 
         let event = C::ScheduledEvent::from_scheduled_event(event);
 
@@ -54,14 +113,14 @@ impl<C: CacheConfig> RedisCache<C> {
 
         pipe.set(key, bytes.as_ref(), C::ScheduledEvent::expire());
 
-        let key = RedisKey::GuildScheduledEvents { id: guild_id };
+        let key = crate::cache::impls::guild::GuildScheduledEventsKey { id: guild_id };
         pipe.sadd(key, event_id.get());
 
-        let key = RedisKey::ScheduledEvents;
+        let key = ScheduledEventsKey;
         pipe.sadd(key, event_id.get());
 
         if C::ScheduledEvent::expire().is_some() {
-            let key = ScheduledEventMetaKey { event: event_id };
+            let key = ScheduledEventMetaKey { id: event_id };
 
             ScheduledEventMeta { guild: guild_id }
                 .store(pipe, key)
@@ -88,7 +147,7 @@ impl<C: CacheConfig> RedisCache<C> {
             .iter()
             .map(|stage_instance| {
                 let id = stage_instance.id;
-                let key = RedisKey::ScheduledEvent { id };
+                let key = ScheduledEventKey { id };
                 let stage_instance = C::ScheduledEvent::from_scheduled_event(stage_instance);
 
                 let bytes = serializer
@@ -99,7 +158,7 @@ impl<C: CacheConfig> RedisCache<C> {
 
                 Ok(((key, BytesWrap(bytes)), id.get()))
             })
-            .collect::<CacheResult<(Vec<(RedisKey, BytesWrap<_>)>, Vec<u64>)>>()?;
+            .collect::<CacheResult<(Vec<(ScheduledEventKey, BytesWrap<_>)>, Vec<u64>)>>()?;
 
         if event_entries.is_empty() {
             return Ok(());
@@ -107,17 +166,17 @@ impl<C: CacheConfig> RedisCache<C> {
 
         pipe.mset(&event_entries, C::ScheduledEvent::expire());
 
-        let key = RedisKey::GuildScheduledEvents { id: guild_id };
+        let key = crate::cache::impls::guild::GuildScheduledEventsKey { id: guild_id };
         pipe.sadd(key, event_ids.as_slice());
 
-        let key = RedisKey::ScheduledEvents;
+        let key = ScheduledEventsKey;
         pipe.sadd(key, event_ids);
 
         if C::ScheduledEvent::expire().is_some() {
             events
                 .iter()
                 .try_for_each(|event| {
-                    let key = ScheduledEventMetaKey { event: event.id };
+                    let key = ScheduledEventMetaKey { id: event.id };
 
                     ScheduledEventMeta { guild: guild_id }.store(pipe, key)
                 })
@@ -142,7 +201,7 @@ impl<C: CacheConfig> RedisCache<C> {
 
         let event_id = event.guild_scheduled_event_id;
 
-        let key = RedisKey::ScheduledEvent { id: event_id };
+        let key = ScheduledEventKey { id: event_id };
 
         let Some(mut archived) = pipe
             .get::<Archived<C::ScheduledEvent<'static>>>(key)
@@ -154,12 +213,12 @@ impl<C: CacheConfig> RedisCache<C> {
         update_fn(&mut archived, event)
             .map_err(|e| UpdateError::new(e, UpdateErrorKind::ScheduledEventUserAdd))?;
 
-        let key = RedisKey::ScheduledEvent { id: event_id };
+        let key = ScheduledEventKey { id: event_id };
         let bytes = archived.into_bytes();
         trace!(bytes = bytes.as_ref().len());
         pipe.set(key, &bytes, C::ScheduledEvent::expire());
 
-        let key = RedisKey::ScheduledEvents;
+        let key = ScheduledEventsKey;
         pipe.sadd(key, event_id.get());
 
         if C::ScheduledEvent::expire().is_some() {
@@ -167,7 +226,7 @@ impl<C: CacheConfig> RedisCache<C> {
                 guild: event.guild_id,
             };
 
-            meta.store(pipe, ScheduledEventMetaKey { event: event_id })
+            meta.store(pipe, ScheduledEventMetaKey { id: event_id })
                 .map_err(|e| MetaError::new(e, MetaErrorKind::ScheduledEvent))?;
         }
 
@@ -189,7 +248,7 @@ impl<C: CacheConfig> RedisCache<C> {
 
         let event_id = event.guild_scheduled_event_id;
 
-        let key = RedisKey::ScheduledEvent { id: event_id };
+        let key = ScheduledEventKey { id: event_id };
 
         let Some(mut archived) = pipe
             .get::<Archived<C::ScheduledEvent<'static>>>(key)
@@ -201,12 +260,12 @@ impl<C: CacheConfig> RedisCache<C> {
         update_fn(&mut archived, event)
             .map_err(|e| UpdateError::new(e, UpdateErrorKind::ScheduledEventUserAdd))?;
 
-        let key = RedisKey::ScheduledEvent { id: event_id };
+        let key = ScheduledEventKey { id: event_id };
         let bytes = archived.into_bytes();
         trace!(bytes = bytes.as_ref().len());
         pipe.set(key, &bytes, C::ScheduledEvent::expire());
 
-        let key = RedisKey::ScheduledEvents;
+        let key = ScheduledEventsKey;
         pipe.sadd(key, event_id.get());
 
         if C::ScheduledEvent::expire().is_some() {
@@ -214,7 +273,7 @@ impl<C: CacheConfig> RedisCache<C> {
                 guild: event.guild_id,
             };
 
-            meta.store(pipe, ScheduledEventMetaKey { event: event_id })
+            meta.store(pipe, ScheduledEventMetaKey { id: event_id })
                 .map_err(|e| MetaError::new(e, MetaErrorKind::ScheduledEvent))?;
         }
 
@@ -237,17 +296,17 @@ impl<C: CacheConfig> RedisCache<C> {
         let event_id = event.id;
         let guild_id = event.guild_id;
 
-        let key = RedisKey::ScheduledEvent { id: event_id };
+        let key = ScheduledEventKey { id: event_id };
         pipe.del(key);
 
-        let key = RedisKey::GuildScheduledEvents { id: guild_id };
+        let key = crate::cache::impls::guild::GuildScheduledEventsKey { id: guild_id };
         pipe.srem(key, event_id.get());
 
-        let key = RedisKey::ScheduledEvents;
+        let key = ScheduledEventsKey;
         pipe.srem(key, event_id.get());
 
         if C::ScheduledEvent::expire().is_some() {
-            let key = RedisKey::ScheduledEventMeta { id: event_id };
+            let key = ScheduledEventMetaKey { id: event_id };
             pipe.del(key);
         }
 
@@ -255,34 +314,29 @@ impl<C: CacheConfig> RedisCache<C> {
     }
 }
 
-#[derive(Debug)]
-pub(crate) struct ScheduledEventMetaKey {
-    event: Id<ScheduledEventMarker>,
-}
-
 impl IMetaKey for ScheduledEventMetaKey {
     fn parse<'a>(split: &mut impl Iterator<Item = &'a [u8]>) -> Option<Self> {
-        split.next().and_then(atoi).map(|event| Self { event })
+        split.next().and_then(atoi).map(|event| Self { id: event })
     }
 
     fn handle_expire(&self, pipe: &mut Pipeline) {
-        let key = RedisKey::ScheduledEvents;
-        pipe.srem(key, self.event.get()).ignore();
+        let key = ScheduledEventsKey;
+        pipe.srem(key, self.id.get()).ignore();
     }
 }
 
 impl HasArchived for ScheduledEventMetaKey {
     type Meta = ScheduledEventMeta;
 
-    fn redis_key(&self) -> RedisKey {
-        RedisKey::ScheduledEventMeta { id: self.event }
+    fn redis_key(&self) -> impl RedisKey {
+        ScheduledEventMetaKey { id: self.id }
     }
 
     fn handle_archived(&self, pipe: &mut Pipeline, archived: &Archived<Self::Meta>) {
-        let key = RedisKey::GuildScheduledEvents {
+        let key = crate::cache::impls::guild::GuildScheduledEventsKey {
             id: archived.guild.into(),
         };
-        pipe.srem(key, self.event.get());
+        pipe.srem(key, self.id.get());
     }
 }
 

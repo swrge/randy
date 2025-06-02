@@ -1,5 +1,3 @@
-use rkyv::Archived;
-use tracing::{instrument, trace};
 use randy_model::{
     gateway::payload::incoming::MemberUpdate,
     guild::{Member, PartialMember},
@@ -8,20 +6,103 @@ use randy_model::{
         Id,
     },
 };
+use rkyv::Archived;
+use tracing::{instrument, trace};
 
 use crate::{
     cache::{
-        impls::user::UserMetaKey,
+        impls::{
+            guild::GuildMembersKey,
+            user::{UserGuildsKey, UserMetaKey},
+        },
         meta::{atoi, IMetaKey},
         pipe::Pipe,
     },
     config::{CacheConfig, Cacheable, ICachedMember, SerializeMany},
     error::{ExpireError, SerializeError, SerializeErrorKind, UpdateError, UpdateErrorKind},
-    key::RedisKey,
-    redis::{DedicatedConnection, Pipeline},
+    key::{name_guild_id, RedisKey},
+    redis::{DedicatedConnection, Pipeline, RedisWrite, ToRedisArgs},
     util::BytesWrap,
     CacheResult, RedisCache,
 };
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct MemberKey {
+    pub guild: Id<GuildMarker>,
+    pub user: Id<UserMarker>,
+}
+
+impl RedisKey for MemberKey {
+    const PREFIX: &'static [u8] = b"MEMBER";
+}
+
+impl ToRedisArgs for MemberKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(name_guild_id(Self::PREFIX, self.guild, self.user).as_ref());
+    }
+}
+
+impl From<(Id<GuildMarker>, Id<UserMarker>)> for MemberKey {
+    fn from(ids: (Id<GuildMarker>, Id<UserMarker>)) -> Self {
+        Self {
+            guild: ids.0,
+            user: ids.1,
+        }
+    }
+}
+
+#[derive(Debug)]
+pub(crate) struct MemberMetaKey {
+    guild: Id<GuildMarker>,
+    user: Id<UserMarker>,
+}
+
+impl IMetaKey for MemberMetaKey {
+    fn parse<'a>(split: &mut impl Iterator<Item = &'a [u8]>) -> Option<Self> {
+        split
+            .next()
+            .and_then(atoi)
+            .zip(split.next().and_then(atoi))
+            .map(|(guild, user)| Self { guild, user })
+    }
+
+    fn handle_expire(&self, pipe: &mut Pipeline) {
+        let key = GuildMembersKey { id: self.guild };
+        pipe.srem(key, self.user.get()).ignore();
+    }
+}
+
+impl MemberMetaKey {
+    pub(crate) async fn async_handle_expire(
+        &self,
+        pipe: &mut Pipeline,
+        conn: &mut DedicatedConnection,
+    ) -> Result<(), ExpireError> {
+        debug_assert_eq!(pipe.cmd_iter().count(), 0);
+
+        let key = UserGuildsKey { id: self.user };
+
+        let common_guild_count: usize = pipe
+            .scard(key)
+            .query_async(conn)
+            .await
+            .map_err(ExpireError::Pipe)?;
+
+        pipe.clear();
+
+        if common_guild_count == 1 {
+            UserMetaKey::new(self.user).handle_expire(pipe);
+        } else {
+            let key = UserGuildsKey { id: self.user };
+            pipe.srem(key, self.guild.get()).ignore();
+        }
+
+        Ok(())
+    }
+}
 
 impl<C: CacheConfig> RedisCache<C> {
     #[instrument(level = "trace", skip_all)]
@@ -33,7 +114,7 @@ impl<C: CacheConfig> RedisCache<C> {
     ) -> CacheResult<()> {
         if C::Member::WANTED {
             let user_id = member.user.id;
-            let key = RedisKey::Member {
+            let key = MemberKey {
                 guild: guild_id,
                 user: user_id,
             };
@@ -47,12 +128,12 @@ impl<C: CacheConfig> RedisCache<C> {
 
             pipe.set(key, bytes.as_ref(), C::Member::expire());
 
-            let key = RedisKey::GuildMembers { id: guild_id };
+            let key = GuildMembersKey { id: guild_id };
             pipe.sadd(key, user_id.get());
         }
 
         if C::User::WANTED {
-            let key = RedisKey::UserGuilds { id: member.user.id };
+            let key = UserGuildsKey { id: member.user.id };
             pipe.sadd(key, guild_id.get());
         }
 
@@ -72,7 +153,7 @@ impl<C: CacheConfig> RedisCache<C> {
         let user_id = update.user.id;
 
         if C::User::WANTED {
-            let key = RedisKey::UserGuilds { id: user_id };
+            let key = UserGuildsKey { id: user_id };
             pipe.sadd(key, update.guild_id.get());
         }
 
@@ -80,7 +161,7 @@ impl<C: CacheConfig> RedisCache<C> {
             return Ok(());
         }
 
-        let key = RedisKey::GuildMembers {
+        let key = GuildMembersKey {
             id: update.guild_id,
         };
 
@@ -90,7 +171,7 @@ impl<C: CacheConfig> RedisCache<C> {
             return Ok(());
         };
 
-        let key = RedisKey::Member {
+        let key = MemberKey {
             guild: update.guild_id,
             user: user_id,
         };
@@ -101,7 +182,7 @@ impl<C: CacheConfig> RedisCache<C> {
 
         update_fn(&mut member, update).map_err(|e| UpdateError::new(e, UpdateErrorKind::Member))?;
 
-        let key = RedisKey::Member {
+        let key = MemberKey {
             guild: update.guild_id,
             user: user_id,
         };
@@ -127,7 +208,7 @@ impl<C: CacheConfig> RedisCache<C> {
                 .iter()
                 .map(|member| {
                     let user_id = member.user.id;
-                    let key = RedisKey::Member {
+                    let key = MemberKey {
                         guild: guild_id,
                         user: user_id,
                     };
@@ -141,24 +222,24 @@ impl<C: CacheConfig> RedisCache<C> {
 
                     Ok(((key, BytesWrap(bytes)), user_id.get()))
                 })
-                .collect::<CacheResult<(Vec<(RedisKey, BytesWrap<_>)>, Vec<u64>)>>()?;
+                .collect::<CacheResult<(Vec<(MemberKey, BytesWrap<_>)>, Vec<u64>)>>()?;
 
             if !member_tuples.is_empty() {
                 pipe.mset(&member_tuples, C::Member::expire());
 
-                let key = RedisKey::GuildMembers { id: guild_id };
+                let key = GuildMembersKey { id: guild_id };
                 pipe.sadd(key, user_ids.as_slice());
 
                 if C::User::WANTED {
                     for member in members {
-                        let key = RedisKey::UserGuilds { id: member.user.id };
+                        let key = UserGuildsKey { id: member.user.id };
                         pipe.sadd(key, guild_id.get());
                     }
                 }
             }
         } else if C::User::WANTED {
             for member in members {
-                let key = RedisKey::UserGuilds { id: member.user.id };
+                let key = UserGuildsKey { id: member.user.id };
                 pipe.sadd(key, guild_id.get());
             }
         }
@@ -185,7 +266,7 @@ impl<C: CacheConfig> RedisCache<C> {
         };
 
         if C::User::WANTED {
-            let key = RedisKey::UserGuilds { id: user.id };
+            let key = UserGuildsKey { id: user.id };
             pipe.sadd(key, guild_id.get());
         }
 
@@ -193,14 +274,14 @@ impl<C: CacheConfig> RedisCache<C> {
             return Ok(());
         }
 
-        let key = RedisKey::GuildMembers { id: guild_id };
+        let key = GuildMembersKey { id: guild_id };
         pipe.sadd(key, user.id.get());
 
         let Some(update_fn) = C::Member::update_via_partial() else {
             return Ok(());
         };
 
-        let key = RedisKey::Member {
+        let key = MemberKey {
             guild: guild_id,
             user: user.id,
         };
@@ -212,7 +293,7 @@ impl<C: CacheConfig> RedisCache<C> {
         update_fn(&mut member, partial_member)
             .map_err(|e| UpdateError::new(e, UpdateErrorKind::PartialMember))?;
 
-        let key = RedisKey::Member {
+        let key = MemberKey {
             guild: guild_id,
             user: user.id,
         };
@@ -236,64 +317,14 @@ impl<C: CacheConfig> RedisCache<C> {
             return Ok(());
         }
 
-        let key = RedisKey::Member {
+        let key = MemberKey {
             guild: guild_id,
             user: user_id,
         };
         pipe.del(key);
 
-        let key = RedisKey::GuildMembers { id: guild_id };
+        let key = GuildMembersKey { id: guild_id };
         pipe.srem(key, user_id.get());
-
-        Ok(())
-    }
-}
-
-#[derive(Debug)]
-pub(crate) struct MemberMetaKey {
-    guild: Id<GuildMarker>,
-    user: Id<UserMarker>,
-}
-
-impl IMetaKey for MemberMetaKey {
-    fn parse<'a>(split: &mut impl Iterator<Item = &'a [u8]>) -> Option<Self> {
-        split
-            .next()
-            .and_then(atoi)
-            .zip(split.next().and_then(atoi))
-            .map(|(guild, user)| Self { guild, user })
-    }
-
-    fn handle_expire(&self, pipe: &mut Pipeline) {
-        let key = RedisKey::GuildMembers { id: self.guild };
-        pipe.srem(key, self.user.get()).ignore();
-    }
-}
-
-impl MemberMetaKey {
-    pub(crate) async fn async_handle_expire(
-        &self,
-        pipe: &mut Pipeline,
-        conn: &mut DedicatedConnection,
-    ) -> Result<(), ExpireError> {
-        debug_assert_eq!(pipe.cmd_iter().count(), 0);
-
-        let key = RedisKey::UserGuilds { id: self.user };
-
-        let common_guild_count: usize = pipe
-            .scard(key)
-            .query_async(conn)
-            .await
-            .map_err(ExpireError::Pipe)?;
-
-        pipe.clear();
-
-        if common_guild_count == 1 {
-            UserMetaKey::new(self.user).handle_expire(pipe);
-        } else {
-            let key = RedisKey::UserGuilds { id: self.user };
-            pipe.srem(key, self.guild.get()).ignore();
-        }
 
         Ok(())
     }

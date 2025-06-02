@@ -1,16 +1,24 @@
 use std::fmt::{Debug, Formatter, Result as FmtResult};
 
+use randy_model::id::Id;
 use rkyv::{rancor::Source, Archive, Archived};
 use tracing::{instrument, trace};
-use randy_model::id::Id;
 
 use super::{
     impls::{
-        channel::ChannelMetaKey, emoji::EmojiMetaKey, guild::GuildMetaKey,
-        integration::IntegrationMetaKey, member::MemberMetaKey, message::MessageMetaKey,
-        presence::PresenceMetaKey, role::RoleMetaKey, scheduled_event::ScheduledEventMetaKey,
-        stage_instance::StageInstanceMetaKey, sticker::StickerMetaKey, user::UserMetaKey,
-        voice_state::VoiceStateMetaKey,
+        channel::{ChannelKey, ChannelMetaKey},
+        emoji::{EmojiKey, EmojiMetaKey},
+        guild::{GuildKey, GuildMetaKey},
+        integration::{IntegrationKey, IntegrationMetaKey},
+        member::{MemberKey, MemberMetaKey},
+        message::{MessageKey, MessageMetaKey},
+        presence::{PresenceKey, PresenceMetaKey},
+        role::{RoleKey, RoleMetaKey},
+        scheduled_event::{ScheduledEventKey, ScheduledEventMetaKey},
+        stage_instance::{StageInstanceKey, StageInstanceMetaKey},
+        sticker::{StickerKey, StickerMetaKey},
+        user::{UserKey, UserMetaKey},
+        voice_state::{VoiceStateKey, VoiceStateMetaKey},
     },
     pipe::Pipe,
 };
@@ -40,23 +48,19 @@ pub(crate) enum MetaKey {
 impl MetaKey {
     pub(crate) fn parse<'a>(split: &mut impl Iterator<Item = &'a [u8]>) -> Option<Self> {
         match split.next() {
-            Some(RedisKey::CHANNEL_PREFIX) => IMetaKey::parse(split).map(Self::Channel),
-            Some(RedisKey::EMOJI_PREFIX) => IMetaKey::parse(split).map(Self::Emoji),
-            Some(RedisKey::GUILD_PREFIX) => IMetaKey::parse(split).map(Self::Guild),
-            Some(RedisKey::INTEGRATION_PREFIX) => IMetaKey::parse(split).map(Self::Integration),
-            Some(RedisKey::MEMBER_PREFIX) => IMetaKey::parse(split).map(Self::Member),
-            Some(RedisKey::MESSAGE_PREFIX) => IMetaKey::parse(split).map(Self::Message),
-            Some(RedisKey::PRESENCE_PREFIX) => IMetaKey::parse(split).map(Self::Presence),
-            Some(RedisKey::ROLE_PREFIX) => IMetaKey::parse(split).map(Self::Role),
-            Some(RedisKey::SCHEDULED_EVENT_PREFIX) => {
-                IMetaKey::parse(split).map(Self::ScheduledEvent)
-            }
-            Some(RedisKey::STAGE_INSTANCE_PREFIX) => {
-                IMetaKey::parse(split).map(Self::StageInstance)
-            }
-            Some(RedisKey::STICKER_PREFIX) => IMetaKey::parse(split).map(Self::Sticker),
-            Some(RedisKey::USER_PREFIX) => IMetaKey::parse(split).map(Self::User),
-            Some(RedisKey::VOICE_STATE_PREFIX) => IMetaKey::parse(split).map(Self::VoiceState),
+            Some(ChannelKey::PREFIX) => IMetaKey::parse(split).map(Self::Channel),
+            Some(EmojiKey::PREFIX) => IMetaKey::parse(split).map(Self::Emoji),
+            Some(GuildKey::PREFIX) => IMetaKey::parse(split).map(Self::Guild),
+            Some(IntegrationKey::PREFIX) => IMetaKey::parse(split).map(Self::Integration),
+            Some(MemberKey::PREFIX) => IMetaKey::parse(split).map(Self::Member),
+            Some(MessageKey::PREFIX) => IMetaKey::parse(split).map(Self::Message),
+            Some(PresenceKey::PREFIX) => IMetaKey::parse(split).map(Self::Presence),
+            Some(RoleKey::PREFIX) => IMetaKey::parse(split).map(Self::Role),
+            Some(ScheduledEventKey::PREFIX) => IMetaKey::parse(split).map(Self::ScheduledEvent),
+            Some(StageInstanceKey::PREFIX) => IMetaKey::parse(split).map(Self::StageInstance),
+            Some(StickerKey::PREFIX) => IMetaKey::parse(split).map(Self::Sticker),
+            Some(UserKey::PREFIX) => IMetaKey::parse(split).map(Self::User),
+            Some(VoiceStateKey::PREFIX) => IMetaKey::parse(split).map(Self::VoiceState),
             Some(_) | None => None,
         }
     }
@@ -167,7 +171,7 @@ impl MetaKey {
     async fn fetch_bytes(
         conn: &mut DedicatedConnection,
         pipe: &mut Pipeline,
-        key: RedisKey,
+        key: impl RedisKey,
     ) -> Result<Option<Vec<u8>>, ExpireError> {
         debug_assert_eq!(pipe.cmd_iter().count(), 0);
 
@@ -221,7 +225,7 @@ pub(crate) trait HasArchived: Sized {
     type Meta: IMeta<Self>;
 
     /// The [`RedisKey`] to gather the additional data.
-    fn redis_key(&self) -> RedisKey;
+    fn redis_key(&self) -> impl RedisKey;
 
     /// What to do after the additional data has been retrieved.
     fn handle_archived(&self, pipe: &mut Pipeline, archived: &Archived<Self::Meta>);

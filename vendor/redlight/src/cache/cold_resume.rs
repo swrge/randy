@@ -16,10 +16,26 @@ use tracing::{info, instrument, trace};
 use crate::{
     error::{CacheError, ValidationError},
     key::RedisKey,
-    redis::Cmd,
+    redis::{Cmd, RedisWrite, ToRedisArgs},
     rkyv_util::session::{ArchivedSessions, SessionsRkyv},
     CacheResult, RedisCache,
 };
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct SessionsKey;
+
+impl RedisKey for SessionsKey {
+    const PREFIX: &'static [u8] = b"SESSIONS";
+}
+
+impl ToRedisArgs for SessionsKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(Self::PREFIX);
+    }
+}
 
 #[cfg_attr(all(docsrs, not(doctest)), doc(cfg(feature = "cold_resume")))]
 impl<C> RedisCache<C> {
@@ -52,12 +68,10 @@ impl<C> RedisCache<C> {
 
         #[allow(clippy::cast_possible_truncation)]
         let cmd = match expire {
-            Some(duration) => Cmd::set_ex(
-                RedisKey::Sessions,
-                bytes.as_slice(),
-                duration.as_secs() as usize,
-            ),
-            None => Cmd::set(RedisKey::Sessions, bytes.as_slice()),
+            Some(duration) => {
+                Cmd::set_ex(SessionsKey, bytes.as_slice(), duration.as_secs() as usize)
+            }
+            None => Cmd::set(SessionsKey, bytes.as_slice()),
         };
 
         let _: () = cmd.query_async(&mut conn).await?;
@@ -83,7 +97,7 @@ impl<C> RedisCache<C> {
     {
         let mut conn = self.connection().await?;
 
-        let bytes: Vec<u8> = Cmd::get(RedisKey::Sessions).query_async(&mut conn).await?;
+        let bytes: Vec<u8> = Cmd::get(SessionsKey).query_async(&mut conn).await?;
 
         if bytes.is_empty() {
             if flush_if_missing {

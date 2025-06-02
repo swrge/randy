@@ -1,5 +1,3 @@
-use rkyv::{api::high::to_bytes_in, rancor::Source, ser::writer::Buffer, Archived};
-use tracing::{instrument, trace};
 use randy_model::{
     channel::StageInstance,
     id::{
@@ -7,6 +5,8 @@ use randy_model::{
         Id,
     },
 };
+use rkyv::{api::high::to_bytes_in, rancor::Source, ser::writer::Buffer, Archived};
+use tracing::{instrument, trace};
 
 use crate::{
     cache::{
@@ -15,12 +15,70 @@ use crate::{
     },
     config::{CacheConfig, Cacheable, ICachedStageInstance, SerializeMany},
     error::{MetaError, MetaErrorKind, SerializeError, SerializeErrorKind},
-    key::RedisKey,
-    redis::Pipeline,
+    key::{name_id, RedisKey},
+    redis::{Pipeline, RedisWrite, ToRedisArgs},
     rkyv_util::id::IdRkyv,
     util::BytesWrap,
     CacheResult, RedisCache,
 };
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct StageInstanceKey {
+    pub id: Id<StageMarker>,
+}
+
+impl RedisKey for StageInstanceKey {
+    const PREFIX: &'static [u8] = b"STAGE_INSTANCE";
+}
+
+impl ToRedisArgs for StageInstanceKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(name_id(Self::PREFIX, self.id).as_ref());
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct StageInstanceMetaKey {
+    pub id: Id<StageMarker>,
+}
+
+impl RedisKey for StageInstanceMetaKey {
+    const PREFIX: &'static [u8] = b"STAGE_INSTANCE_META";
+}
+
+impl ToRedisArgs for StageInstanceMetaKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(name_id(Self::PREFIX, self.id).as_ref());
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct StageInstancesKey;
+
+impl RedisKey for StageInstancesKey {
+    const PREFIX: &'static [u8] = b"STAGE_INSTANCES";
+}
+
+impl ToRedisArgs for StageInstancesKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(Self::PREFIX);
+    }
+}
+
+impl From<Id<StageMarker>> for StageInstanceKey {
+    fn from(id: Id<StageMarker>) -> Self {
+        Self { id }
+    }
+}
 
 impl<C: CacheConfig> RedisCache<C> {
     #[instrument(level = "trace", skip_all)]
@@ -35,7 +93,7 @@ impl<C: CacheConfig> RedisCache<C> {
 
         let stage_instance_id = stage_instance.id;
         let guild_id = stage_instance.guild_id;
-        let key = RedisKey::StageInstance {
+        let key = StageInstanceKey {
             id: stage_instance_id,
         };
         let stage_instance = C::StageInstance::from_stage_instance(stage_instance);
@@ -48,15 +106,15 @@ impl<C: CacheConfig> RedisCache<C> {
 
         pipe.set(key, bytes.as_ref(), C::StageInstance::expire());
 
-        let key = RedisKey::GuildStageInstances { id: guild_id };
+        let key = crate::cache::impls::guild::GuildStageInstancesKey { id: guild_id };
         pipe.sadd(key, stage_instance_id.get());
 
-        let key = RedisKey::StageInstances;
+        let key = StageInstancesKey;
         pipe.sadd(key, stage_instance_id.get());
 
         if C::StageInstance::expire().is_some() {
             let key = StageInstanceMetaKey {
-                stage: stage_instance_id,
+                id: stage_instance_id,
             };
 
             StageInstanceMeta { guild: guild_id }
@@ -84,7 +142,7 @@ impl<C: CacheConfig> RedisCache<C> {
             .iter()
             .map(|stage_instance| {
                 let id = stage_instance.id;
-                let key = RedisKey::StageInstance { id };
+                let key = StageInstanceKey { id };
                 let stage_instance = C::StageInstance::from_stage_instance(stage_instance);
 
                 let bytes = serializer
@@ -95,7 +153,7 @@ impl<C: CacheConfig> RedisCache<C> {
 
                 Ok(((key, BytesWrap(bytes)), id.get()))
             })
-            .collect::<CacheResult<(Vec<(RedisKey, BytesWrap<_>)>, Vec<u64>)>>()?;
+            .collect::<CacheResult<(Vec<(StageInstanceKey, BytesWrap<_>)>, Vec<u64>)>>()?;
 
         if stage_instance_entries.is_empty() {
             return Ok(());
@@ -103,10 +161,10 @@ impl<C: CacheConfig> RedisCache<C> {
 
         pipe.mset(&stage_instance_entries, C::StageInstance::expire());
 
-        let key = RedisKey::GuildStageInstances { id: guild_id };
+        let key = crate::cache::impls::guild::GuildStageInstancesKey { id: guild_id };
         pipe.sadd(key, stage_instance_ids.as_slice());
 
-        let key = RedisKey::StageInstances;
+        let key = StageInstancesKey;
         pipe.sadd(key, stage_instance_ids);
 
         if C::StageInstance::expire().is_some() {
@@ -114,7 +172,7 @@ impl<C: CacheConfig> RedisCache<C> {
                 .iter()
                 .try_for_each(|stage_instance| {
                     let key = StageInstanceMetaKey {
-                        stage: stage_instance.id,
+                        id: stage_instance.id,
                     };
 
                     StageInstanceMeta { guild: guild_id }.store(pipe, key)
@@ -135,19 +193,19 @@ impl<C: CacheConfig> RedisCache<C> {
             return;
         }
 
-        let key = RedisKey::StageInstance {
+        let key = StageInstanceKey {
             id: stage_instance_id,
         };
         pipe.del(key);
 
-        let key = RedisKey::GuildStageInstances { id: guild_id };
+        let key = crate::cache::impls::guild::GuildStageInstancesKey { id: guild_id };
         pipe.srem(key, stage_instance_id.get());
 
-        let key = RedisKey::StageInstances;
+        let key = StageInstancesKey;
         pipe.srem(key, stage_instance_id.get());
 
         if C::StageInstance::expire().is_some() {
-            let key = RedisKey::StageInstanceMeta {
+            let key = StageInstanceMetaKey {
                 id: stage_instance_id,
             };
             pipe.del(key);
@@ -155,34 +213,29 @@ impl<C: CacheConfig> RedisCache<C> {
     }
 }
 
-#[derive(Debug)]
-pub(crate) struct StageInstanceMetaKey {
-    stage: Id<StageMarker>,
-}
-
 impl IMetaKey for StageInstanceMetaKey {
     fn parse<'a>(split: &mut impl Iterator<Item = &'a [u8]>) -> Option<Self> {
-        split.next().and_then(atoi).map(|stage| Self { stage })
+        split.next().and_then(atoi).map(|stage| Self { id: stage })
     }
 
     fn handle_expire(&self, pipe: &mut Pipeline) {
-        let key = RedisKey::StageInstances;
-        pipe.srem(key, self.stage.get()).ignore();
+        let key = StageInstancesKey;
+        pipe.srem(key, self.id.get()).ignore();
     }
 }
 
 impl HasArchived for StageInstanceMetaKey {
     type Meta = StageInstanceMeta;
 
-    fn redis_key(&self) -> RedisKey {
-        RedisKey::StageInstanceMeta { id: self.stage }
+    fn redis_key(&self) -> impl RedisKey {
+        StageInstanceMetaKey { id: self.id }
     }
 
     fn handle_archived(&self, pipe: &mut Pipeline, archived: &Archived<Self::Meta>) {
-        let key = RedisKey::GuildStageInstances {
+        let key = crate::cache::impls::guild::GuildStageInstancesKey {
             id: archived.guild.into(),
         };
-        pipe.srem(key, self.stage.get());
+        pipe.srem(key, self.id.get());
     }
 }
 

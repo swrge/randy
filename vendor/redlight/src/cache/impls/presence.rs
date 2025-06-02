@@ -1,4 +1,3 @@
-use tracing::{instrument, trace};
 use randy_model::{
     gateway::presence::{Presence, UserOrId},
     id::{
@@ -6,6 +5,7 @@ use randy_model::{
         Id,
     },
 };
+use tracing::{instrument, trace};
 
 use crate::{
     cache::{
@@ -14,11 +14,51 @@ use crate::{
     },
     config::{CacheConfig, Cacheable, ICachedPresence, SerializeMany},
     error::{SerializeError, SerializeErrorKind},
-    key::RedisKey,
-    redis::Pipeline,
+    key::{name_guild_id, RedisKey},
+    redis::{Pipeline, RedisWrite, ToRedisArgs},
     util::BytesWrap,
     CacheResult, RedisCache,
 };
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct PresenceKey {
+    pub guild: Id<GuildMarker>,
+    pub user: Id<UserMarker>,
+}
+
+impl RedisKey for PresenceKey {
+    const PREFIX: &'static [u8] = b"PRESENCE";
+}
+
+impl ToRedisArgs for PresenceKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(name_guild_id(Self::PREFIX, self.guild, self.user).as_ref());
+    }
+}
+
+#[derive(Debug)]
+pub(crate) struct PresenceMetaKey {
+    guild: Id<GuildMarker>,
+    user: Id<UserMarker>,
+}
+
+impl IMetaKey for PresenceMetaKey {
+    fn parse<'a>(split: &mut impl Iterator<Item = &'a [u8]>) -> Option<Self> {
+        split
+            .next()
+            .and_then(atoi)
+            .zip(split.next().and_then(atoi))
+            .map(|(guild, user)| Self { guild, user })
+    }
+
+    fn handle_expire(&self, pipe: &mut Pipeline) {
+        let key = crate::cache::impls::guild::GuildPresencesKey { id: self.guild };
+        pipe.srem(key, self.user.get());
+    }
+}
 
 impl<C: CacheConfig> RedisCache<C> {
     #[instrument(level = "trace", skip_all)]
@@ -30,7 +70,7 @@ impl<C: CacheConfig> RedisCache<C> {
         if C::Presence::WANTED {
             let guild_id = presence.guild_id;
             let user_id = presence.user.id();
-            let key = RedisKey::Presence {
+            let key = PresenceKey {
                 guild: guild_id,
                 user: user_id,
             };
@@ -44,7 +84,7 @@ impl<C: CacheConfig> RedisCache<C> {
 
             pipe.set(key, bytes.as_ref(), C::Presence::expire());
 
-            let key = RedisKey::GuildPresences { id: guild_id };
+            let key = crate::cache::impls::guild::GuildPresencesKey { id: guild_id };
             pipe.sadd(key, user_id.get());
         }
 
@@ -70,7 +110,7 @@ impl<C: CacheConfig> RedisCache<C> {
                 .map(|presence| {
                     let guild_id = presence.guild_id;
                     let user_id = presence.user.id();
-                    let key = RedisKey::Presence {
+                    let key = PresenceKey {
                         guild: guild_id,
                         user: user_id,
                     };
@@ -84,12 +124,12 @@ impl<C: CacheConfig> RedisCache<C> {
 
                     Ok(((key, BytesWrap(bytes)), user_id.get()))
                 })
-                .collect::<CacheResult<(Vec<(RedisKey, BytesWrap<_>)>, Vec<u64>)>>()?;
+                .collect::<CacheResult<(Vec<(PresenceKey, BytesWrap<_>)>, Vec<u64>)>>()?;
 
             if !presence_entries.is_empty() {
                 pipe.mset(&presence_entries, C::Presence::expire());
 
-                let key = RedisKey::GuildPresences { id: guild_id };
+                let key = crate::cache::impls::guild::GuildPresencesKey { id: guild_id };
                 pipe.sadd(key, user_ids.as_slice());
             }
         }
@@ -102,27 +142,5 @@ impl<C: CacheConfig> RedisCache<C> {
         self.store_users(pipe, users)?;
 
         Ok(())
-    }
-}
-
-#[derive(Debug)]
-
-pub(crate) struct PresenceMetaKey {
-    guild: Id<GuildMarker>,
-    user: Id<UserMarker>,
-}
-
-impl IMetaKey for PresenceMetaKey {
-    fn parse<'a>(split: &mut impl Iterator<Item = &'a [u8]>) -> Option<Self> {
-        split
-            .next()
-            .and_then(atoi)
-            .zip(split.next().and_then(atoi))
-            .map(|(guild, user)| Self { guild, user })
-    }
-
-    fn handle_expire(&self, pipe: &mut Pipeline) {
-        let key = RedisKey::GuildPresences { id: self.guild };
-        pipe.srem(key, self.user.get());
     }
 }

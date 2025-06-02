@@ -1,5 +1,3 @@
-use rkyv::Archived;
-use tracing::{instrument, trace};
 use randy_model::{
     gateway::payload::incoming::invite_create::PartialUser,
     id::{
@@ -8,6 +6,8 @@ use randy_model::{
     },
     user::User,
 };
+use rkyv::Archived;
+use tracing::{instrument, trace};
 
 use crate::{
     cache::{
@@ -16,11 +16,69 @@ use crate::{
     },
     config::{CacheConfig, Cacheable, ICachedUser, SerializeMany},
     error::{SerializeError, SerializeErrorKind, UpdateError, UpdateErrorKind},
-    key::RedisKey,
-    redis::Pipeline,
+    key::{name_id, RedisKey},
+    redis::{Pipeline, RedisWrite, ToRedisArgs},
     util::BytesWrap,
     CacheResult, RedisCache,
 };
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct UserKey {
+    pub id: Id<UserMarker>,
+}
+
+impl RedisKey for UserKey {
+    const PREFIX: &'static [u8] = b"USER";
+}
+
+impl ToRedisArgs for UserKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(name_id(Self::PREFIX, self.id).as_ref());
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct UserGuildsKey {
+    pub id: Id<UserMarker>,
+}
+
+impl RedisKey for UserGuildsKey {
+    const PREFIX: &'static [u8] = b"USER_GUILDS";
+}
+
+impl ToRedisArgs for UserGuildsKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(name_id(Self::PREFIX, self.id).as_ref());
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct UsersKey;
+
+impl RedisKey for UsersKey {
+    const PREFIX: &'static [u8] = b"USERS";
+}
+
+impl ToRedisArgs for UsersKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(Self::PREFIX);
+    }
+}
+
+impl From<Id<UserMarker>> for UserKey {
+    fn from(id: Id<UserMarker>) -> Self {
+        Self { id }
+    }
+}
 
 impl<C: CacheConfig> RedisCache<C> {
     #[instrument(level = "trace", skip_all)]
@@ -30,7 +88,7 @@ impl<C: CacheConfig> RedisCache<C> {
         }
 
         let id = user.id;
-        let key = RedisKey::User { id };
+        let key = UserKey { id };
         let user = C::User::from_user(user);
 
         let bytes = user
@@ -41,7 +99,7 @@ impl<C: CacheConfig> RedisCache<C> {
 
         pipe.set(key, bytes.as_ref(), C::User::expire());
 
-        let key = RedisKey::Users;
+        let key = UsersKey;
         pipe.sadd(key, id.get());
 
         Ok(())
@@ -62,7 +120,7 @@ impl<C: CacheConfig> RedisCache<C> {
             .into_iter()
             .map(|user| {
                 let id = user.id;
-                let key = RedisKey::User { id };
+                let key = UserKey { id };
                 let user = C::User::from_user(user);
 
                 let bytes = serializer
@@ -73,7 +131,7 @@ impl<C: CacheConfig> RedisCache<C> {
 
                 Ok(((key, BytesWrap(bytes)), id.get()))
             })
-            .collect::<CacheResult<(Vec<(RedisKey, BytesWrap<_>)>, Vec<u64>)>>()?;
+            .collect::<CacheResult<(Vec<(UserKey, BytesWrap<_>)>, Vec<u64>)>>()?;
 
         if users.is_empty() {
             return Ok(());
@@ -81,7 +139,7 @@ impl<C: CacheConfig> RedisCache<C> {
 
         pipe.mset(&users, C::User::expire());
 
-        let key = RedisKey::Users;
+        let key = UsersKey;
         pipe.sadd(key, user_ids);
 
         Ok(())
@@ -98,14 +156,14 @@ impl<C: CacheConfig> RedisCache<C> {
 
         let id = partial_user.id;
 
-        let key = RedisKey::Users;
+        let key = UsersKey;
         pipe.sadd(key, id.get());
 
         let Some(update_fn) = C::User::update_via_partial() else {
             return Ok(());
         };
 
-        let key = RedisKey::User { id };
+        let key = UserKey { id };
 
         let Some(mut user) = pipe.get::<Archived<C::User<'static>>>(key).await? else {
             return Ok(());
@@ -114,7 +172,7 @@ impl<C: CacheConfig> RedisCache<C> {
         update_fn(&mut user, partial_user)
             .map_err(|e| UpdateError::new(e, UpdateErrorKind::PartialUser))?;
 
-        let key = RedisKey::User { id };
+        let key = UserKey { id };
         let bytes = user.into_bytes();
         pipe.set(key, &bytes, C::Guild::expire());
 
@@ -133,19 +191,19 @@ impl<C: CacheConfig> RedisCache<C> {
 
         debug_assert!(pipe.is_empty());
 
-        let key = RedisKey::UserGuilds { id: user_id };
+        let key = UserGuildsKey { id: user_id };
         pipe.srem(key, guild_id.get());
 
-        let key = RedisKey::UserGuilds { id: user_id };
+        let key = UserGuildsKey { id: user_id };
         pipe.scard(key);
 
         let common_guild_count: usize = pipe.query().await?;
 
         if common_guild_count == 0 {
-            let key = RedisKey::User { id: user_id };
+            let key = UserKey { id: user_id };
             pipe.del(key);
 
-            let key = RedisKey::Users;
+            let key = UsersKey;
             pipe.srem(key, user_id.get());
         }
 
@@ -155,7 +213,7 @@ impl<C: CacheConfig> RedisCache<C> {
 
 #[derive(Debug)]
 pub(crate) struct UserMetaKey {
-    user: Id<UserMarker>,
+    pub user: Id<UserMarker>,
 }
 
 impl IMetaKey for UserMetaKey {
@@ -164,10 +222,10 @@ impl IMetaKey for UserMetaKey {
     }
 
     fn handle_expire(&self, pipe: &mut Pipeline) {
-        let key = RedisKey::Users;
+        let key = UsersKey;
         pipe.srem(key, self.user.get()).ignore();
 
-        let key = RedisKey::UserGuilds { id: self.user };
+        let key = UserGuildsKey { id: self.user };
         pipe.del(key).ignore();
     }
 }

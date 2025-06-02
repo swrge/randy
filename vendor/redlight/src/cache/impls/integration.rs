@@ -1,4 +1,3 @@
-use tracing::{instrument, trace};
 use randy_model::{
     guild::GuildIntegration,
     id::{
@@ -6,6 +5,7 @@ use randy_model::{
         Id,
     },
 };
+use tracing::{instrument, trace};
 
 use crate::{
     cache::{
@@ -14,10 +14,12 @@ use crate::{
     },
     config::{CacheConfig, Cacheable, ICachedIntegration},
     error::{SerializeError, SerializeErrorKind},
-    key::RedisKey,
-    redis::Pipeline,
+    key::{name_guild_id, RedisKey},
+    redis::{Pipeline, RedisWrite, ToRedisArgs},
     CacheResult, RedisCache,
 };
+
+use super::guild::GuildIntegrationsKey;
 
 impl<C: CacheConfig> RedisCache<C> {
     #[instrument(level = "trace", skip_all)]
@@ -29,7 +31,7 @@ impl<C: CacheConfig> RedisCache<C> {
     ) -> CacheResult<()> {
         if C::Integration::WANTED {
             let integration_id = integration.id;
-            let key = RedisKey::Integration {
+            let key = IntegrationKey {
                 guild: guild_id,
                 id: integration_id,
             };
@@ -43,7 +45,7 @@ impl<C: CacheConfig> RedisCache<C> {
 
             pipe.set(key, bytes.as_ref(), C::Integration::expire());
 
-            let key = RedisKey::GuildIntegrations { id: guild_id };
+            let key = GuildIntegrationsKey { id: guild_id };
             pipe.sadd(key, integration_id.get());
         }
 
@@ -64,13 +66,13 @@ impl<C: CacheConfig> RedisCache<C> {
             return;
         }
 
-        let key = RedisKey::Integration {
+        let key = IntegrationKey {
             guild: guild_id,
             id: integration_id,
         };
         pipe.del(key);
 
-        let key = RedisKey::GuildIntegrations { id: guild_id };
+        let key = GuildIntegrationsKey { id: guild_id };
         pipe.srem(key, integration_id.get());
     }
 }
@@ -91,7 +93,26 @@ impl IMetaKey for IntegrationMetaKey {
     }
 
     fn handle_expire(&self, pipe: &mut Pipeline) {
-        let key = RedisKey::GuildIntegrations { id: self.guild };
+        let key = GuildIntegrationsKey { id: self.guild };
         pipe.srem(key, self.integration.get());
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct IntegrationKey {
+    pub guild: Id<GuildMarker>,
+    pub id: Id<IntegrationMarker>,
+}
+
+impl RedisKey for IntegrationKey {
+    const PREFIX: &'static [u8] = b"INTEGRATION";
+}
+
+impl ToRedisArgs for IntegrationKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(name_guild_id(Self::PREFIX, self.guild, self.id).as_ref());
     }
 }

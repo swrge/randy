@@ -10,21 +10,44 @@ pub(super) mod role;
 pub(super) mod scheduled_event;
 pub(super) mod stage_instance;
 pub(super) mod sticker;
+pub(super) mod unavailable_guilds;
 pub(super) mod user;
 pub(super) mod voice_state;
 
-use tracing::instrument;
 use randy_model::{
     application::interaction::{Interaction, InteractionData},
     guild::UnavailableGuild,
     id::{marker::GuildMarker, Id},
 };
+use tracing::instrument;
 
 use super::pipe::Pipe;
 use crate::{
     config::{CacheConfig, Cacheable},
     key::RedisKey,
     CacheResult, RedisCache,
+};
+
+use crate::cache::impls::{
+    channel::{ChannelKey, ChannelMessagesKey, ChannelMetaKey, ChannelsKey},
+    current_user::CurrentUserKey,
+    emoji::{EmojiKey, EmojiMetaKey, EmojisKey},
+    guild::{
+        GuildChannelsKey, GuildEmojisKey, GuildIntegrationsKey, GuildKey, GuildMembersKey,
+        GuildPresencesKey, GuildRolesKey, GuildScheduledEventsKey, GuildStageInstancesKey,
+        GuildStickersKey, GuildVoiceStatesKey, GuildsKey,
+    },
+    integration::IntegrationKey,
+    member::MemberKey,
+    message::{MessageKey, MessageMetaKey, MessagesKey},
+    presence::PresenceKey,
+    role::{RoleKey, RoleMetaKey, RolesKey},
+    scheduled_event::{ScheduledEventKey, ScheduledEventMetaKey, ScheduledEventsKey},
+    stage_instance::{StageInstanceKey, StageInstanceMetaKey, StageInstancesKey},
+    sticker::{StickerKey, StickerMetaKey, StickersKey},
+    unavailable_guilds::UnavailableGuildsKey,
+    user::{UserGuildsKey, UserKey, UsersKey},
+    voice_state::VoiceStateKey,
 };
 
 impl<C: CacheConfig> RedisCache<C> {
@@ -74,7 +97,7 @@ impl<C: CacheConfig> RedisCache<C> {
         self.delete_guild(pipe, guild_id).await?;
 
         if C::Guild::WANTED {
-            let key = RedisKey::UnavailableGuilds;
+            let key = UnavailableGuildsKey;
             pipe.sadd(key, guild_id.get());
         }
 
@@ -95,7 +118,7 @@ impl<C: CacheConfig> RedisCache<C> {
         self.delete_guilds(pipe, &guild_ids).await?;
 
         if C::Guild::WANTED {
-            let key = RedisKey::UnavailableGuilds;
+            let key = UnavailableGuildsKey;
             pipe.sadd(key, guild_ids.as_slice());
         }
 

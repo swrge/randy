@@ -1,5 +1,21 @@
-use rkyv::{api::high::to_bytes_in, rancor::Source, ser::writer::Buffer, Archived};
-use tracing::{instrument, trace};
+use std::borrow::Cow;
+
+use crate::{
+    cache::{
+        impls::GuildChannelsKey,
+        meta::{atoi, HasArchived, IMeta, IMetaKey},
+        pipe::Pipe,
+    },
+    config::{CacheConfig, Cacheable, ICachedChannel, SerializeMany},
+    error::{
+        MetaError, MetaErrorKind, SerializeError, SerializeErrorKind, UpdateError, UpdateErrorKind,
+    },
+    key::{name_id, RedisKey},
+    redis::{Pipeline, RedisWrite, ToRedisArgs},
+    rkyv_util::id::IdRkyvMap,
+    util::BytesWrap,
+    CacheResult, RedisCache,
+};
 use randy_model::{
     channel::Channel,
     gateway::payload::incoming::ChannelPinsUpdate,
@@ -8,22 +24,13 @@ use randy_model::{
         Id,
     },
 };
-
-use crate::{
-    cache::{
-        meta::{atoi, HasArchived, IMeta, IMetaKey},
-        pipe::Pipe,
-    },
-    config::{CacheConfig, Cacheable, ICachedChannel, SerializeMany},
-    error::{
-        MetaError, MetaErrorKind, SerializeError, SerializeErrorKind, UpdateError, UpdateErrorKind,
-    },
-    key::RedisKey,
-    redis::Pipeline,
-    rkyv_util::id::IdRkyvMap,
-    util::BytesWrap,
-    CacheResult, RedisCache,
+use rkyv::{
+    api::high::to_bytes_in,
+    rancor::{self, Source},
+    ser::writer::Buffer,
+    Archived,
 };
+use tracing::{instrument, trace};
 
 impl<C: CacheConfig> RedisCache<C> {
     #[instrument(level = "trace", skip_all)]
@@ -35,7 +42,7 @@ impl<C: CacheConfig> RedisCache<C> {
         if C::Channel::WANTED {
             let guild_id = channel.guild_id;
             let channel_id = channel.id;
-            let key = RedisKey::Channel { id: channel_id };
+            let key = ChannelKey { id: channel_id };
             let channel = C::Channel::from_channel(channel);
 
             let bytes = channel
@@ -57,11 +64,11 @@ impl<C: CacheConfig> RedisCache<C> {
             }
 
             if let Some(guild_id) = guild_id {
-                let key = RedisKey::GuildChannels { id: guild_id };
+                let key = GuildChannelsKey { id: guild_id };
                 pipe.sadd(key, channel_id.get());
             }
 
-            let key = RedisKey::Channels;
+            let key = ChannelsKey;
             pipe.sadd(key, channel_id.get());
         }
 
@@ -96,7 +103,7 @@ impl<C: CacheConfig> RedisCache<C> {
             return Ok(());
         };
 
-        let key = RedisKey::Channel {
+        let key = ChannelKey {
             id: update.channel_id,
         };
 
@@ -107,7 +114,7 @@ impl<C: CacheConfig> RedisCache<C> {
         update_fn(&mut channel, update)
             .map_err(|e| UpdateError::new(e, UpdateErrorKind::ChannelPins))?;
 
-        let key = RedisKey::Channel {
+        let key = ChannelKey {
             id: update.channel_id,
         };
 
@@ -145,7 +152,7 @@ impl<C: CacheConfig> RedisCache<C> {
                 .iter()
                 .map(|channel| {
                     let id = channel.id;
-                    let key = RedisKey::Channel { id };
+                    let key = ChannelKey { id };
                     let channel = C::Channel::from_channel(channel);
 
                     let bytes = serializer
@@ -156,15 +163,15 @@ impl<C: CacheConfig> RedisCache<C> {
 
                     Ok(((key, BytesWrap(bytes)), id.get()))
                 })
-                .collect::<CacheResult<(Vec<(RedisKey, BytesWrap<_>)>, Vec<u64>)>>()?;
+                .collect::<CacheResult<(Vec<(ChannelKey, BytesWrap<_>)>, Vec<u64>)>>()?;
 
             if !channel_entries.is_empty() {
                 pipe.mset(&channel_entries, C::Channel::expire());
 
-                let key = RedisKey::GuildChannels { id: guild_id };
+                let key = GuildChannelsKey { id: guild_id };
                 pipe.sadd(key, channel_ids.as_slice());
 
-                let key = RedisKey::Channels;
+                let key = ChannelsKey;
                 pipe.sadd(key, channel_ids);
 
                 if C::Channel::expire().is_some() {
@@ -206,26 +213,77 @@ impl<C: CacheConfig> RedisCache<C> {
             return;
         }
 
-        let key = RedisKey::Channel { id: channel_id };
+        let key = ChannelKey { id: channel_id };
         pipe.del(key);
 
         if let Some(guild_id) = guild_id {
-            let key = RedisKey::GuildChannels { id: guild_id };
+            let key = GuildChannelsKey { id: guild_id };
             pipe.srem(key, channel_id.get());
         }
 
-        let key = RedisKey::Channels;
+        let key = ChannelsKey;
         pipe.srem(key, channel_id.get());
 
         if C::Channel::expire().is_some() {
-            pipe.del(RedisKey::ChannelMeta { id: channel_id });
+            pipe.del(ChannelMetaKey {
+                channel: channel_id,
+            });
         }
     }
 }
 
-#[derive(Debug)]
-pub(crate) struct ChannelMetaKey {
-    channel: Id<ChannelMarker>,
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct ChannelKey {
+    pub id: Id<ChannelMarker>,
+}
+
+impl RedisKey for ChannelKey {
+    const PREFIX: &'static [u8] = b"CHANNEL";
+}
+
+impl ToRedisArgs for ChannelKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(name_id(Self::PREFIX, self.id).as_ref());
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct ChannelMessagesKey {
+    pub channel: Id<ChannelMarker>,
+}
+
+impl RedisKey for ChannelMessagesKey {
+    const PREFIX: &'static [u8] = b"CHANNEL_MESSAGES_META";
+}
+
+impl ToRedisArgs for ChannelMessagesKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(name_id(Self::PREFIX, self.channel).as_ref());
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct ChannelMetaKey {
+    pub channel: Id<ChannelMarker>,
+}
+
+impl RedisKey for ChannelMetaKey {
+    const PREFIX: &'static [u8] = b"CHANNEL_META";
+}
+
+impl ToRedisArgs for ChannelMetaKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(name_id(Self::PREFIX, self.channel).as_ref());
+    }
 }
 
 impl IMetaKey for ChannelMetaKey {
@@ -236,7 +294,7 @@ impl IMetaKey for ChannelMetaKey {
     }
 
     fn handle_expire(&self, pipe: &mut Pipeline) {
-        let key = RedisKey::Channels;
+        let key = ChannelsKey;
         pipe.srem(key, self.channel.get()).ignore();
     }
 }
@@ -244,16 +302,40 @@ impl IMetaKey for ChannelMetaKey {
 impl HasArchived for ChannelMetaKey {
     type Meta = ChannelMeta;
 
-    fn redis_key(&self) -> RedisKey {
-        RedisKey::ChannelMeta { id: self.channel }
+    fn redis_key(&self) -> ChannelMetaKey {
+        ChannelMetaKey {
+            channel: self.channel,
+        }
     }
 
     fn handle_archived(&self, pipe: &mut Pipeline, archived: &Archived<Self::Meta>) {
         if let Some(archived) = archived.guild.as_ref() {
             let guild = Id::from(*archived);
-            let key = RedisKey::GuildChannels { id: guild };
+            let key = GuildChannelsKey { id: guild };
             pipe.srem(key, self.channel.get());
         }
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct ChannelsKey;
+
+impl RedisKey for ChannelsKey {
+    const PREFIX: &'static [u8] = b"CHANNELS";
+}
+
+impl ToRedisArgs for ChannelsKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(Self::PREFIX);
+    }
+}
+
+impl From<Id<ChannelMarker>> for ChannelKey {
+    fn from(id: Id<ChannelMarker>) -> Self {
+        Self { id }
     }
 }
 

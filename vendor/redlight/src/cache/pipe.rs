@@ -46,7 +46,7 @@ impl<'c, C> Pipe<'c, C> {
         self.pipe.cmd_iter().next().is_none()
     }
 
-    pub fn mset<V: ToRedisArgs>(&mut self, items: &[(RedisKey, V)], expire: Option<Duration>) {
+    pub fn mset<V: ToRedisArgs>(&mut self, items: &[(impl RedisKey, V)], expire: Option<Duration>) {
         self.pipe.mset(items).ignore();
 
         if let Some(duration) = expire {
@@ -57,15 +57,15 @@ impl<'c, C> Pipe<'c, C> {
         }
     }
 
-    pub fn sadd(&mut self, key: RedisKey, member: impl ToRedisArgs) {
+    pub fn sadd(&mut self, key: impl RedisKey, member: impl ToRedisArgs) {
         self.pipe.sadd(key, member).ignore();
     }
 
-    pub fn scard(&mut self, key: RedisKey) {
+    pub fn scard(&mut self, key: impl RedisKey) {
         self.pipe.scard(key);
     }
 
-    pub fn set(&mut self, key: RedisKey, bytes: &[u8], expire: Option<Duration>) {
+    pub fn set(&mut self, key: impl RedisKey, bytes: &[u8], expire: Option<Duration>) {
         if let Some(duration) = expire {
             #[allow(clippy::cast_possible_truncation)]
             self.pipe.set_ex(key, bytes, duration.as_secs() as usize);
@@ -76,26 +76,26 @@ impl<'c, C> Pipe<'c, C> {
         self.pipe.ignore();
     }
 
-    pub fn smembers(&mut self, key: RedisKey) {
+    pub fn smembers(&mut self, key: impl RedisKey) {
         self.pipe.smembers(key);
     }
 
-    pub fn srem(&mut self, key: RedisKey, member: impl ToRedisArgs) {
+    pub fn srem(&mut self, key: impl RedisKey, member: impl ToRedisArgs) {
         self.pipe.srem(key, member).ignore();
     }
 
-    pub fn zadd(&mut self, key: RedisKey, member: impl ToRedisArgs, score: impl ToRedisArgs) {
+    pub fn zadd(&mut self, key: impl RedisKey, member: impl ToRedisArgs, score: impl ToRedisArgs) {
         self.pipe.zadd(key, member, score).ignore();
     }
 
-    pub fn zrem(&mut self, key: RedisKey, members: impl ToRedisArgs) {
+    pub fn zrem(&mut self, key: impl RedisKey, members: impl ToRedisArgs) {
         self.pipe.zrem(key, members).ignore();
     }
 }
 
 impl<C: CacheConfig> Pipe<'_, C> {
     #[instrument(level = "trace", skip_all)]
-    pub async fn get<T>(&mut self, key: RedisKey) -> CacheResult<Option<CachedArchive<T>>>
+    pub async fn get<T>(&mut self, key: impl RedisKey) -> CacheResult<Option<CachedArchive<T>>>
     where
         T: CheckedArchived,
     {

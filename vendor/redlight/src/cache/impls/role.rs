@@ -1,5 +1,3 @@
-use rkyv::{api::high::to_bytes_in, rancor::Source, ser::writer::Buffer, Archived};
-use tracing::{instrument, trace};
 use randy_model::{
     guild::Role,
     id::{
@@ -7,6 +5,8 @@ use randy_model::{
         Id,
     },
 };
+use rkyv::{api::high::to_bytes_in, rancor::Source, Archived};
+use tracing::{instrument, trace};
 
 use crate::{
     cache::{
@@ -15,12 +15,70 @@ use crate::{
     },
     config::{CacheConfig, Cacheable, ICachedRole, SerializeMany},
     error::{MetaError, MetaErrorKind, SerializeError, SerializeErrorKind},
-    key::RedisKey,
-    redis::Pipeline,
+    key::{name_id, RedisKey},
+    redis::{Pipeline, RedisWrite, ToRedisArgs},
     rkyv_util::id::IdRkyv,
     util::BytesWrap,
     CacheResult, RedisCache,
 };
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct RoleKey {
+    pub id: Id<RoleMarker>,
+}
+
+impl RedisKey for RoleKey {
+    const PREFIX: &'static [u8] = b"ROLE";
+}
+
+impl ToRedisArgs for RoleKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(name_id(Self::PREFIX, self.id).as_ref());
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct RoleMetaKey {
+    pub id: Id<RoleMarker>,
+}
+
+impl RedisKey for RoleMetaKey {
+    const PREFIX: &'static [u8] = b"ROLE_META";
+}
+
+impl ToRedisArgs for RoleMetaKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(name_id(Self::PREFIX, self.id).as_ref());
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct RolesKey;
+
+impl RedisKey for RolesKey {
+    const PREFIX: &'static [u8] = b"ROLES";
+}
+
+impl ToRedisArgs for RolesKey {
+    fn write_redis_args<W>(&self, out: &mut W)
+    where
+        W: ?Sized + RedisWrite,
+    {
+        out.write_arg(Self::PREFIX);
+    }
+}
+
+impl From<Id<RoleMarker>> for RoleKey {
+    fn from(id: Id<RoleMarker>) -> Self {
+        Self { id }
+    }
+}
 
 impl<C: CacheConfig> RedisCache<C> {
     #[instrument(level = "trace", skip_all)]
@@ -35,7 +93,7 @@ impl<C: CacheConfig> RedisCache<C> {
         }
 
         let id = role.id;
-        let key = RedisKey::Role { id };
+        let key = RoleKey { id };
         let role = C::Role::from_role(role);
 
         let bytes = role
@@ -46,15 +104,15 @@ impl<C: CacheConfig> RedisCache<C> {
 
         pipe.set(key, bytes.as_ref(), C::Role::expire());
 
-        let key = RedisKey::GuildRoles { id: guild_id };
+        let key = crate::cache::impls::guild::GuildRolesKey { id: guild_id };
         pipe.sadd(key, id.get());
 
-        let key = RedisKey::Roles;
+        let key = RolesKey;
         pipe.sadd(key, id.get());
 
         if C::Role::expire().is_some() {
             RoleMeta { guild: guild_id }
-                .store(pipe, RoleMetaKey { role: id })
+                .store(pipe, RoleMetaKey { id })
                 .map_err(|e| MetaError::new(e, MetaErrorKind::Role))?;
         }
 
@@ -83,12 +141,12 @@ impl<C: CacheConfig> RedisCache<C> {
             .into_iter()
             .map(|role| {
                 let id = role.id;
-                let key = RedisKey::Role { id };
+                let key = RoleKey { id };
                 let cached = C::Role::from_role(role);
 
                 if with_expire {
                     RoleMeta { guild: guild_id }
-                        .store(pipe, RoleMetaKey { role: id })
+                        .store(pipe, RoleMetaKey { id })
                         .map_err(|e| MetaError::new(e, MetaErrorKind::Role))?;
                 }
 
@@ -100,7 +158,7 @@ impl<C: CacheConfig> RedisCache<C> {
 
                 Ok(((key, BytesWrap(bytes)), id.get()))
             })
-            .collect::<CacheResult<(Vec<(RedisKey, BytesWrap<_>)>, Vec<u64>)>>()?;
+            .collect::<CacheResult<(Vec<(RoleKey, BytesWrap<_>)>, Vec<u64>)>>()?;
 
         if roles.is_empty() {
             return Ok(());
@@ -108,10 +166,10 @@ impl<C: CacheConfig> RedisCache<C> {
 
         pipe.mset(&roles, C::Role::expire());
 
-        let key = RedisKey::GuildRoles { id: guild_id };
+        let key = crate::cache::impls::guild::GuildRolesKey { id: guild_id };
         pipe.sadd(key, role_ids.as_slice());
 
-        let key = RedisKey::Roles;
+        let key = RolesKey;
         pipe.sadd(key, role_ids);
 
         Ok(())
@@ -127,49 +185,44 @@ impl<C: CacheConfig> RedisCache<C> {
             return;
         }
 
-        let key = RedisKey::Role { id: role_id };
+        let key = RoleKey { id: role_id };
         pipe.del(key);
 
-        let key = RedisKey::GuildRoles { id: guild_id };
+        let key = crate::cache::impls::guild::GuildRolesKey { id: guild_id };
         pipe.srem(key, role_id.get());
 
-        let key = RedisKey::Roles;
+        let key = RolesKey;
         pipe.srem(key, role_id.get());
 
         if C::Role::expire().is_some() {
-            pipe.del(RedisKey::RoleMeta { id: role_id });
+            pipe.del(RoleMetaKey { id: role_id });
         }
     }
 }
 
-#[derive(Debug)]
-pub(crate) struct RoleMetaKey {
-    role: Id<RoleMarker>,
-}
-
 impl IMetaKey for RoleMetaKey {
     fn parse<'a>(split: &mut impl Iterator<Item = &'a [u8]>) -> Option<Self> {
-        split.next().and_then(atoi).map(|role| Self { role })
+        split.next().and_then(atoi).map(|role| Self { id: role })
     }
 
     fn handle_expire(&self, pipe: &mut Pipeline) {
-        let key = RedisKey::Roles;
-        pipe.srem(key, self.role.get()).ignore();
+        let key = RolesKey;
+        pipe.srem(key, self.id.get()).ignore();
     }
 }
 
 impl HasArchived for RoleMetaKey {
     type Meta = RoleMeta;
 
-    fn redis_key(&self) -> RedisKey {
-        RedisKey::RoleMeta { id: self.role }
+    fn redis_key(&self) -> impl RedisKey {
+        RoleMetaKey { id: self.id }
     }
 
     fn handle_archived(&self, pipe: &mut Pipeline, archived: &Archived<Self::Meta>) {
-        let key = RedisKey::GuildRoles {
+        let key = crate::cache::impls::guild::GuildRolesKey {
             id: archived.guild.into(),
         };
-        pipe.srem(key, self.role.get());
+        pipe.srem(key, self.id.get());
     }
 }
 
@@ -184,7 +237,7 @@ impl IMeta<RoleMetaKey> for RoleMeta {
 
     fn to_bytes<E: Source>(&self) -> Result<Self::Bytes, E> {
         let mut bytes = [0; 8];
-        to_bytes_in(self, Buffer::from(&mut bytes))?;
+        to_bytes_in(self, rkyv::ser::writer::Buffer::from(&mut bytes))?;
 
         Ok(bytes)
     }
