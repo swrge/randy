@@ -1,10 +1,6 @@
 mod expire;
 mod get;
 mod impls;
-#[cfg(any(feature = "bb8", feature = "deadpool"))]
-/// Types related to iteration of cache entries.
-pub mod iter;
-
 mod meta;
 pub mod pipe;
 
@@ -16,7 +12,6 @@ mod metrics;
 
 use std::marker::PhantomData;
 
-use iter::RedisCacheIter;
 use randy_model::gateway::{event::Event, payload::incoming::GuildCreate};
 use tracing::instrument;
 
@@ -24,6 +19,7 @@ use crate::{
     cache::pipe::Pipe,
     config::{CacheConfig, ReactionEvent},
     error::CacheError,
+    iter::RedisCacheIter,
     redis::{Connection, Pool},
     stats::RedisCacheStats,
     CacheResult,

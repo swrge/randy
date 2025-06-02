@@ -143,6 +143,10 @@ pub mod config;
 pub mod error;
 
 #[cfg(any(feature = "bb8", feature = "deadpool"))]
+/// Types related to iteration of cache entries.
+pub mod iter;
+
+#[cfg(any(feature = "bb8", feature = "deadpool"))]
 /// Types to help implement rkyv traits.
 pub mod rkyv_util;
 

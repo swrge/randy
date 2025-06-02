@@ -18,23 +18,12 @@ use crate::{
 };
 pub use cache_iter::{CacheIter, EntryResult, OptionalCacheIter};
 
-use super::impls::{
-    channel::{ChannelKey, ChannelMessagesKey, ChannelsKey},
-    emoji::{EmojiKey, EmojisKey},
-    guild::{
-        GuildChannelsKey, GuildEmojisKey, GuildIntegrationsKey, GuildKey, GuildMembersKey,
-        GuildPresencesKey, GuildRolesKey, GuildStageInstancesKey, GuildStickersKey,
-        GuildVoiceStatesKey, GuildsKey,
-    },
-    integration::IntegrationKey,
-    member::MemberKey,
-    message::{MessageKey, MessagesKey},
-    presence::PresenceKey,
-    role::{RoleKey, RolesKey},
-    stage_instance::{StageInstanceKey, StageInstancesKey},
-    sticker::{StickerKey, StickersKey},
-    user::{UserKey, UsersKey},
-    voice_state::VoiceStateKey,
+use crate::cache::{
+    ChannelKey, ChannelMessagesKey, ChannelsKey, EmojiKey, EmojisKey, GuildChannelsKey,
+    GuildEmojisKey, GuildIntegrationsKey, GuildKey, GuildMembersKey, GuildPresencesKey,
+    GuildRolesKey, GuildStageInstancesKey, GuildStickersKey, GuildVoiceStatesKey, GuildsKey,
+    IntegrationKey, MemberKey, MessageKey, MessagesKey, PresenceKey, RoleKey, RolesKey,
+    StageInstanceKey, StageInstancesKey, StickerKey, StickersKey, UserKey, UsersKey, VoiceStateKey,
 };
 /// Base type to create iterators for cached entries.
 ///
